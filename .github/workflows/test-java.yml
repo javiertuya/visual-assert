@@ -1,4 +1,4 @@
-name: Build visual-assert Java
+name: Test visual-assert Java
 on: [push, pull_request]
 jobs:
   test:
@@ -32,4 +32,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: test-reports-html
-          path: target/site/surefire-report.html
+          path: java/target/site/surefire-report.html
