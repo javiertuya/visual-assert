@@ -3,6 +3,9 @@ on: [push, pull_request]
 jobs:
   test:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: java
     #if: ${{ false }}  # disable for now
     steps:
       - name: Checkout GitHub repo
