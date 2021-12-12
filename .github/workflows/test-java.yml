@@ -10,13 +10,12 @@ jobs:
     steps:
       - name: Checkout GitHub repo
         uses: actions/checkout@v2
-      #Especifica java 8, con la version por defecto causa: Corrupted STDOUT by directly writing to native stream in forked JVM 1
       - name: Select Java Version
         uses: actions/setup-java@v2
         with:
           distribution: 'temurin'
-          java-version: '8'
-          #cache: 'maven'
+          java-version: '11'
+          #cache: 'maven' (Ahora causa fallo al cargar el entorno!!!)
 
       - name: Build and test
         run: mvn test -Dmaven.test.failure.ignore=true -U --no-transfer-progress

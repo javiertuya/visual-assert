@@ -1,0 +1,38 @@
+name: Publish Java to Maven Central
+on:
+  release:
+    types: [created]
+jobs:
+  publish-java:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: java
+
+    steps:
+      - name: Checkout GitHub repo
+        uses: actions/checkout@v2
+      #para que no falle la importacion de la clave: https://stackoverflow.com/questions/61096521/how-to-use-gpg-key-in-github-actions
+      #requiere exportar la key con la opcion armor: gpg --output private.pgm --armor --export-secret-key <email>
+      - name: Import GPG Key 
+        uses: crazy-max/ghaction-import-gpg@v1
+        env:
+          GPG_PRIVATE_KEY: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
+          PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
+      - name: Set up Apache Maven Central
+        uses: actions/setup-java@v2
+        with: # running setup-java again overwrites the settings.xml
+          distribution: 'temurin'
+          java-version: '11'
+          server-id: ossrh # Value of the distributionManagement/repository/id field of the pom.xml
+          server-username: MAVEN_USERNAME # env variable for username in deploy
+          server-password: MAVEN_CENTRAL_TOKEN # env variable for token in deploy
+          gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }} # Value of the GPG private key to import
+          gpg-passphrase: MAVEN_GPG_PASSPHRASE # env variable for GPG private key passphrase
+
+      - name: Publish to Apache Maven Central
+        run: mvn deploy --no-transfer-progress
+        env:
+          MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
+          MAVEN_CENTRAL_TOKEN: ${{ secrets.MAVEN_CENTRAL_TOKEN }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
