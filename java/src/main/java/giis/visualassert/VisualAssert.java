@@ -17,15 +17,15 @@ public class VisualAssert {
 	private String reportSubdir="target";
 
 	/**
-	 * Sets the folder where generated files with the differences are stored. If not set, files are stored by default in folder named 'target'
+	 * Sets the folder where generated files with the differences are stored; if not set, files are stored by default in folder named 'target'
 	 */
 	public VisualAssert setReportSubdir(String reportSubdir) {
 	    this.reportSubdir=reportSubdir;
 	    return this;
 	}
 	/**
-	 * If set to true, the link with the differences file will include an file url with the absolute path to the file.
-	 * Useful when running tests from a development environment that allows links in the messages (e.g. MS Visual Studio)
+	 * If set to true, the link with the differences file will include an file url with the absolute path to the file;
+	 * useful when running tests from a development environment that allows links in the messages (e.g. MS Visual Studio)
 	 */
 	public VisualAssert setUseLocalAbsolutePath(boolean useLocalAbsolutePath) {
 	    this.useLocalAbsolutePath=useLocalAbsolutePath;
@@ -40,16 +40,16 @@ public class VisualAssert {
 	}
 	
 	/**
-	 * Asserts that two longs are equal. 
-	 * If they are not, generates an html file highlighting the additions and deletions
+	 * Asserts that two large strings are equal; 
+	 * if they are not, generates an html file highlighting the additions and deletions
 	 * and includes a link to the html file in the assert message.
 	 */
 	public void assertEquals(String expected, String actual) {
 		assertEquals(expected, actual, "", "");
 	}
 	/**
-	 * Asserts that two longs are equal. 
-	 * If they are not, generates an html file with the 'fileName' provided highlighting the additions and deletions
+	 * Asserts that two large strings are equal; 
+	 * if they are not, generates an html file with the 'fileName' provided highlighting the additions and deletions
 	 * and includes the specified 'message' and a link to the html file in the assert message.
 	 */
 	public void assertEquals(String expected, String actual, String message, String fileName) {
@@ -57,11 +57,6 @@ public class VisualAssert {
 			throw new AssertionError(getAssertionMessage(expected, actual, message, fileName));
 	}
 	
-
-	/**
-	 * Obtiene el mensaje de comparacion de los dos strings que debe aparecer en un assert cuando falla,
-	 * incluyendo un enlace a las diferencias de forma visual en caso de diferencias.
-	 */
 	private String getAssertionMessage(String expected, String actual, String message, String fileName) {
 		//Determina las diferencias en html usando diff match patch
 		String htmlDiffs = getHtmlDiffs(expected, actual);
@@ -89,11 +84,6 @@ public class VisualAssert {
 		dmp.diffCleanupSemantic((LinkedList<DiffMatchPatch.Diff>)diff);
 		return dmp.diffPrettyHtml(diff);
 	}
-	
-    /**
-    * Obtiene markup html para insertar un link al archivo indicado.
-    * En local es una direccion absoluta, en remoto es relativa (a donde esta el log)
-    */
     private String  getHtmlMarkup(String uniqueFileName) {
     	String path=uniqueFileName;
     	if (useLocalAbsolutePath) {
