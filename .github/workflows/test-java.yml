@@ -1,0 +1,35 @@
+name: Build visual-assert Java
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    #if: ${{ false }}  # disable for now
+    steps:
+      - name: Checkout GitHub repo
+        uses: actions/checkout@v2
+      #Especifica java 8, con la version por defecto causa: Corrupted STDOUT by directly writing to native stream in forked JVM 1
+      - name: Select Java Version
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin'
+          java-version: '8'
+          cache: 'maven'
+
+      - name: Build and test
+        run: mvn test -Dmaven.test.failure.ignore=true -U --no-transfer-progress
+      - name: Generate surefire report
+        if: always()
+        uses: scacap/action-surefire-report@v1
+        with:
+          check_name: test-failure-report (ut, it)
+          report_paths: '**/target/*-reports/TEST-*.xml'
+          fail_on_test_failures: 'true'
+ 
+      - if: always()
+        name: Publish test reports
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-reports-html
+          path: |
+            target/surefire-reports/
+            target/failsafe-reports/
