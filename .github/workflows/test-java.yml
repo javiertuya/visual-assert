@@ -15,7 +15,7 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '11'
-          #cache: 'maven' (Ahora causa fallo al cargar el entorno!!!)
+          #cache: 'maven' (Now fails when loading the environment!!!)
 
       - name: Build and test
         run: mvn test -Dmaven.test.failure.ignore=true -U --no-transfer-progress
@@ -23,7 +23,7 @@ jobs:
         if: always()
         uses: scacap/action-surefire-report@v1
         with:
-          check_name: test-failure-report (ut, it)
+          check_name: test-failure-report
           report_paths: '**/target/surefire-reports/TEST-*.xml'
           fail_on_test_failures: 'true'
  
@@ -32,4 +32,5 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: test-reports-html
+          #working-directory does not work here
           path: java/target/site/surefire-report.html

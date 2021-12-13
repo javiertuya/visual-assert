@@ -3,11 +3,12 @@ package giis.portable;
 import java.util.UUID;
 
 /**
- * Funciones para portabilidad entre Java y Csharp. 
- * Deben ser utilizadas en las nativas de Java para los componentes que vayan a ser traducidos a csharp 
- * y usados de forma independiente.
+ * Utility methods for compatibility between Java and C#
  */
 public class JavaCs {
+	//Default report folder, relative to the current directory
+	public static final String DEFAULT_REPORT_SUBDIR="target";
+	
 	private JavaCs() {
 	    throw new IllegalAccessError("Utility class");
 	}

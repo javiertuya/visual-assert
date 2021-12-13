@@ -1,17 +1,15 @@
 package giis.portable;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.io.FilenameUtils; //no usa java.nio.file.Paths por compatibilidad con java 1.6
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.filefilter.WildcardFileFilter;
 
 /**
- * Metodos de manejo de ficheros para compatibilidad Java/C#
+ * Utility methods for file management for compatibilty between Java and C#
  */
 public class FileUtil {
 	private static final String UTF_8 = "UTF-8";
@@ -79,9 +77,6 @@ public class FileUtil {
 		}
     }
 
-	/** 
-	 * Crea la carpeta indicada como parametro
-	 */
 	public static void createDirectory(String path) {
 		try {
 			FileUtils.forceMkdir(new File(path));

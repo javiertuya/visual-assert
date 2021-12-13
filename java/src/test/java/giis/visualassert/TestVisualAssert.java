@@ -22,7 +22,7 @@ public class TestVisualAssert {
 	 * - do not show expected and actual 
 	 * - specified dif filename
 	 */
-	String defaultFolder = "target";
+	String defaultFolder = JavaCs.DEFAULT_REPORT_SUBDIR;
 	String diffFile = "VisualAssertDiffFile.html";
 	String expected = "abc def ghi\nmno pqr stu";
 	String actualNofail = "abc def ghi\nmno pqr stu";

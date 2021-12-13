@@ -2,7 +2,23 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+	
+<!-- TODO warnings to remove in release
+fix javadoc: Warning:  Unable to locate Test Source XRef to link to - DISABLED
 
+fix javadoc: warning - The code being documented uses modules but the packages defined in http://docs.oracle.com/javase/7/docs/api/ are in the unnamed module.
+see: https://stackoverflow.com/questions/58836862/jdk-11-and-javadoc
+
+check/fix:
+[INFO] nexus-staging-maven-plugin:1.6.7:deploy (injected-nexus-deploy) @ visual-assert -
+[INFO] Performing local staging (local stagingDirectory="/home/runner/work/visual-assert/visual-assert/java/target/nexus-staging/staging")...
+[INFO]  + Using server credentials "ossrh" from Maven settings.
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by com.thoughtworks.xstream.core.util.Fields (file:/home/runner/.m2/repository/com/thoughtworks/xstream/xstream/1.4.7/xstream-1.4.7.jar) to field java.util.TreeMap.comparator
+WARNING: Please consider reporting this to the maintainers of com.thoughtworks.xstream.core.util.Fields
+WARNING: Use -illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+-->
 	<groupId>io.github.javiertuya</groupId>
 	<artifactId>visual-assert</artifactId>
 	<version>2.0.1-SNAPSHOT</version>
