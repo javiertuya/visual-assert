@@ -1,4 +1,4 @@
-package giis.portable;
+package giis.visualassert.portable;
 
 import java.io.File;
 import java.io.IOException;

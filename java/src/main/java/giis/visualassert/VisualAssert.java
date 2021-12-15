@@ -4,8 +4,8 @@ import java.util.LinkedList;
 
 import org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch;
 
-import giis.portable.FileUtil;
-import giis.portable.JavaCs;
+import giis.visualassert.portable.FileUtil;
+import giis.visualassert.portable.JavaCs;
 
 /**
  * Assertion methods that generate an html file with the differences highlighting the additions and deletions;
@@ -27,7 +27,7 @@ public class VisualAssert {
 	}
 	/**
 	 * If set to true, the link with the differences file will include an file url with the absolute path to the file;
-	 * useful when running tests from a development environment that allows links in the messages (e.g. MS Visual Studio)
+	 * useful when running tests from a development environment that allows links in the messages (eg MS Visual Studio)
 	 * @param useLocalAbsolutePath activates or deactivates this option
 	 * @return this object to allow fluent style
 	 */
@@ -75,7 +75,9 @@ public class VisualAssert {
 		
 		//Asegura que existe la carpeta y guarda las diferencias en un html con nombre unico
 		FileUtil.createDirectory(reportSubdir);
-		String uniqueFileName =JavaCs.isEmpty(fileName) ?  "diff-" + JavaCs.getUniqueId() + ".html" : fileName;
+		String uniqueFileName = fileName;
+		if (JavaCs.isEmpty(fileName))
+			uniqueFileName = "diff-" + JavaCs.getSequenceAndIncrement() + ".html";
 		String uniqueFile = FileUtil.getPath(reportSubdir, uniqueFileName);
 		FileUtil.fileWrite(uniqueFile, htmlDiffs);
 
@@ -83,7 +85,7 @@ public class VisualAssert {
 		String fullMessage = "Strings are different.";
 		if (!JavaCs.isEmpty(message))
 			fullMessage += "\n" + message + ".";
-		fullMessage += "\nVisual diffs at: " + getHtmlMarkup(uniqueFileName);
+		fullMessage += "\nVisual diffs at: " + getFileUrl(uniqueFileName);
 		if (showExpectedAndActual) {
 			fullMessage += "\nExpected: <" + expected + ">.";
 			fullMessage += "\nActual: <" + actual + ">.";
@@ -96,13 +98,13 @@ public class VisualAssert {
 		dmp.diffCleanupSemantic((LinkedList<DiffMatchPatch.Diff>)diff);
 		return dmp.diffPrettyHtml(diff);
 	}
-    private String  getHtmlMarkup(String uniqueFileName) {
-    	String path=uniqueFileName;
+    private String  getFileUrl(String uniqueFileName) {
+    	String fileUrl=uniqueFileName;
     	if (useLocalAbsolutePath) {
-    		path = FileUtil.getPath(reportSubdir, uniqueFileName);
-    		path = "file:///" + FileUtil.getFullPath(path);
+    		fileUrl = FileUtil.getPath(reportSubdir, uniqueFileName);
+    		fileUrl = "file:///" + FileUtil.getFullPath(fileUrl);
     	}
-    	return "<a href=\"" + path + "\">" + uniqueFileName + "</a>";
+    	return fileUrl;
     }
 
 }
