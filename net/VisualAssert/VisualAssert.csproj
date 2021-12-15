@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <InformationalVersion>2.0.1</InformationalVersion>
+    
+    <PackageOutputPath>./nupkg</PackageOutputPath>
+    <RepositoryUrl>https://github.com/$(GITHUB_REPOSITORY)</RepositoryUrl>
+    <Version>2.0.1</Version>
+    <Authors>Javier Tuya</Authors>
+    <Company>GIIS - University of Oviedo</Company>
+    <Description>
+      Assertion methods that generate an html file with the differences highlighting the additions and deletions. Useful when comparing large strings.
+    </Description>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageProjectUrl>https://github.com/javiertuya/visual-assert</PackageProjectUrl>
+    <PackageTags>assert, reporting, mstest, junit, differences</PackageTags>
+    <ApplicationIcon />
+    <StartupObject />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="../../LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="DiffMatchPatch\" />
+  </ItemGroup>
+
+</Project>

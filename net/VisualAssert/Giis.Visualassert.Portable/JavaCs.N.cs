@@ -1,0 +1,41 @@
+using System;
+
+namespace Giis.Visualassert.Portable
+{
+    /// <summary>
+    ///  Utility methods for compatibility between Java and C#
+    /// </summary>
+	public static class JavaCs
+	{
+        //Default report folder, relative to the current solution directory
+        //(provided that the project folder is under the solution)
+        public const string DefaultReportSubdir = "../../../../reports";
+        //to generate sequential identifiers
+        public static int currentSequenceId = 0;
+        public static object Lock = new object();
+
+        public static bool IsEmpty(string str)
+        {
+            return string.IsNullOrWhiteSpace(str);
+        }
+
+        public static int GetSequenceAndIncrement()
+        {
+            lock (Lock)
+            {
+                return currentSequenceId++;
+            }
+        }
+        public static int GetCurrentSequence()
+        {
+            lock(Lock)
+            {
+                return currentSequenceId;
+            }
+        }
+        public static string GetUniqueId()
+        {
+            return Guid.NewGuid().ToString();
+        }
+    }
+}

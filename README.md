@@ -3,8 +3,10 @@
 Assertion methods that generate an html file with the differences highlighting the additions and deletions. 
 Useful when comparing large strings.
 
-- From Java include the dependency as indicated in the [Maven Central Repository](https://search.maven.org/artifact/io.github.javiertuya/visual-assert/2.0.0/jar)
-- The .NET version will be available soon
+- From Java include the dependency as indicated in the 
+  [Maven Central Repository](https://search.maven.org/artifact/io.github.javiertuya/visual-assert/2.0.0/jar)
+- From .NET include the package in you project as indicated in 
+  [NuGet](https://www.nuget.org/packages/VisualAssert/)
 
 ## Usage
 
@@ -18,6 +20,11 @@ va.assertEquals("abc def ghi\nmno pqr stu", "abc DEF ghi\nother line\nmno pqr st
 This will produce an html file at the `target` directory that highlights the differences (additions in green, deletions in red):
 
 ![diff-example](docs/diff-file-example.png "Diff example")
+
+From .NET, everything works like Java, only with these differences:
+
+- Method names are capitalized.
+- The destination folder is `reports`, located at the level of the project folder.
 
 ## Customization
 
