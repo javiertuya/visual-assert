@@ -1,7 +1,7 @@
 name: Test visual-assert Java
 on: [push, pull_request]
 jobs:
-  test:
+  test-java:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -23,7 +23,7 @@ jobs:
         if: always()
         uses: scacap/action-surefire-report@v1
         with:
-          check_name: test-failure-report
+          check_name: test-report-java
           report_paths: '**/target/surefire-reports/TEST-*.xml'
           fail_on_test_failures: 'true'
  
@@ -31,6 +31,36 @@ jobs:
         name: Publish test reports
         uses: actions/upload-artifact@v2
         with:
-          name: test-reports-html
+          name: test-reports-java-files
           #working-directory does not work here
           path: java/target/site/surefire-report.html
+  test-net:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: net
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-dotnet@v1
+        with:
+            dotnet-version: '3.1.x'
+
+      - name: Run test
+        run: dotnet test --logger "trx;LogFileName=../../reports/visual-assert-report.trx" TestVisualAssert/TestVisualAssert.csproj
+
+      - name: Publish test report
+        if: always()
+        uses: dorny/test-reporter@v1
+        with:
+          name: test-report-net
+          #working-directory does not work here
+          path: net/reports/visual-assert-report.trx
+          reporter: dotnet-trx
+          fail-on-error: 'true'
+      - if: always()
+        name: Publish test reports files
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-report-net-files
+          #working-directory does not work here
+          path: net/reports
