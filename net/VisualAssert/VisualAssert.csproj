@@ -11,7 +11,7 @@
     <Authors>Javier Tuya</Authors>
     <Company>GIIS - University of Oviedo</Company>
     <Description>
-      Assertion methods that generate an html file with the differences highlighting the additions and deletions. Useful when comparing large strings.
+      Assertion methods that generate an html file with the differences highlighting the additions and deletions. Useful for comparing large strings. Available on Java and .NET.
     </Description>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/javiertuya/visual-assert</PackageProjectUrl>

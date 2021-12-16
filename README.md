@@ -1,7 +1,8 @@
 # visual-assert
 
 Assertion methods that generate an html file with the differences highlighting the additions and deletions. 
-Useful when comparing large strings.
+Useful for comparing large strings.
+Available on Java and .NET.
 
 - From Java include the dependency as indicated in the 
   [Maven Central Repository](https://search.maven.org/artifact/io.github.javiertuya/visual-assert/2.0.0/jar)
@@ -17,7 +18,7 @@ VisualAssert va = new VisualAssert();
 va.assertEquals("abc def ghi\nmno pqr stu", "abc DEF ghi\nother line\nmno pqr stu");
 ```
 
-This will produce an html file at the `target` directory that highlights the differences (additions in green, deletions in red):
+This will produce an html file in the `target` directory that highlights the differences (additions in green, deletions in red):
 
 ![diff-example](docs/diff-file-example.png "Diff example")
 

@@ -9,7 +9,7 @@ import giis.visualassert.portable.JavaCs;
 
 /**
  * Assertion methods that generate an html file with the differences highlighting the additions and deletions;
- * useful when comparing large strings.
+ * useful for comparing large strings.
  */
 public class VisualAssert {
 	private boolean useLocalAbsolutePath=false;

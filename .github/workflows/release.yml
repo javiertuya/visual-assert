@@ -1,9 +1,10 @@
-name: Publish Java to Maven Central
+name: Publish to Maven Central and NuGet
 on:
   release:
     types: [created]
 jobs:
-  publish-java:
+  release-java:
+    #if: ${{ false }}  # disable for now
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -37,3 +38,31 @@ jobs:
           MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
           MAVEN_CENTRAL_TOKEN: ${{ secrets.MAVEN_CENTRAL_TOKEN }}
           MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
+
+  release-net:
+    #if: ${{ false }}  # disable for now
+    runs-on: ubuntu-latest 
+    defaults:
+      run:
+        working-directory: net
+    permissions: 
+      contents: read
+      packages: write 
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-dotnet@v1
+        with:
+            dotnet-version: '3.1.x'
+      - name: Pack
+        run: dotnet pack --configuration Release VisualAssert/VisualAssert.csproj
+      #- name: Push to GitHub packages
+      #  run: |
+      #    dotnet nuget add source --username javiertuya --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/javiertuya/index.json"
+      #    dotnet nuget push VisualAssert/nupkg/*.nupkg  --api-key ${{ secrets.GITHUB_TOKEN }} --source "github"
+      #  env:
+      #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Push to nuget.org
+        run: dotnet nuget push VisualAssert/nupkg/*.nupkg  --api-key ${{ secrets.NUGET_API_KEY }} --source "https://api.nuget.org/v3/index.json"
+      #- name: Push to int.nugettest.org
+      #  run: dotnet nuget push VisualAssert/nupkg/*.nupkg  --api-key ${{ secrets.NUGETTEST_API_KEY }} --source "https://apiint.nugettest.org/v3/index.json"

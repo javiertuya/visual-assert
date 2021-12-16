@@ -1,4 +1,4 @@
-name: Test visual-assert Java
+name: Test visual-assert Java and .NET
 on: [push, pull_request]
 jobs:
   test-java:
@@ -31,9 +31,12 @@ jobs:
         name: Publish test reports
         uses: actions/upload-artifact@v2
         with:
-          name: test-reports-java-files
+          name: test-report-java-files
           #working-directory does not work here
-          path: java/target/site/surefire-report.html
+          path: |
+            java/target/site
+            java/target/*.html
+            java/target/tmp*/*.html
   test-net:
     runs-on: ubuntu-latest
     defaults:

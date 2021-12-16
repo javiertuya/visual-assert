@@ -7,7 +7,7 @@ namespace Giis.Visualassert
 {
 	/// <summary>
 	/// Assertion methods that generate an html file with the differences highlighting the additions and deletions;
-	/// useful when comparing large strings.
+	/// useful for comparing large strings.
 	/// </summary>
 	public class VisualAssert
 	{
