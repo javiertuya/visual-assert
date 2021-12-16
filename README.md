@@ -5,7 +5,7 @@ Useful for comparing large strings.
 Available on Java and .NET.
 
 - From Java include the dependency as indicated in the 
-  [Maven Central Repository](https://search.maven.org/artifact/io.github.javiertuya/visual-assert/2.0.0/jar)
+  [Maven Central Repository](https://search.maven.org/artifact/io.github.javiertuya/visual-assert/2.1.0/jar)
 - From .NET include the package in you project as indicated in 
   [NuGet](https://www.nuget.org/packages/VisualAssert/)
 
