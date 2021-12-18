@@ -21,7 +21,7 @@ WARNING: All illegal access operations will be denied in a future release
 -->
 	<groupId>io.github.javiertuya</groupId>
 	<artifactId>visual-assert</artifactId>
-	<version>2.1.0</version>
+	<version>2.1.1</version>
 	<packaging>jar</packaging>
 	<organization>
 		<name>Software Engineering Research Group - University of Oviedo, ES</name>
