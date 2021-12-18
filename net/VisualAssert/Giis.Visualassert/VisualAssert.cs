@@ -103,7 +103,7 @@ namespace Giis.Visualassert
 		//Uses the original source code (C#) of Google diff match patch
 		//https://github.com/google/diff-match-patch
 		//Last commit on Jul 25, 2019: 62f2e68
-		private string GetHtmlDiffs(string expected, string actual)
+		protected string GetHtmlDiffs(string expected, string actual)
 		{
 			DiffMatchPatch.diff_match_patch dmp = new DiffMatchPatch.diff_match_patch();
 			List<Diff> diff = dmp.diff_main(expected, actual);

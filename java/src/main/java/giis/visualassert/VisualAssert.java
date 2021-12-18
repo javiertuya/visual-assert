@@ -69,7 +69,7 @@ public class VisualAssert {
 			throw new AssertionError(getAssertionMessage(expected, actual, message, fileName));
 	}
 	
-	private String getAssertionMessage(String expected, String actual, String message, String fileName) {
+	protected String getAssertionMessage(String expected, String actual, String message, String fileName) {
 		//Determina las diferencias en html usando diff match patch
 		String htmlDiffs = getHtmlDiffs(expected, actual);
 		
@@ -92,13 +92,13 @@ public class VisualAssert {
 		} 
 		return fullMessage;
 	}
-	private String getHtmlDiffs(String expected, String actual) {
+	protected String getHtmlDiffs(String expected, String actual) {
 		DiffMatchPatch dmp = new DiffMatchPatch();
 		LinkedList<DiffMatchPatch.Diff> diff = dmp.diffMain(expected, actual);
 		dmp.diffCleanupSemantic((LinkedList<DiffMatchPatch.Diff>)diff);
 		return dmp.diffPrettyHtml(diff);
 	}
-    private String  getFileUrl(String uniqueFileName) {
+    protected String  getFileUrl(String uniqueFileName) {
     	String fileUrl=uniqueFileName;
     	if (useLocalAbsolutePath) {
     		fileUrl = FileUtil.getPath(reportSubdir, uniqueFileName);

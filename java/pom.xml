@@ -46,7 +46,7 @@ WARNING: All illegal access operations will be denied in a future release
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>${junit.version}</version>
-			<scope>provided</scope>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.bitbucket.cowwoc</groupId>
