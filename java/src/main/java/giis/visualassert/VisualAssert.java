@@ -113,7 +113,7 @@ public class VisualAssert {
 			return diffPrettyHtmlHard(diff);
 	}
 	//customized method to display spaces as whtiespace entities
-	public String diffPrettyHtmlHard(LinkedList<DiffMatchPatch.Diff> diffs) {
+	protected String diffPrettyHtmlHard(LinkedList<DiffMatchPatch.Diff> diffs) {
 		StringBuilder html = new StringBuilder();
 		for (DiffMatchPatch.Diff aDiff : diffs) {
 			String text = aDiff.text.replace("&", "&amp;").replace("<", "&lt;")

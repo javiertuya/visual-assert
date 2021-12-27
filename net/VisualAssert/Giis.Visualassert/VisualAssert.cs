@@ -129,7 +129,7 @@ namespace Giis.Visualassert
 		}
 
 		//customized method to display spaces as whtiespace entities
-		public String DiffPrettyHtmlHard(List<DiffMatchPatch.Diff> diffs)
+		protected String DiffPrettyHtmlHard(List<DiffMatchPatch.Diff> diffs)
 		{
 			StringBuilder html = new StringBuilder();
 			foreach (DiffMatchPatch.Diff aDiff in diffs)
