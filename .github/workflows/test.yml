@@ -1,4 +1,4 @@
-name: Test visual-assert Java and .NET
+name: Test Java and .NET
 on: [push, pull_request]
 jobs:
   test-java:
@@ -14,8 +14,8 @@ jobs:
         uses: actions/setup-java@v2
         with:
           distribution: 'temurin'
-          java-version: '11'
-          #cache: 'maven' (Now fails when loading the environment!!!)
+          java-version: '8'
+          cache: 'maven'
 
       - name: Build and test
         run: mvn test -Dmaven.test.failure.ignore=true -U --no-transfer-progress
