@@ -25,7 +25,7 @@ public class TestVisualAssert {
 	 * - specified dif filename
 	 * conditions on self generated file
 	 * - different instances
-	 * - different exections same instance
+	 * - different executions same instance
 	 */
 	String defaultFolder = JavaCs.DEFAULT_REPORT_SUBDIR;
 	String diffFile = "VisualAssertDiffFile.html";
