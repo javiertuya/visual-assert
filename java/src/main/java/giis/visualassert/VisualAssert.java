@@ -14,6 +14,7 @@ import giis.visualassert.portable.JavaCs;
 public class VisualAssert {
 	private boolean useLocalAbsolutePath=false;
 	private boolean showExpectedAndActual=false;
+	private boolean softDifferences=false;
 	private String reportSubdir=JavaCs.DEFAULT_REPORT_SUBDIR;
 
 	/**
@@ -26,7 +27,17 @@ public class VisualAssert {
 	    return this;
 	}
 	/**
-	 * If set to true, the link with the differences file will include an file url with the absolute path to the file;
+	 * By default (hard), differences in whitespaces are rendered as whitespace html entities and therefore, always visible in the html ouput;
+	 * if set to true (soft), some whitespace differences may be hidden from the html output
+	 * @param useSoftDifferences sets soft differences
+	 * @return this object to allow fluent style
+	 */
+	public VisualAssert setSoftDifferences(boolean useSoftDifferences) {
+	    this.softDifferences=useSoftDifferences;
+	    return this;
+	}
+	/**
+	 * If set to true, the link with the differences file will include a file url with the absolute path to the file;
 	 * useful when running tests from a development environment that allows links in the messages (eg MS Visual Studio)
 	 * @param useLocalAbsolutePath activates or deactivates this option
 	 * @return this object to allow fluent style
@@ -95,8 +106,33 @@ public class VisualAssert {
 	protected String getHtmlDiffs(String expected, String actual) {
 		DiffMatchPatch dmp = new DiffMatchPatch();
 		LinkedList<DiffMatchPatch.Diff> diff = dmp.diffMain(expected, actual);
-		dmp.diffCleanupSemantic((LinkedList<DiffMatchPatch.Diff>)diff);
-		return dmp.diffPrettyHtml(diff);
+		//dmp.diffCleanupSemantic((LinkedList<DiffMatchPatch.Diff>)diff);
+		if (this.softDifferences)
+			return dmp.diffPrettyHtml(diff);
+		else
+			return diffPrettyHtmlHard(diff);
+	}
+	//customized method to display spaces as whtiespace entities
+	public String diffPrettyHtmlHard(LinkedList<DiffMatchPatch.Diff> diffs) {
+		StringBuilder html = new StringBuilder();
+		for (DiffMatchPatch.Diff aDiff : diffs) {
+			String text = aDiff.text.replace("&", "&amp;").replace("<", "&lt;")
+					.replace(">", "&gt;").replace("\n", "&para;<br>");
+			switch (aDiff.operation) {
+			case INSERT:
+				html.append("<ins style=\"background:#e6ffe6;\">").append(text.replace(" ", "&nbsp;"))
+				.append("</ins>");
+				break;
+			case DELETE:
+				html.append("<del style=\"background:#ffe6e6;\">").append(text.replace(" ", "&nbsp;"))
+				.append("</del>");
+				break;
+			case EQUAL:
+				html.append("<span>").append(text).append("</span>");
+				break;
+			}
+		}
+		return html.toString();
 	}
     protected String  getFileUrl(String uniqueFileName) {
     	String fileUrl=uniqueFileName;

@@ -21,6 +21,7 @@ public class TestVisualAssert {
 	 * - use default report subdir 
 	 * - use relative path 
 	 * - do not show expected and actual 
+	 * - soft differences
 	 * - specified dif filename
 	 * conditions on self generated file
 	 * - different instances
@@ -28,13 +29,16 @@ public class TestVisualAssert {
 	 */
 	String defaultFolder = JavaCs.DEFAULT_REPORT_SUBDIR;
 	String diffFile = "VisualAssertDiffFile.html";
-	String expected = "abc def ghi\nmno pqr stu";
-	String actualNofail = "abc def ghi\nmno pqr stu";
-	String actualFail = "abc DEF ghi\nother line\nmno pqr stu";
+	String expected = "abc def ghi\nmno pqr s tu";
+	String actualNofail = "abc def ghi\nmno pqr s tu";
+	String actualFail = " abc DEF ghi\nother line\nmno pqr stu";
 	String expectedMessageShort = "Strings are different." + "\nThis is the additional message."
 			+ "\nVisual diffs at: VisualAssertDiffFile.html";
-	String htmlDiffs = "<span>abc </span><del style=\"background:#ffe6e6;\">def</del><ins style=\"background:#e6ffe6;\">DEF</ins><span> ghi&para;"
-			+ "<br></span><ins style=\"background:#e6ffe6;\">other line&para;" + "<br></ins><span>mno pqr stu</span>";
+	String htmlDiffs = "<ins style=\"background:#e6ffe6;\">&nbsp;</ins>"
+			+ "<span>abc </span><del style=\"background:#ffe6e6;\">def</del>"
+			+ "<ins style=\"background:#e6ffe6;\">DEF</ins><span> ghi&para;"
+			+ "<br></span><ins style=\"background:#e6ffe6;\">other&nbsp;line&para;" 
+			+ "<br></ins><span>mno pqr s</span><del style=\"background:#ffe6e6;\">&nbsp;</del><span>tu</span>";
 
 	@Test
 	public void testNoFail() {
@@ -61,6 +65,7 @@ public class TestVisualAssert {
 		VisualAssert va = new VisualAssert()
 				.setShowExpectedAndActual(true)
 				.setUseLocalAbsolutePath(true)
+				.setSoftDifferences(true)
 				.setReportSubdir(tempReportPath);
 		try {
 			va.assertEquals(expected, actualFail);
@@ -77,7 +82,7 @@ public class TestVisualAssert {
 					+ "\nExpected: <" + expected + ">." 
 					+ "\nActual: <" + actualFail + ">.";
 			assertEquals(expectedMessageLong.replace("\r", ""), e.getMessage().replace("\r", ""));
-			assertEquals(htmlDiffs, FileUtil.fileRead(FileUtil.getPath(tempReportPath, diffFileName)));
+			assertEquals(htmlDiffs.replace("&nbsp;", " "), FileUtil.fileRead(FileUtil.getPath(tempReportPath, diffFileName)));
 		}
 	}
 	

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text;
 using DiffMatchPatch;
 using Giis.Visualassert.Portable;
 
@@ -13,6 +14,7 @@ namespace Giis.Visualassert
 	{
 		private bool useLocalAbsolutePath = false;
 		private bool showExpectedAndActual = false;
+		private bool softDifferences = false;
 		private string reportSubdir = JavaCs.DefaultReportSubdir;
 
 		/// <summary>Sets the folder where the generated files with the differences are stored; if not set, files are stored by default in folder named 'target'</summary>
@@ -21,6 +23,18 @@ namespace Giis.Visualassert
 		public virtual VisualAssert SetReportSubdir(string reportSubdir)
 		{
 			this.reportSubdir = reportSubdir;
+			return this;
+		}
+
+		/// <summary>
+		/// By default (hard), differences in whitespaces are rendered as whitespace html entities and therefore, always visible in the html ouput;
+		/// if set to true (soft), some whitespace differences may be hidden from the html output
+		/// </summary>
+		/// <param name="useSoftDifferences">sets soft differences</param>
+		/// <returns>this object to allow fluent style</returns>
+		public VisualAssert SetSoftDifferences(bool useSoftDifferences)
+		{
+			this.softDifferences = useSoftDifferences;
 			return this;
 		}
 
@@ -107,8 +121,37 @@ namespace Giis.Visualassert
 		{
 			DiffMatchPatch.diff_match_patch dmp = new DiffMatchPatch.diff_match_patch();
 			List<Diff> diff = dmp.diff_main(expected, actual);
-			dmp.diff_cleanupSemantic(diff);
-			return dmp.diff_prettyHtml(diff);
+			//dmp.diff_cleanupSemantic(diff);
+			if (this.softDifferences)
+				return dmp.diff_prettyHtml(diff);
+			else
+				return DiffPrettyHtmlHard(diff);
+		}
+
+		//customized method to display spaces as whtiespace entities
+		public String DiffPrettyHtmlHard(List<DiffMatchPatch.Diff> diffs)
+		{
+			StringBuilder html = new StringBuilder();
+			foreach (DiffMatchPatch.Diff aDiff in diffs)
+			{
+				string text = aDiff.text.Replace("&", "&amp;").Replace("<", "&lt;")
+						.Replace(">", "&gt;").Replace("\n", "&para;<br>");
+				switch (aDiff.operation)
+				{
+					case Operation.INSERT:
+						html.Append("<ins style=\"background:#e6ffe6;\">").Append(text.Replace(" ", "&nbsp;"))
+						.Append("</ins>");
+						break;
+					case Operation.DELETE:
+						html.Append("<del style=\"background:#ffe6e6;\">").Append(text.Replace(" ", "&nbsp;"))
+						.Append("</del>");
+						break;
+					case Operation.EQUAL:
+						html.Append("<span>").Append(text).Append("</span>");
+						break;
+				}
+			}
+			return html.ToString();
 		}
 
 		protected string GetFileUrl(string uniqueFileName)

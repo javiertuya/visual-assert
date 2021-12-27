@@ -9,11 +9,15 @@ namespace Giis.Visualassert
 	{
 		internal string defaultFolder = JavaCs.DefaultReportSubdir;
 		internal string diffFile = "VisualAssertDiffFile.html";
-		internal string expected = "abc def ghi\nmno pqr stu";
-		internal string actualNofail = "abc def ghi\nmno pqr stu";
-		internal string actualFail = "abc DEF ghi\nother line\nmno pqr stu";
+		internal string expected = "abc def ghi\nmno pqr s tu";
+		internal string actualNofail = "abc def ghi\nmno pqr s tu";
+		internal string actualFail = " abc DEF ghi\nother line\nmno pqr stu";
 		internal string expectedMessageShort = "Strings are different." + "\nThis is the additional message." + "\nVisual diffs at: VisualAssertDiffFile.html";
-		internal string htmlDiffs = "<span>abc </span><del style=\"background:#ffe6e6;\">def</del><ins style=\"background:#e6ffe6;\">DEF</ins><span> ghi&para;" + "<br></span><ins style=\"background:#e6ffe6;\">other line&para;" + "<br></ins><span>mno pqr stu</span>";
+		internal string htmlDiffs = "<ins style=\"background:#e6ffe6;\">&nbsp;</ins>"
+				+ "<span>abc </span><del style=\"background:#ffe6e6;\">def</del>"
+				+ "<ins style=\"background:#e6ffe6;\">DEF</ins><span> ghi&para;"
+				+ "<br></span><ins style=\"background:#e6ffe6;\">other&nbsp;line&para;"
+				+ "<br></ins><span>mno pqr s</span><del style=\"background:#ffe6e6;\">&nbsp;</del><span>tu</span>";
 
 		/*
 		* What is being tested: no failure and failure with each choice of below
@@ -23,10 +27,11 @@ namespace Giis.Visualassert
 		* - use default report subdir
 		* - use relative path
 		* - do not show expected and actual
+	    * - soft differences
 		* - specified dif filename
 	    * conditions on self generated file
 	    * - different instances
-	    * - different exections same instance
+	    * - different executions same instance
 		*/
 		[Test]
 		public virtual void TestNoFail()
@@ -57,7 +62,11 @@ namespace Giis.Visualassert
 		{
 			string tempReportPath = FileUtil.GetPath(defaultFolder, "tmp-" + JavaCs.GetUniqueId());
 			//folder does not exist
-			VisualAssert va = new VisualAssert().SetShowExpectedAndActual(true).SetUseLocalAbsolutePath(true).SetReportSubdir(tempReportPath);
+			VisualAssert va = new VisualAssert()
+				.SetShowExpectedAndActual(true)
+				.SetUseLocalAbsolutePath(true)
+				.SetSoftDifferences(true)
+				.SetReportSubdir(tempReportPath);
 			try
 			{
 				va.AssertEquals(expected, actualFail);
@@ -72,7 +81,7 @@ namespace Giis.Visualassert
 				string diffFileFullPath = "file:///" + FileUtil.GetFullPath(FileUtil.GetPath(tempReportPath, diffFileName));
 				string expectedMessageLong = "Strings are different." + "\nVisual diffs at: " + diffFileFullPath + "\nExpected: <" + expected + ">." + "\nActual: <" + actualFail + ">.";
 				Assert.AreEqual(expectedMessageLong.Replace("\r", string.Empty), e.Message.Replace("\r", string.Empty));
-				Assert.AreEqual(htmlDiffs, FileUtil.FileRead(FileUtil.GetPath(tempReportPath, diffFileName)));
+				Assert.AreEqual(htmlDiffs.Replace("&nbsp;", " "), FileUtil.FileRead(FileUtil.GetPath(tempReportPath, diffFileName)));
 			}
 		}
 
