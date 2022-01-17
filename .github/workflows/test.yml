@@ -1,5 +1,13 @@
-name: Test Java and .NET
-on: [push, pull_request]
+name: test-all
+on:
+  push:
+    branches-ignore:
+      - 'dependabot/**' #avoid duplicates: only run the PR, not the commit
+    tags-ignore:
+      - 'v*' #avoids rerun existing commit on release
+  pull_request:
+    branches:
+      - 'main'
 jobs:
   test-java:
     runs-on: ubuntu-latest
@@ -19,13 +27,13 @@ jobs:
 
       - name: Build and test
         run: mvn test -Dmaven.test.failure.ignore=true -U --no-transfer-progress
-      - name: Generate surefire report
+      - name: Publish test report
         if: always()
-        uses: scacap/action-surefire-report@v1
+        uses: mikepenz/action-junit-report@v2
         with:
           check_name: test-report-java
           report_paths: '**/target/surefire-reports/TEST-*.xml'
-          fail_on_test_failures: 'true'
+          fail_on_failure: 'true'
  
       - if: always()
         name: Publish test reports
@@ -51,8 +59,14 @@ jobs:
       - name: Run test
         run: dotnet test --logger "trx;LogFileName=../../reports/visual-assert-report.trx" TestVisualAssert/TestVisualAssert.csproj
 
+      #Shows message in case of some failure (as test report checks are not always produced)
+      - name: Failure message if needed
+        if: failure()
+        run: echo "::error ::There was a build error or test failure, see the log and diff files in the test report artifacts"
+
+      #prevents execute on pr or dependabot that fails with "Resource not accessible by integration" due to permissions
       - name: Publish test report
-        if: always()
+        if: ${{ always() && github.actor=='javiertuya' }} 
         uses: dorny/test-reporter@v1
         with:
           name: test-report-net
@@ -60,6 +74,7 @@ jobs:
           path: net/reports/visual-assert-report.trx
           reporter: dotnet-trx
           fail-on-error: 'true'
+
       - if: always()
         name: Publish test reports files
         uses: actions/upload-artifact@v2
