@@ -52,7 +52,7 @@ jobs:
         working-directory: net
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-dotnet@v1
+      - uses: actions/setup-dotnet@v2
         with:
             dotnet-version: '3.1.x'
 
