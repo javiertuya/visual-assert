@@ -37,7 +37,7 @@ jobs:
  
       - if: always()
         name: Publish test reports
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: test-report-java-files
           #working-directory does not work here
@@ -77,7 +77,7 @@ jobs:
 
       - if: always()
         name: Publish test reports files
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: test-report-net-files
           #working-directory does not work here
