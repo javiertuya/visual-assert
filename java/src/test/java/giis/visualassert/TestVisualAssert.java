@@ -21,6 +21,7 @@ public class TestVisualAssert {
 	 * - use relative path 
 	 * - do not show expected and actual 
 	 * - soft differences
+	 * - bright colors
 	 * - specified dif filename
 	 * conditions on self generated file
 	 * - different instances
@@ -46,7 +47,7 @@ public class TestVisualAssert {
 	}
 
 	@Test
-	public void testFailAllConditionsTrue() {
+	public void testFailAllConditionsFalse() {
 		VisualAssert va = new VisualAssert(); // all config methods by default
 		FileUtil.createDirectory(defaultFolder); // ensure folder exists
 		try {
@@ -61,13 +62,14 @@ public class TestVisualAssert {
 	}
 
 	@Test
-	public void testFailAllConditionsFalse() {
+	public void testFailAllConditionsTrue() {
 		String tempReportPath = FileUtil.getPath(defaultFolder, "tmp-"+JavaCs.getUniqueId()); //folder does not exist
 		VisualAssert va = new VisualAssert()
 				.clearCurrentSequence()
 				.setShowExpectedAndActual(true)
 				.setUseLocalAbsolutePath(true)
 				.setSoftDifferences(true)
+				.setBrightColors(true)
 				.setReportSubdir(tempReportPath);
 		try {
 			va.assertEquals(expected, actualFail);
@@ -84,7 +86,8 @@ public class TestVisualAssert {
 					+ "\n- Expected: <" + expected + ">." 
 					+ "\n- Actual: <" + actualFail + ">.";
 			assertEquals(expectedMessageLong.replace("\r", ""), e.getMessage().replace("\r", ""));
-			assertEquals(htmlDiffs.replace("&nbsp;", " "), FileUtil.fileRead(FileUtil.getPath(tempReportPath, diffFileName)));
+			assertEquals(htmlDiffs.replace("&nbsp;", " ").replace("e6ffe6", "00ff00").replace("ffe6e6", "ff4000"),
+					FileUtil.fileRead(FileUtil.getPath(tempReportPath, diffFileName)));
 		}
 	}
 	

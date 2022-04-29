@@ -58,6 +58,8 @@ These methods follow a fluent style, so as, they can be concatenated in a single
 - `setReportSubdir(String reportSubdir)`: Sets the folder where generated files with the differences are stored (default is `target`).
 - `setSoftDifferences(boolean useSoftDifferences)`: By default (hard), differences in whitespaces are rendered as whitespace html entities and therefore, always visible in the html ouput.
 If set to true (soft), some whitespace differences may be hidden from the html output.
+- `setBrightColors(boolean useBrightColors)`: By default differences are highlighted with pale red and green colors,
+  if set to true the colors are brighter to easily locate small differences.
 - `setUseLocalAbsolutePath(boolean useLocalAbsolutePath)`: If set to true, the link with the differences file will include an file url with the absolute path to the file,
   useful when running tests from a development environment that allows links in the assertion messages (e.g. MS Visual Studio).
 - `setShowExpectedAndActual(boolean showExpectedAndActual)`: If set to true, the assert message will include the whole content of the exepcted and actual strings that are compared.

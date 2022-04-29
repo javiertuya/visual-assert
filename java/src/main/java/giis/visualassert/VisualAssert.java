@@ -15,6 +15,7 @@ public class VisualAssert {
 	private boolean useLocalAbsolutePath=false;
 	private boolean showExpectedAndActual=false;
 	private boolean softDifferences=false;
+	private boolean brightColors=false;
 	private String reportSubdir=JavaCs.DEFAULT_REPORT_SUBDIR;
 
 	/**
@@ -34,6 +35,16 @@ public class VisualAssert {
 	 */
 	public VisualAssert setSoftDifferences(boolean useSoftDifferences) {
 	    this.softDifferences=useSoftDifferences;
+	    return this;
+	}
+	/**
+	 * By default differences are highlighted with pale red and green colors,
+	 * if set to true the colors are brighter to easily locate small differences.
+	 * @param useBrightColors sets brighter colors in diff files
+	 * @return this object to allow fluent style
+	 */
+	public VisualAssert setBrightColors(boolean useBrightColors) {
+	    this.brightColors=useBrightColors;
 	    return this;
 	}
 	/**
@@ -131,10 +142,11 @@ public class VisualAssert {
 		DiffMatchPatch dmp = new DiffMatchPatch();
 		LinkedList<DiffMatchPatch.Diff> diff = dmp.diffMain(expected, actual);
 		dmp.diffCleanupSemantic((LinkedList<DiffMatchPatch.Diff>)diff);
-		if (this.softDifferences)
-			return dmp.diffPrettyHtml(diff);
-		else
-			return diffPrettyHtmlHard(diff);
+		String diffs = this.softDifferences ? dmp.diffPrettyHtml(diff) : diffPrettyHtmlHard(diff);
+		if (brightColors)
+			diffs = diffs.replace("background:#e6ffe6;", "background:#00ff00;")
+					.replace("background:#ffe6e6;", "background:#ff4000;");
+		return diffs;
 	}
 	//customized method to display spaces as whtiespace entities
 	protected String diffPrettyHtmlHard(LinkedList<DiffMatchPatch.Diff> diffs) {
