@@ -138,7 +138,7 @@ public class VisualAssert {
 		} 
 		return fullMessage;
 	}
-	protected String getHtmlDiffs(String expected, String actual) {
+	public String getHtmlDiffs(String expected, String actual) {
 		DiffMatchPatch dmp = new DiffMatchPatch();
 		LinkedList<DiffMatchPatch.Diff> diff = dmp.diffMain(expected, actual);
 		dmp.diffCleanupSemantic((LinkedList<DiffMatchPatch.Diff>)diff);

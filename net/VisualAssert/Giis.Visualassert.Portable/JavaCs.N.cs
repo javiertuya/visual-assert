@@ -33,6 +33,13 @@ namespace Giis.Visualassert.Portable
                 return currentSequenceId;
             }
         }
+        public static void ClearCurrentSequence()
+        {
+            lock (Lock)
+            {
+                currentSequenceId = 0;
+            }
+        }
         public static string GetUniqueId()
         {
             return Guid.NewGuid().ToString();
