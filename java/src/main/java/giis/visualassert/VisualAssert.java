@@ -159,9 +159,8 @@ public class VisualAssert {
 		return html.toString();
 	}
     protected String  getFileUrl(String uniqueFileName) {
-    	String fileUrl=uniqueFileName;
+    	String fileUrl=FileUtil.getPath(reportSubdir, uniqueFileName);;
     	if (useLocalAbsolutePath) {
-    		fileUrl = FileUtil.getPath(reportSubdir, uniqueFileName);
     		fileUrl = "file:///" + FileUtil.getFullPath(fileUrl);
     	}
     	return fileUrl;

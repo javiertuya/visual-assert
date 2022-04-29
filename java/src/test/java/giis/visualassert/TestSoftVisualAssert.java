@@ -51,6 +51,9 @@ public class TestSoftVisualAssert {
 			va.assertAll();
 			fail("this should fail");
 		} catch (AssertionError e) {
+			//first transforms the file name in expected mesage to include the path
+			expectedMessage=expectedMessage.replace("f1.html", FileUtil.getPath(tempReportPath, "f1.html"));
+			expectedMessage=expectedMessage.replace("diff-0.html", FileUtil.getPath(tempReportPath, "diff-0.html"));
 			assertEquals(expectedMessage, e.getMessage());
 		}
 		

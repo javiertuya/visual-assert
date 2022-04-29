@@ -32,7 +32,7 @@ public class TestVisualAssert {
 	String actualNofail = "abc def ghi\nmno pqr s tu";
 	String actualFail = " abc DEF ghi\nother line\nmno pqr stu";
 	String expectedMessageShort = "Strings are different." + "\nThis is the additional message."
-			+ "\n- Visual diffs at: VisualAssertDiffFile.html";
+			+ "\n- Visual diffs at: " + diffFile;
 	String htmlDiffs = "<ins style=\"background:#e6ffe6;\">&nbsp;</ins>"
 			+ "<span>abc </span><del style=\"background:#ffe6e6;\">def</del>"
 			+ "<ins style=\"background:#e6ffe6;\">DEF</ins><span> ghi&para;"
@@ -53,6 +53,8 @@ public class TestVisualAssert {
 			va.assertEquals(expected, actualFail, "This is the additional message", diffFile);
 			fail("this should fail");
 		} catch (AssertionError e) {
+			//first transforms the file name in expected mesage to include the path
+			expectedMessageShort=expectedMessageShort.replace(diffFile, FileUtil.getPath(JavaCs.DEFAULT_REPORT_SUBDIR, diffFile));
 			assertEquals(expectedMessageShort, e.getMessage());
 			assertEquals(htmlDiffs, FileUtil.fileRead(FileUtil.getPath(defaultFolder, diffFile)));
 		}
