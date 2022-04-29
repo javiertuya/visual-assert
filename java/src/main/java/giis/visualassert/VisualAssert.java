@@ -55,6 +55,13 @@ public class VisualAssert {
 	    this.showExpectedAndActual=showExpectedAndActual;
 	    return this;
 	}
+	/**
+	 * Resets the sequence number used to identify diff files when name is not specified in the assert
+	 */
+	VisualAssert clearCurrentSequence() {
+		JavaCs.clearCurrentSequence();
+	    return this;
+	}
 	
 	/**
 	 * Asserts that two large strings are equal; 
@@ -68,6 +75,16 @@ public class VisualAssert {
 	}
 	/**
 	 * Asserts that two large strings are equal; 
+	 * if they are not, generates an html file highlighting the additions and deletions
+	 * and includes a link to the html file in the assert message.
+	 * @param expected the expected string
+	 * @param actual the value to compare against expected
+	 */
+	public void assertEquals(String expected, String actual, String message) {
+		assertEquals(expected, actual, message, "");
+	}
+	/**
+	 * Asserts that two large strings are equal; 
 	 * if they are not, generates an html file with the 'fileName' provided highlighting the additions and deletions
 	 * and includes the specified 'message' and a link to the html file in the assert message.
 	 * @param expected the expected string
@@ -77,10 +94,17 @@ public class VisualAssert {
 	 */
 	public void assertEquals(String expected, String actual, String message, String fileName) {
 		if (!expected.equals(actual))
-			throw new AssertionError(getAssertionMessage(expected, actual, message, fileName));
+			throwAssertionError(getAssertionMessage(expected, actual, message, fileName));
+	}
+	
+	protected void throwAssertionError(String assertionMessage) {
+		throw new AssertionError(assertionMessage);		
 	}
 	
 	protected String getAssertionMessage(String expected, String actual, String message, String fileName) {
+		return getAssertionMessage(expected, actual, message, fileName, "Strings are different.");
+	}
+	protected String getAssertionMessage(String expected, String actual, String message, String fileName, String messagePrefix) {
 		//Determina las diferencias en html usando diff match patch
 		String htmlDiffs = getHtmlDiffs(expected, actual);
 		
@@ -93,20 +117,20 @@ public class VisualAssert {
 		FileUtil.fileWrite(uniqueFile, htmlDiffs);
 
 		//Compone el mensaje html
-		String fullMessage = "Strings are different.";
+		String fullMessage = messagePrefix;
 		if (!JavaCs.isEmpty(message))
 			fullMessage += "\n" + message + ".";
-		fullMessage += "\nVisual diffs at: " + getFileUrl(uniqueFileName);
+		fullMessage += "\n- Visual diffs at: " + getFileUrl(uniqueFileName);
 		if (showExpectedAndActual) {
-			fullMessage += "\nExpected: <" + expected + ">.";
-			fullMessage += "\nActual: <" + actual + ">.";
+			fullMessage += "\n- Expected: <" + expected + ">.";
+			fullMessage += "\n- Actual: <" + actual + ">.";
 		} 
 		return fullMessage;
 	}
 	protected String getHtmlDiffs(String expected, String actual) {
 		DiffMatchPatch dmp = new DiffMatchPatch();
 		LinkedList<DiffMatchPatch.Diff> diff = dmp.diffMain(expected, actual);
-		//dmp.diffCleanupSemantic((LinkedList<DiffMatchPatch.Diff>)diff);
+		dmp.diffCleanupSemantic((LinkedList<DiffMatchPatch.Diff>)diff);
 		if (this.softDifferences)
 			return dmp.diffPrettyHtml(diff);
 		else

@@ -23,6 +23,9 @@ public class JavaCs {
 	public static synchronized int getCurrentSequence() {
 		return currentSequenceId;
 	}
+	public static synchronized void clearCurrentSequence() {
+		currentSequenceId=0;
+	}
 	public static String getUniqueId() {
 		return UUID.randomUUID().toString();
 	}

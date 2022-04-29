@@ -8,7 +8,6 @@ import java.util.List;
 
 import org.junit.Test;
 
-import giis.visualassert.VisualAssert;
 import giis.visualassert.portable.FileUtil;
 import giis.visualassert.portable.JavaCs;
 
@@ -33,7 +32,7 @@ public class TestVisualAssert {
 	String actualNofail = "abc def ghi\nmno pqr s tu";
 	String actualFail = " abc DEF ghi\nother line\nmno pqr stu";
 	String expectedMessageShort = "Strings are different." + "\nThis is the additional message."
-			+ "\nVisual diffs at: VisualAssertDiffFile.html";
+			+ "\n- Visual diffs at: VisualAssertDiffFile.html";
 	String htmlDiffs = "<ins style=\"background:#e6ffe6;\">&nbsp;</ins>"
 			+ "<span>abc </span><del style=\"background:#ffe6e6;\">def</del>"
 			+ "<ins style=\"background:#e6ffe6;\">DEF</ins><span> ghi&para;"
@@ -63,6 +62,7 @@ public class TestVisualAssert {
 	public void testFailAllConditionsFalse() {
 		String tempReportPath = FileUtil.getPath(defaultFolder, "tmp-"+JavaCs.getUniqueId()); //folder does not exist
 		VisualAssert va = new VisualAssert()
+				.clearCurrentSequence()
 				.setShowExpectedAndActual(true)
 				.setUseLocalAbsolutePath(true)
 				.setSoftDifferences(true)
@@ -78,9 +78,9 @@ public class TestVisualAssert {
 			String diffFileFullPath = "file:///" + FileUtil.getFullPath(FileUtil.getPath(tempReportPath, diffFileName));
 
 			String expectedMessageLong = "Strings are different." 
-					+ "\nVisual diffs at: " + diffFileFullPath 
-					+ "\nExpected: <" + expected + ">." 
-					+ "\nActual: <" + actualFail + ">.";
+					+ "\n- Visual diffs at: " + diffFileFullPath 
+					+ "\n- Expected: <" + expected + ">." 
+					+ "\n- Actual: <" + actualFail + ">.";
 			assertEquals(expectedMessageLong.replace("\r", ""), e.getMessage().replace("\r", ""));
 			assertEquals(htmlDiffs.replace("&nbsp;", " "), FileUtil.fileRead(FileUtil.getPath(tempReportPath, diffFileName)));
 		}

@@ -26,10 +26,29 @@ This will produce an html file in the `target` directory that highlights the dif
 
 ![diff-example](docs/diff-file-example.png "Diff example")
 
+The assert statement is overloaded to specify an additional message and the name of the differences file if required:
+
+```
+assertEquals(String expected, String actual, String message)
+assertEquals(String expected, String actual, String message, String fileName)
+```
+
 From .NET, everything works like Java, only with these differences:
 
 - Method names are capitalized.
 - The destination folder is `reports`, located at the level of the project folder.
+
+## Soft assertions
+
+Soft assertions do not throw and exception immediately when an assertion fails, 
+but record the assertion message and allow to continue the test and check other assertions.
+
+Class `SoftVisualAssert` implements this type of assertions:
+- After a number of assertions, method `assertAll()` will throw the exception 
+  if at least one previous assertion failed. The message aggregates the messages of all failed assertions.
+- If the soft assert instance is shared by more than one test, `assertClear()` must be called
+  before the sequence of assertions to reset the stored messages.
+- In addition to `assertEquals` a `fail` assertion is provided.
 
 ## Customization
 
@@ -42,12 +61,7 @@ If set to true (soft), some whitespace differences may be hidden from the html o
 - `setUseLocalAbsolutePath(boolean useLocalAbsolutePath)`: If set to true, the link with the differences file will include an file url with the absolute path to the file,
   useful when running tests from a development environment that allows links in the assertion messages (e.g. MS Visual Studio).
 - `setShowExpectedAndActual(boolean showExpectedAndActual)`: If set to true, the assert message will include the whole content of the exepcted and actual strings that are compared.
-
-The assert statement is overloaded to specify an additional message and the name of the differences file if required:
-
-```
-assertEquals(String expected, String actual, String message, String fileName)
-```
+- Note that when using `SoftVisualAssert` the constructor must be cast with `(VisualAssert)` to allow configuation using the above fluent methods.
 
 ## Publish from a CI environment
 
