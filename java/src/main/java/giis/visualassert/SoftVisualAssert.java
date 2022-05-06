@@ -3,6 +3,8 @@ package giis.visualassert;
 import java.util.ArrayList;
 import java.util.List;
 
+import giis.visualassert.portable.CallStack;
+
 /**
  * Records all VisualAssert assertion message that fail and the diff files instead of throwing and exception;
  * Calling assertAll() will cause an exception to be thrown including all assertion messages 
@@ -11,20 +13,59 @@ import java.util.List;
 public class SoftVisualAssert extends VisualAssert {
 
 	private List<String> assertionMessages;
+	private int callStackLength = 1; //by default shows the single line where assert failed
 	
 	public SoftVisualAssert() {
 		super();
 		assertClear();
 	}
 	
+	/**
+	 * Sets the number of the call stack items that are shown when a soft assertion fails (default 1)
+	 * @param length number of call stack items
+	 * @return this object to allow fluent style
+	 */
+	public SoftVisualAssert setCallStackLength(int length) {
+		this.callStackLength = length;
+		return this;
+	}
+	
 	@Override
 	protected void throwAssertionError(String message) {
 		// instead of throwing the exception, stores the message
+		if (callStackLength>0) { 
+			//firstly adds the call stack traces when appropriate
+			CallStack stack=new CallStack();
+			message += getStackTraceMessage(stack);
+		}
 		assertionMessages.add(message);
 	}
+	private String getStackTraceMessage(CallStack stack) {
+		StringBuilder sb=new StringBuilder();
+		boolean skip=true;
+		int countTraces=0;
+		for (int i=0; i<stack.size(); i++) {
+			//Skip traces corresponding to the classes of this package that are at the top of stack
+			if (skip && !stack.getClassName(i).startsWith("giis.visualassert.portable.CallStack")
+					&& !stack.getClassName(i).startsWith("giis.visualassert.SoftVisualAssert") 
+					&& !stack.getClassName(i).startsWith("giis.visualassert.VisualAssert")) {
+				skip=false;
+			}
+			//Collect the desired number of traces
+			if (!skip) {
+				sb.append("\n    at ").append(stack.getClassName(i) + "." + stack.getMethodName(i) 
+						+ "(" + stack.getFileName(i) + ":" +stack.getLineNumber(i) +")");
+				countTraces++;
+				if (countTraces>=callStackLength)
+					return "\n- Call Stack:" + sb.toString();
+			}
+		}
+		return "";
+	}
+	
 	@Override
 	protected String getAssertionMessage(String expected, String actual, String message, String fileName) {
-		return super.getAssertionMessage(expected, actual, message, fileName, getMessagePrefix()+" Strings are different.");
+		return super.getAssertionMessage(expected, actual, message, fileName, getMessagePrefix() +" Strings are different.");
 	}
 	private String getMessagePrefix() {
 		return "Failure " + (assertionMessages.size()+1) + ":";

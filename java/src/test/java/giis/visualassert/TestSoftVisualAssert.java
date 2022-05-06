@@ -38,7 +38,7 @@ public class TestSoftVisualAssert {
 	public void testFail() {
 		//uses a different path for files to avoid filename collisions with other tests
 		String tempReportPath=FileUtil.getPath(JavaCs.DEFAULT_REPORT_SUBDIR, "tmp-"+JavaCs.getUniqueId());
-		SoftVisualAssert va = (SoftVisualAssert) new SoftVisualAssert()
+		SoftVisualAssert va = (SoftVisualAssert) new SoftVisualAssert().setCallStackLength(0)
 				.setReportSubdir(tempReportPath).clearCurrentSequence();
 
 		va.assertEquals("ab zz cd", "ab cd", "", "f1.html");

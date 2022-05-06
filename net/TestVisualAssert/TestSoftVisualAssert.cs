@@ -36,8 +36,8 @@ namespace Giis.Visualassert
 		public void TestFail()
 		{
 			//uses a different path for files to avoid filename collisions with other tests
-			String tempReportPath = FileUtil.GetPath(JavaCs.DefaultReportSubdir, "tmp-" + JavaCs.GetUniqueId());
-			SoftVisualAssert va = (SoftVisualAssert)new SoftVisualAssert()
+			string tempReportPath = FileUtil.GetPath(JavaCs.DefaultReportSubdir, "tmp-" + JavaCs.GetUniqueId());
+			SoftVisualAssert va = (SoftVisualAssert)new SoftVisualAssert().SetCallStackLength(0)
 					.SetReportSubdir(tempReportPath).ClearCurrentSequence();
 
 			va.AssertEquals("ab zz cd", "ab cd", "", "f1.html");

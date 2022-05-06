@@ -29,8 +29,8 @@ This will produce an html file in the `target` directory that highlights the dif
 The assert statement is overloaded to specify an additional message and the name of the differences file if required:
 
 ```
-assertEquals(String expected, String actual, String message)
-assertEquals(String expected, String actual, String message, String fileName)
+va.assertEquals(String expected, String actual, String message)
+va.assertEquals(String expected, String actual, String message, String fileName)
 ```
 
 From .NET, everything works like Java, only with these differences:
@@ -40,15 +40,24 @@ From .NET, everything works like Java, only with these differences:
 
 ## Soft assertions
 
-Soft assertions do not throw and exception immediately when an assertion fails, 
+Soft assertions do not throw an exception immediately when an assertion fails, 
 but record the assertion message and allow to continue the test and check other assertions.
 
 Class `SoftVisualAssert` implements this type of assertions:
 - After a number of assertions, method `assertAll()` will throw the exception 
   if at least one previous assertion failed. The message aggregates the messages of all failed assertions.
 - If the soft assert instance is shared by more than one test, `assertClear()` must be called
-  before the sequence of assertions to reset the stored messages.
+  before each sequence of assertions to reset the stored messages.
 - In addition to `assertEquals` a `fail` assertion is provided.
+
+Example:
+
+```
+SoftVisualAssert va = new SoftVisualAssert();
+va.assertEquals("abc def ghi\nmno pqr stu", "abc DEF ghi\nother line\nmno pqr stu", "this will fail");
+va.assertEquals("abc def ghi\nmno pqr stu", "abc def ghi\nmno pqr stu", "this does not fail")
+va.assertAll();
+```
 
 ## Customization
 
@@ -63,7 +72,11 @@ If set to true (soft), some whitespace differences may be hidden from the html o
 - `setUseLocalAbsolutePath(boolean useLocalAbsolutePath)`: If set to true, the link with the differences file will include an file url with the absolute path to the file,
   useful when running tests from a development environment that allows links in the assertion messages (e.g. MS Visual Studio).
 - `setShowExpectedAndActual(boolean showExpectedAndActual)`: If set to true, the assert message will include the whole content of the exepcted and actual strings that are compared.
-- Note that when using `SoftVisualAssert` the constructor must be cast with `(VisualAssert)` to allow configuation using the above fluent methods.
+
+Additionally, if the instance is `SoftVisualAssert`:
+- The constructor must be cast to `(VisualAssert)` to allow configuation using the above fluent methods.
+- An additional setting method is available: `setCallStackLength(int length)`: 
+  Sets the number of the call stack items that are shown when a soft assertion fails (default 1)
 
 ## Publish from a CI environment
 
