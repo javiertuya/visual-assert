@@ -201,9 +201,10 @@ namespace Giis.Visualassert
 			string fileUrl = FileUtil.GetPath(reportSubdir, uniqueFileName);
 			if (useLocalAbsolutePath)
 			{
-				fileUrl = "file:///" + FileUtil.GetFullPath(fileUrl);
-			}
-			return fileUrl;
+                string absPath = FileUtil.GetFullPath(fileUrl).Replace("\\", "/");
+                fileUrl = "file://" + (absPath.StartsWith("/") ? "" : "/") + absPath;
+            }
+            return fileUrl;
 		}
 	}
 }

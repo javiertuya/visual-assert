@@ -79,7 +79,12 @@ public class TestVisualAssert {
 			List<String> allFiles = FileUtil.getFileListInDirectory(tempReportPath);
 			assertEquals(1, allFiles.size()); // only a file has been created
 			String diffFileName = allFiles.get(0);
-			String diffFileFullPath = "file:///" + FileUtil.getFullPath(FileUtil.getPath(tempReportPath, diffFileName));
+			
+			String fullPath=FileUtil.getFullPath(FileUtil.getPath(tempReportPath, diffFileName));
+			//on windows, back slash must be replaced by forward slash and full path start with slash
+			if (fullPath.contains("\\"))
+				fullPath="/" + fullPath.replace("\\", "/");
+			String diffFileFullPath = "file://" + fullPath;
 
 			String expectedMessageLong = "Strings are different." 
 					+ "\n- Visual diffs at: " + diffFileFullPath 

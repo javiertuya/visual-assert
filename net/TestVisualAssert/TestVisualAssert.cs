@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Giis.Visualassert.Portable;
 using NUnit.Framework;
 
@@ -85,8 +86,14 @@ namespace Giis.Visualassert
 				IList<string> allFiles = FileUtil.GetFileListInDirectory(tempReportPath);
 				Assert.AreEqual(1, allFiles.Count); // only a file has been created
 				string diffFileName = allFiles[0];
-				string diffFileFullPath = "file:///" + FileUtil.GetFullPath(FileUtil.GetPath(tempReportPath, diffFileName));
-				string expectedMessageLong = "Strings are different." 
+
+                String fullPath = FileUtil.GetFullPath(FileUtil.GetPath(tempReportPath, diffFileName));
+				//on windows, back slash must be replaced by forward slash and full path start with slash
+                if (fullPath.Contains("\\"))
+                    fullPath = "/" + fullPath.Replace("\\", "/");
+                String diffFileFullPath = "file://" + fullPath;
+
+                string expectedMessageLong = "Strings are different." 
 					+ "\n- Visual diffs at: " + diffFileFullPath 
 					+ "\n- Expected: <" + expected + ">." 
 					+ "\n- Actual: <" + actualFail + ">.";
