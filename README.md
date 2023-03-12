@@ -17,7 +17,7 @@ Available on Java and .NET platforms.
 
 From Java, instantiate the `VisualAssert` class and perform an assert:
 
-```
+```java
 VisualAssert va = new VisualAssert();
 va.assertEquals("abc def ghi\nmno pqr stu", "abc DEF ghi\nother line\nmno pqr stu");
 ```
@@ -28,7 +28,7 @@ This will produce an html file in the `target` directory that highlights the dif
 
 The assert statement is overloaded to specify an additional message and the name of the differences file if required:
 
-```
+```java
 va.assertEquals(String expected, String actual, String message)
 va.assertEquals(String expected, String actual, String message, String fileName)
 ```
@@ -37,6 +37,20 @@ From .NET, everything works like Java, only with these differences:
 
 - Method names are capitalized.
 - The destination folder is `reports`, located at the level of the project folder.
+
+## Specifying a test framework (java only)
+
+By default, when the assertion fails, a java `AssertionError` is thrown,
+which does not require any particular test framework.
+If you want also see the diffs from your developement environment, 
+you can specify a test framework that will raise the assertion failures:
+
+```java
+VisualAssert va = new VisualAssert().setFramework(Framework.JUNIT5);
+```
+
+JUnit 3, 4 and 5 are supported. Note that you will get a `NoClassDefFoundError` exception
+if the specified framework is not in the classpath.
 
 ## Soft assertions
 
@@ -52,7 +66,7 @@ Class `SoftVisualAssert` implements this type of assertions:
 
 Example:
 
-```
+```java
 SoftVisualAssert va = new SoftVisualAssert();
 va.assertEquals("abc def ghi\nmno pqr stu", "abc DEF ghi\nother line\nmno pqr stu", "this will fail");
 va.assertEquals("abc def ghi\nmno pqr stu", "abc def ghi\nmno pqr stu", "this does not fail")

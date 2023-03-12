@@ -20,6 +20,11 @@ public class SoftVisualAssert extends VisualAssert {
 		assertClear();
 	}
 	
+	@Override
+	public VisualAssert setFramework(Framework framework) {
+	    throw new UnsupportedOperationException("Soft Visual Assert can not be configured for a specific test framework");
+	}
+
 	/**
 	 * Sets the number of the call stack items that are shown when a soft assertion fails (default 1)
 	 * @param length number of call stack items
@@ -31,6 +36,11 @@ public class SoftVisualAssert extends VisualAssert {
 	}
 	
 	@Override
+	public void assertEquals(String expected, String actual, String message, String fileName) {
+		if (!expected.equals(actual))
+			throwAssertionError(getAssertionMessage(expected, actual, message, fileName));
+	}
+
 	protected void throwAssertionError(String message) {
 		// instead of throwing the exception, stores the message
 		if (callStackLength>0) { 
@@ -77,13 +87,13 @@ public class SoftVisualAssert extends VisualAssert {
 	public void assertAll() {
 		if (assertionMessages.isEmpty())
 			return;
-		//Composes a single message for all assertions and throws the exception (by calling the parent method)
+		//Composes a single message for all assertions and throws the exception
 		StringBuilder allMsg = new StringBuilder();
 		allMsg.append("There are " + assertionMessages.size() + " failed assertion(s)");
 		for (String msg : assertionMessages)
 			allMsg.append("\n" + msg);
 		assertClear(); //reset
-		super.throwAssertionError(allMsg.toString());
+		throw new AssertionError(allMsg.toString());
 	}
 	
 	/**

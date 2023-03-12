@@ -13,7 +13,7 @@ import giis.visualassert.portable.JavaCs;
 
 public class TestVisualAssert {
 	/*
-	 * What is being tested: no failure and failure with each choice of below
+	 * What is being tested: no failure and failure for every feature. Each choice of:
 	 * conditions on features: 
 	 * - additional message
 	 * - existing report subdir
@@ -26,15 +26,16 @@ public class TestVisualAssert {
 	 * conditions on self generated file
 	 * - different instances
 	 * - different executions same instance
+	 * Framework usage is tested in separate class
 	 */
-	String defaultFolder = JavaCs.DEFAULT_REPORT_SUBDIR;
-	String diffFile = "VisualAssertDiffFile.html";
-	String expected = "abc def ghi\nmno pqr s tu";
-	String actualNofail = "abc def ghi\nmno pqr s tu";
-	String actualFail = " abc DEF ghi\nother line\nmno pqr stu";
-	String expectedMessageShort = "Strings are different." + "\nThis is the additional message."
+	static String defaultFolder = JavaCs.DEFAULT_REPORT_SUBDIR;
+	static String diffFile = "VisualAssertDiffFile.html";
+	static String expected = "abc def ghi\nmno pqr s tu";
+	static String actualNofail = "abc def ghi\nmno pqr s tu";
+	static String actualFail = " abc DEF ghi\nother line\nmno pqr stu";
+	static String expectedMessageShort = "Strings are different." + "\nThis is the additional message."
 			+ "\n- Visual diffs at: " + diffFile;
-	String htmlDiffs = "<ins style=\"background:#e6ffe6;\">&nbsp;</ins>"
+	static String htmlDiffs = "<ins style=\"background:#e6ffe6;\">&nbsp;</ins>"
 			+ "<span>abc </span><del style=\"background:#ffe6e6;\">def</del>"
 			+ "<ins style=\"background:#e6ffe6;\">DEF</ins><span> ghi&para;"
 			+ "<br></span><ins style=\"background:#e6ffe6;\">other&nbsp;line&para;" 
@@ -49,14 +50,21 @@ public class TestVisualAssert {
 	@Test
 	public void testFailAllConditionsFalse() {
 		VisualAssert va = new VisualAssert(); // all config methods by default
+		doFailAllConditionsFalse(va, "java.lang.AssertionError", "", "");
+	}
+	//Actual execution and assertions in a method that will be reused to test with frameworks
+	public static void doFailAllConditionsFalse(VisualAssert va, String assertionException, String assertMessage, String expActMessage) {
 		FileUtil.createDirectory(defaultFolder); // ensure folder exists
+		FileUtil.fileWrite(FileUtil.getPath(defaultFolder, diffFile), "");
 		try {
 			va.assertEquals(expected, actualFail, "This is the additional message", diffFile);
 			fail("this should fail");
 		} catch (AssertionError e) {
-			//first transforms the file name in expected mesage to include the path
-			expectedMessageShort=expectedMessageShort.replace(diffFile, FileUtil.getPath(JavaCs.DEFAULT_REPORT_SUBDIR, diffFile));
-			assertEquals(expectedMessageShort, e.getMessage());
+			assertEquals(assertionException, e.getClass().getName()); //not a subclass of this exception
+			//first transforms the file name in expected message to include the path
+			String message=expectedMessageShort.replace(diffFile, FileUtil.getPath(JavaCs.DEFAULT_REPORT_SUBDIR, diffFile));
+			message+=expActMessage;
+			assertEquals(message, e.getMessage());
 			assertEquals(htmlDiffs, FileUtil.fileRead(FileUtil.getPath(defaultFolder, diffFile)));
 		}
 	}

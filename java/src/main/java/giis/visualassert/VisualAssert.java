@@ -17,7 +17,18 @@ public class VisualAssert {
 	private boolean softDifferences=false;
 	private boolean brightColors=false;
 	private String reportSubdir=JavaCs.DEFAULT_REPORT_SUBDIR;
+	protected FrameworkAssert platformAssert=new FrameworkAssert(null); //no platform by default
 
+	/**
+	 * Sets the the test framework that will raise the assertion failures
+	 * (useful If you want also see the diffs from your developement environment)
+	 * @param framework Onew of JUnit 3, 4 and 5
+	 * @return this object to allow fluent style
+	 */
+	public VisualAssert setFramework(Framework framework) {
+	    this.platformAssert=new FrameworkAssert(framework);
+	    return this;
+	}
 	/**
 	 * Sets the folder where the generated files with the differences are stored; if not set, files are stored by default in folder named 'target'
 	 * @param reportSubdir the folder to store differences, relative to the current directory
@@ -59,7 +70,7 @@ public class VisualAssert {
 	}
 	/**
 	 * If set to true, the assert message will include the whole content of the exepcted and actual strings that are compared
-	 * @param showExpectedAndActual activates or deacctivates this option
+	 * @param showExpectedAndActual activates or deactivates this option
 	 * @return this object to allow fluent style
 	 */
 	public VisualAssert setShowExpectedAndActual(boolean showExpectedAndActual) {
@@ -105,11 +116,7 @@ public class VisualAssert {
 	 */
 	public void assertEquals(String expected, String actual, String message, String fileName) {
 		if (!expected.equals(actual))
-			throwAssertionError(getAssertionMessage(expected, actual, message, fileName));
-	}
-	
-	protected void throwAssertionError(String assertionMessage) {
-		throw new AssertionError(assertionMessage);		
+			platformAssert.assertEquals(expected, actual, getAssertionMessage(expected, actual, message, fileName));
 	}
 	
 	protected String getAssertionMessage(String expected, String actual, String message, String fileName) {
@@ -132,7 +139,10 @@ public class VisualAssert {
 		if (!JavaCs.isEmpty(message))
 			fullMessage += "\n" + message + ".";
 		fullMessage += "\n- Visual diffs at: " + getFileUrl(uniqueFileName);
-		if (showExpectedAndActual) {
+		//if using a framework, the expected/actual message is already always supplied by the platform
+		if (platformAssert.getFramework()!=Framework.NONE) {
+			fullMessage +="\n";
+		} else if (showExpectedAndActual) {
 			fullMessage += "\n- Expected: <" + expected + ">.";
 			fullMessage += "\n- Actual: <" + actual + ">.";
 		} 
