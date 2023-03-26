@@ -69,9 +69,6 @@
 						<goals>
 							<goal>report-only</goal>
 						</goals>
-						<configuration>
-							<skip>${skipTests}</skip>
-						</configuration>
 					</execution>
 				</executions>
 			</plugin>
