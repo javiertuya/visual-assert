@@ -82,3 +82,21 @@ jobs:
           name: test-report-net-files
           #working-directory does not work here
           path: net/reports
+
+  publish-java-snapshot:
+    #avoid publishing PRs and dependabot branches
+    if: ${{ github.event_name != 'pull_request' && !contains('/head/refs/dependabot/', github.ref) }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: java
+    steps:
+      - uses: javiertuya/branch-snapshots-action@v1.0.0
+        with: 
+          token: ${{ secrets.GITHUB_TOKEN }}
+          working-directory: java
+          java-version: '8'
+          mvn-deploy-args: '-P publish-github -DskipTests=true -Dmaven.test.failure.ignore=true -U --no-transfer-progress'
+          package-name: 'giis.io.github.javiertuya.visual-assert'
+          delete-old-versions: false
+          min-versions-to-keep: 4
