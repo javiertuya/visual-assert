@@ -135,13 +135,15 @@
 	<profiles>
 		<profile>
 			<id>publish-github</id>
-			<distributionManagement>
-   				<snapshotRepository>
-					<id>github</id>
-					<name>GitHub javiertuya Apache Maven Packages</name>
-					<url>https://maven.pkg.github.com/javiertuya/visual-assert</url>
-				</snapshotRepository>
-			</distributionManagement>
+			<build>
+				<distributionManagement>
+   					<snapshotRepository>
+						<id>github</id>
+						<name>GitHub javiertuya Apache Maven Packages</name>
+						<url>https://maven.pkg.github.com/javiertuya/visual-assert</url>
+					</snapshotRepository>
+				</distributionManagement>
+			</build>
 		</profile>
 		<profile>
 			<id>publish-maven</id>
