@@ -101,6 +101,6 @@ jobs:
           working-directory: java
           java-version: '8'
           mvn-deploy-args: '-P publish-github -DskipTests=true -Dmaven.test.failure.ignore=false -U --no-transfer-progress'
-          package-name: 'giis.io.github.javiertuya.visual-assert'
+          package-name: 'io.github.javiertuya.visual-assert'
           delete-old-versions: true
           min-versions-to-keep: 4
