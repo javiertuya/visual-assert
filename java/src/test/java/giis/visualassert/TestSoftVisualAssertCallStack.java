@@ -54,6 +54,18 @@ public class TestSoftVisualAssertCallStack {
 			assertEquals(getExpectedMultipleStackItem(), e.getMessage().replace("\\","/"));
 		}
 	}
+	@Test
+	public void testZeroStackItem() {
+		SoftVisualAssert va = new SoftVisualAssert().setCallStackLength(0);
+		va.assertEquals("ab zz cd", "ab cd", "", "fstack11.html");
+		callDoAssert(va);
+		try {
+			va.assertAll();
+			fail("this should fail");
+		} catch (AssertionError e) {
+			assertEquals(getExpectedZeroStackItem(), e.getMessage().replace("\\","/"));
+		}
+	}
 	
 	private String getExpectedSingleStackItem() {
 		return "There are 2 failed assertion(s)\n"
@@ -77,4 +89,11 @@ public class TestSoftVisualAssertCallStack {
 				+ "    at giis.visualassert.TestSoftVisualAssertCallStack.testMultipleStackItem(TestSoftVisualAssertCallStack.java:49)";
 	}
 
+	private String getExpectedZeroStackItem() {
+		return "There are 2 failed assertion(s)\n"
+				+ "Failure 1: Strings are different.\n"
+				+ "- Visual diffs at: target/fstack11.html\n"
+				+ "Failure 2: Strings are different.\n"
+				+ "- Visual diffs at: target/fstack12.html";
+	}
 }
