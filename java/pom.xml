@@ -114,7 +114,7 @@
 				<snapshotRepository>
 					<id>github</id>
 					<name>GitHub Apache Maven Packages</name>
-					<url>https://maven.pkg.github.com/giis-uniovi/visual-assert</url>
+					<url>https://maven.pkg.github.com/javiertuya/visual-assert</url>
 				</snapshotRepository>
 			</distributionManagement>
 		</profile>
