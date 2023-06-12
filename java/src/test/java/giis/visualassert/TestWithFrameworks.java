@@ -20,6 +20,12 @@ public class TestWithFrameworks {
 			+ "mno pqr stu>";
 
 	@Test
+	public void testJunit4Pass() {
+		VisualAssert va = new VisualAssert().setFramework(Framework.JUNIT4);
+		va.assertEquals("ab cd\nxy zt", "ab cd\nxy zt");
+	}
+
+	@Test
 	public void testJunit4Failure() {
 		VisualAssert va = new VisualAssert()
 				.setShowExpectedAndActual(false)
@@ -57,11 +63,6 @@ public class TestWithFrameworks {
 				.setShowExpectedAndActual(true) //this should be ignored (replaced by native diff message)
 				.setFramework(Framework.JUNIT5);
 		TestVisualAssert.doFailAllConditionsFalse(va, "org.opentest4j.AssertionFailedError", "", junit5AdditionalMessage);
-	}
-
-	@Test(expected=UnsupportedOperationException.class)
-	public void testJunitNotAllowedWithSoftAssertion() {
-		new SoftVisualAssert().setFramework(Framework.JUNIT4);
 	}
 
 	//Remove the Ignore annotation to check that we can see 

@@ -151,14 +151,7 @@ public abstract class AbstractVisualAssert<T extends AbstractVisualAssert<T>> {
 			String messagePrefix) {
 		// Determina las diferencias en html usando diff match patch
 		String htmlDiffs = getHtmlDiffs(expected, actual);
-
-		// Asegura que existe la carpeta y guarda las diferencias en un html con nombre unico
-		FileUtil.createDirectory(reportSubdir);
-		String uniqueFileName = fileName;
-		if (JavaCs.isEmpty(fileName))
-			uniqueFileName = "diff-" + JavaCs.getSequenceAndIncrement() + ".html";
-		String uniqueFile = FileUtil.getPath(reportSubdir, uniqueFileName);
-		FileUtil.fileWrite(uniqueFile, htmlDiffs);
+		String uniqueFileName = writeDiffFile(htmlDiffs, fileName);
 
 		// Compone el mensaje html
 		String fullMessage = messagePrefix;
@@ -173,6 +166,15 @@ public abstract class AbstractVisualAssert<T extends AbstractVisualAssert<T>> {
 			fullMessage += "\n- Actual: <" + actual + ">.";
 		}
 		return fullMessage;
+	}
+	protected String writeDiffFile(String htmlDiffs, String fileName) {
+		FileUtil.createDirectory(reportSubdir);
+		String uniqueFileName = fileName;
+		if (JavaCs.isEmpty(fileName))
+			uniqueFileName = "diff-" + JavaCs.getSequenceAndIncrement() + ".html";
+		String uniqueFile = FileUtil.getPath(reportSubdir, uniqueFileName);
+		FileUtil.fileWrite(uniqueFile, htmlDiffs);
+		return uniqueFileName;
 	}
 
 	public String getHtmlDiffs(String expected, String actual) {
