@@ -8,10 +8,6 @@ on:
   pull_request:
     branches:
       - 'main'
-permissions:
-  contents: read
-  packages: write
-  checks: write
 
 jobs:
   test-java:
@@ -95,6 +91,9 @@ jobs:
     defaults:
       run:
         working-directory: java
+    permissions:
+      contents: read
+      packages: write
     steps:
       - uses: javiertuya/branch-snapshots-action@v1.0.0
         with: 
