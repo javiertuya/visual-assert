@@ -10,7 +10,7 @@ import giis.visualassert.portable.CallStack;
  * Calling assertAll() will cause an exception to be thrown including all assertion messages 
  * (if one or more assertions failed).
  */
-public class SoftVisualAssert extends VisualAssert {
+public class SoftVisualAssert extends AbstractVisualAssert<SoftVisualAssert> {
 
 	private List<String> assertionMessages;
 	private int callStackLength = 1; //by default shows the single line where assert failed
@@ -21,7 +21,7 @@ public class SoftVisualAssert extends VisualAssert {
 	}
 	
 	@Override
-	public VisualAssert setFramework(Framework framework) {
+	public SoftVisualAssert setFramework(Framework framework) {
 	    throw new UnsupportedOperationException("Soft Visual Assert can not be configured for a specific test framework");
 	}
 

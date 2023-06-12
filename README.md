@@ -87,10 +87,9 @@ If set to true (soft), some whitespace differences may be hidden from the html o
   useful when running tests from a development environment that allows links in the assertion messages (e.g. MS Visual Studio).
 - `setShowExpectedAndActual(boolean showExpectedAndActual)`: If set to true, the assert message will include the whole content of the exepcted and actual strings that are compared.
 
-Additionally, if the instance is `SoftVisualAssert`:
-- The constructor must be cast to `(VisualAssert)` to allow configuation using the above fluent methods.
-- An additional setting method is available: `setCallStackLength(int length)`: 
-  Sets the number of the call stack items that are shown when a soft assertion fails (default 1)
+The `SoftVisualAssert` instances have an additional method:
+- `setCallStackLength(int length)`: 
+  Sets the number of call stack items that are shown for each failed assertion (default 1)
 
 ## Publish from a CI environment
 
@@ -102,7 +101,7 @@ archiveArtifacts artifacts:'target/*.html', allowEmptyArchive:true
 
 To create an artifact including the files with differences using GitHub Actions, you can include the following step in your workflow:
 
-```
+```yaml
   - name: Publish test diff files
     if: always()
     uses: actions/upload-artifact@v2

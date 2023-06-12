@@ -45,7 +45,7 @@ public class TestSoftVisualAssertCallStack {
 	}
 	@Test
 	public void testMultipleStackItem() {
-		SoftVisualAssert va = (SoftVisualAssert) new SoftVisualAssert().setCallStackLength(3);
+		SoftVisualAssert va = new SoftVisualAssert().setCallStackLength(3);
 		callDoAssert(va);
 		try {
 			va.assertAll();
