@@ -95,7 +95,7 @@ jobs:
       contents: read
       packages: write
     steps:
-      - uses: javiertuya/branch-snapshots-action@main
+      - uses: javiertuya/branch-snapshots-action@v1.0.0
         with: 
           token: ${{ secrets.GITHUB_TOKEN }}
           working-directory: java
