@@ -66,12 +66,20 @@ public class TestSoftAggregateDiffs {
 			+ "\n" + va.getAggregateFailureHeader(1)
 			+ "\n"
 			+ "\n" + va.getAggregateFailureHeader(2)
+			+ "\n"
+			+ "\n" + va.getAggregateFailureHeader(3)
+			+ "\nthis is notnull"
+			+ "\n" + va.getAggregateFailureHeader(4)
 			+ "\nxy vw> but was: <Aggregated failures:"
 			+ "\n" + va.getAggregateFailureHeader(0)
 			+ "\nab cd"
 			+ "\n" + va.getAggregateFailureHeader(1)
 			+ "\n"
 			+ "\n" + va.getAggregateFailureHeader(2)
+			+ "\nthis is notnull"
+			+ "\n" + va.getAggregateFailureHeader(3)
+			+ "\n"
+			+ "\n" + va.getAggregateFailureHeader(4)
 			+ "\nxy zz vw>";
 	}
 
@@ -103,11 +111,19 @@ public class TestSoftAggregateDiffs {
 			+ "\n" + va.getAggregateFailureHeader(1)
 			+ "\n"
 			+ "\n" + va.getAggregateFailureHeader(2)
+			+ "\n"
+			+ "\n" + va.getAggregateFailureHeader(3)
+			+ "\nthis is notnull"
+			+ "\n" + va.getAggregateFailureHeader(4)
 			+ "\nxy] vw> but was:<...----------------"
 			+ "\nab [cd"
 			+ "\n" + va.getAggregateFailureHeader(1)
 			+ "\n"
 			+ "\n" + va.getAggregateFailureHeader(2)
+			+ "\nthis is notnull"
+			+ "\n" + va.getAggregateFailureHeader(3)
+			+ "\n"
+			+ "\n" + va.getAggregateFailureHeader(4)
 			+ "\nxy zz] vw>";
 	}
 	

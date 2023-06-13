@@ -16,8 +16,10 @@ public class TestSoftVisualAssert {
 		va.assertEquals("ab cd", "ab cd", "msg2");
 		va.assertEquals("mn op", "mn op", "msg3");
 		va.fail("msg4");
+		va.assertEquals(null, "this is notnull", "msgen", "fen.html");
+		va.assertEquals("this is notnull", null, "msgan", "fan.html");
 		va.assertEquals("xy vw", "xy zz vw", "msg5");
-		assertEquals(3, va.getFailureCount());
+		assertEquals(5, va.getFailureCount());
 		try {
 			if ("".equals(aggregateFile))
 				va.assertAll();
@@ -27,6 +29,8 @@ public class TestSoftVisualAssert {
 		} catch (AssertionError e) {
 			//first transforms the file name in expected mesage to include the path
 			expected=expected.replace("f1.html", FileUtil.getPath(reportPath, "f1.html"));
+			expected=expected.replace("fen.html", FileUtil.getPath(reportPath, "fen.html"));
+			expected=expected.replace("fan.html", FileUtil.getPath(reportPath, "fan.html"));
 			expected=expected.replace("diff-0.html", FileUtil.getPath(reportPath, "diff-0.html"));
 			expected=expected.replace("Aggregate.html", FileUtil.getPath(reportPath, "Aggregate.html"));
 			assertEquals(expected, e.getMessage());
@@ -44,7 +48,7 @@ public class TestSoftVisualAssert {
 	}
 
 	public static String expectedMessage(boolean aggregateDiffs) {
-		return "There are 3 failed assertion(s)\n"
+		return "There are 5 failed assertion(s)\n"
 			+ (aggregateDiffs ?  "Aggregated visual diffs at: Aggregate.html\n" : "")
 			+ "Failure 1: Strings are different.\n"
 			+ "- Visual diffs at: f1.html\n"
@@ -54,11 +58,21 @@ public class TestSoftVisualAssert {
 			+ "msg4\n"
 			+ "- Call Stack:\n"
 			+ "    at giis.visualassert.TestSoftVisualAssert.doFailSoftAssert(TestSoftVisualAssert.java:18)\n"
-			+ "Failure 3: Strings are different.\n"
+			+ "Failure 3: Strings are different. Expected was <null>.\n"
+			+ "msgen.\n"
+			+ "- Visual diffs at: fen.html\n"
+			+ "- Call Stack:\n"
+			+ "    at giis.visualassert.TestSoftVisualAssert.doFailSoftAssert(TestSoftVisualAssert.java:19)\n"
+			+ "Failure 4: Strings are different. Actual was <null>.\n"
+			+ "msgan.\n"
+			+ "- Visual diffs at: fan.html\n"
+			+ "- Call Stack:\n"
+			+ "    at giis.visualassert.TestSoftVisualAssert.doFailSoftAssert(TestSoftVisualAssert.java:20)\n"
+			+ "Failure 5: Strings are different.\n"
 			+ "msg5.\n"
 			+ "- Visual diffs at: diff-0.html\n"
 			+ "- Call Stack:\n"
-			+ "    at giis.visualassert.TestSoftVisualAssert.doFailSoftAssert(TestSoftVisualAssert.java:19)";
+			+ "    at giis.visualassert.TestSoftVisualAssert.doFailSoftAssert(TestSoftVisualAssert.java:21)";
 	}
 	
 	@Test

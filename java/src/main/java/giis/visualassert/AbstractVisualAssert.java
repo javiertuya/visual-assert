@@ -147,6 +147,13 @@ public abstract class AbstractVisualAssert<T extends AbstractVisualAssert<T>> {
 
 	// Common methods to obtain messages and diffs
 	 
+	// Always use this to check for equality with null handling
+	protected boolean stringsAreEqual(String expected, String actual) {
+		if (expected == null && actual == null)
+			return true;
+		return expected == null ? actual.equals(expected) : expected.equals(actual);
+	}
+	
 	protected String getAssertionMessage(String expected, String actual, String message, String fileName,
 			String messagePrefix) {
 		// Determina las diferencias en html usando diff match patch
@@ -155,6 +162,8 @@ public abstract class AbstractVisualAssert<T extends AbstractVisualAssert<T>> {
 
 		// Compone el mensaje html
 		String fullMessage = messagePrefix;
+		fullMessage += actual == null ? " Actual was <null>." : "";
+		fullMessage += expected == null ? " Expected was <null>." : "";
 		if (!JavaCs.isEmpty(message))
 			fullMessage += "\n" + message + ".";
 		fullMessage += "\n- Visual diffs at: " + getFileUrl(uniqueFileName);
@@ -179,6 +188,8 @@ public abstract class AbstractVisualAssert<T extends AbstractVisualAssert<T>> {
 
 	public String getHtmlDiffs(String expected, String actual) {
 		DiffMatchPatch dmp = new DiffMatchPatch();
+		expected = expected == null ? "" : expected;
+		actual = actual == null ? "" : actual;
 		LinkedList<DiffMatchPatch.Diff> diff = dmp.diffMain(expected, actual);
 		dmp.diffCleanupSemantic((LinkedList<DiffMatchPatch.Diff>) diff);
 		String diffs = this.softDifferences ? dmp.diffPrettyHtml(diff) : diffPrettyHtmlHard(diff);
