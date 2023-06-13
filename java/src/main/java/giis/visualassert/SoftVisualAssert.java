@@ -36,7 +36,7 @@ public class SoftVisualAssert extends AbstractVisualAssert<SoftVisualAssert> {
 	
 	@Override
 	public void assertEquals(String expected, String actual, String message, String fileName) {
-		if (!expected.equals(actual))
+		if (!stringsAreEqual(expected, actual))
 			throwAssertionError(getAssertionMessage(expected, actual, message, fileName), expected, actual);
 	}
 
@@ -108,7 +108,8 @@ public class SoftVisualAssert extends AbstractVisualAssert<SoftVisualAssert> {
 			writeDiffFile(htmlDiff, aggregateFileName);
 		}
 		assertClear(); //reset
-		platformAssert.assertEquals(expected, actual, allMsg.toString());
+		if (!stringsAreEqual(expected, actual))
+			platformAssert.failNotEquals(expected, actual, allMsg.toString());
 	}
 	/**
 	 * Throws and exception if at least one assertion failed including all assertion messages
@@ -122,7 +123,7 @@ public class SoftVisualAssert extends AbstractVisualAssert<SoftVisualAssert> {
 		sb.append("Aggregated failures:");
 		for (int i = 0; i<expectedOrActual.size(); i++) {
 			sb.append("\n").append(getAggregateFailureHeader(i))
-				.append("\n").append(expectedOrActual.get(i));
+				.append("\n").append(expectedOrActual.get(i) == null ? "" : expectedOrActual.get(i));
 		}
 		return sb.toString();
 	}

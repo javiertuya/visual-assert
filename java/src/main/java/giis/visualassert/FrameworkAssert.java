@@ -18,17 +18,15 @@ public class FrameworkAssert {
 	}
 
 	@SuppressWarnings("deprecation")
-	public void assertEquals(String expected, String actual, String message) {
-		if (!expected.equals(actual)) {
-			if (framework==Framework.JUNIT3) {
-				junit.framework.Assert.assertEquals(message, expected, actual);
-			} else if (framework==Framework.JUNIT4) {
-				org.junit.Assert.assertEquals(message, expected, actual);
-			} else if (framework==Framework.JUNIT5) {
-				org.junit.jupiter.api.Assertions.assertEquals(expected, actual, message);
-			} else
-				throw new AssertionError(message);
-		}
+	public void failNotEquals(String expected, String actual, String message) {
+		if (framework==Framework.JUNIT3) {
+			junit.framework.Assert.assertEquals(message, expected, actual);
+		} else if (framework==Framework.JUNIT4) {
+			org.junit.Assert.assertEquals(message, expected, actual);
+		} else if (framework==Framework.JUNIT5) {
+			org.junit.jupiter.api.Assertions.assertEquals(expected, actual, message);
+		} else
+			throw new AssertionError(message);
 	}
 	
 }
