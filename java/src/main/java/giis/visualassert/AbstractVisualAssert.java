@@ -17,7 +17,7 @@ public abstract class AbstractVisualAssert<T extends AbstractVisualAssert<T>> {
 	private boolean softDifferences = false;
 	private boolean brightColors = false;
 	private String reportSubdir = JavaCs.DEFAULT_REPORT_SUBDIR;
-	protected FrameworkAssert platformAssert = new FrameworkAssert(null); // no platform by default
+	protected FrameworkAssert platformAssert = new FrameworkAssert(Framework.NONE); // no platform by default
 
 	/**
 	 * Sets the the test framework that will raise the assertion failures 
@@ -99,7 +99,7 @@ public abstract class AbstractVisualAssert<T extends AbstractVisualAssert<T>> {
 	 * specified in the assert
 	 */
 	@SuppressWarnings("unchecked")
-	T clearCurrentSequence() {
+	public T clearCurrentSequence() {
 		JavaCs.clearCurrentSequence();
 		return (T) this;
 	}

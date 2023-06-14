@@ -5,6 +5,8 @@ import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
+import giis.visualassert.portable.CallStack;
+
 /**
  * Checks the stack trace items shown in messages.
  * WARNING: Expected messages (at the end of this class) are sensitive to 
@@ -40,7 +42,7 @@ public class TestSoftVisualAssertCallStack {
 			va.assertAll();
 			fail("this should fail");
 		} catch (AssertionError e) {
-			assertEquals(getExpectedSingleStackItem(), e.getMessage().replace("\\","/"));
+			assertEquals(CallStack.normalize(getExpectedSingleStackItem()), CallStack.normalize(e.getMessage()));
 		}
 	}
 	@Test
@@ -51,7 +53,7 @@ public class TestSoftVisualAssertCallStack {
 			va.assertAll();
 			fail("this should fail");
 		} catch (AssertionError e) {
-			assertEquals(getExpectedMultipleStackItem(), e.getMessage().replace("\\","/"));
+			assertEquals(CallStack.normalize(getExpectedMultipleStackItem()), CallStack.normalize(e.getMessage()));
 		}
 	}
 	@Test
@@ -63,7 +65,7 @@ public class TestSoftVisualAssertCallStack {
 			va.assertAll();
 			fail("this should fail");
 		} catch (AssertionError e) {
-			assertEquals(getExpectedZeroStackItem(), e.getMessage().replace("\\","/"));
+			assertEquals(CallStack.normalize(getExpectedZeroStackItem()), CallStack.normalize(e.getMessage()));
 		}
 	}
 	

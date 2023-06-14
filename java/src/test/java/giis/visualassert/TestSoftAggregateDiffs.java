@@ -15,6 +15,7 @@ import giis.visualassert.portable.JavaCs;
  */
 public class TestSoftAggregateDiffs {
 	
+	private static final String SRC_TEST_RESOURCES = "src/test/resources";
 	private static final String AGGREGATE_HTML = "Aggregate.html";
 
 	//Soft assert tests used junit4 as base, here using unit5
@@ -54,8 +55,7 @@ public class TestSoftAggregateDiffs {
 		assertAggregateFile(tempReportPath);
 	}
 	private void assertAggregateFile(String tempReportPath) {
-		assertEquals("Aggregate file " + tempReportPath + "/" + AGGREGATE_HTML + " must be same than src/test/resources/" + AGGREGATE_HTML,
-				FileUtil.fileRead(FileUtil.getPath("src/test/resources", AGGREGATE_HTML)), 
+		assertEquals(FileUtil.fileRead(FileUtil.getPath(SRC_TEST_RESOURCES, AGGREGATE_HTML)), 
 				FileUtil.fileRead(FileUtil.getPath(tempReportPath, AGGREGATE_HTML)));
 	}
 	
