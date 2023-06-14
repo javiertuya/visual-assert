@@ -71,11 +71,11 @@ public class TestSoftVisualAssertCallStack {
 	
 	private String getExpectedSingleStackItem() {
 		return "There are 2 failed assertion(s)\n"
-				+ "Failure 1: Strings are different.\n"
+				+ "Failure 1: Strings are different. First diff at line 1 column 4.\n"
 				+ "- Visual diffs at: target/fstack11.html\n"
 				+ "- Call Stack:\n"
 				+ "    at giis.visualassert.TestSoftVisualAssertCallStack.testSingleStackItem(TestSoftVisualAssertCallStack.java:37)\n"
-				+ "Failure 2: Strings are different.\n"
+				+ "Failure 2: Strings are different. First diff at line 1 column 4.\n"
 				+ "- Visual diffs at: target/fstack12.html\n"
 				+ "- Call Stack:\n"
 				+ "    at giis.visualassert.TestSoftVisualAssertCallStack$OtherClass.doAssert(TestSoftVisualAssertCallStack.java:19)";
@@ -83,7 +83,7 @@ public class TestSoftVisualAssertCallStack {
 
 	private String getExpectedMultipleStackItem() {
 		return "There are 1 failed assertion(s)\n"
-				+ "Failure 1: Strings are different.\n"
+				+ "Failure 1: Strings are different. First diff at line 1 column 4.\n"
 				+ "- Visual diffs at: target/fstack12.html\n"
 				+ "- Call Stack:\n"
 				+ "    at giis.visualassert.TestSoftVisualAssertCallStack$OtherClass.doAssert(TestSoftVisualAssertCallStack.java:19)\n"
@@ -93,9 +93,9 @@ public class TestSoftVisualAssertCallStack {
 
 	private String getExpectedZeroStackItem() {
 		return "There are 2 failed assertion(s)\n"
-				+ "Failure 1: Strings are different.\n"
+				+ "Failure 1: Strings are different. First diff at line 1 column 4.\n"
 				+ "- Visual diffs at: target/fstack11.html\n"
-				+ "Failure 2: Strings are different.\n"
+				+ "Failure 2: Strings are different. First diff at line 1 column 4.\n"
 				+ "- Visual diffs at: target/fstack12.html";
 	}
 }

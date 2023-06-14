@@ -32,10 +32,10 @@ public class TestVisualAssert {
 	static String diffFile = "VisualAssertDiffFile.html";
 	static String expected = "abc def ghi\nmno pqr s tu";
 	static String actualNofail = "abc def ghi\nmno pqr s tu";
-	static String actualFail = " abc DEF ghi\nother line\nmno pqr stu";
-	static String expectedMessageShort = "Strings are different." + "\nThis is the additional message."
+	static String actualFail = "abc DEF ghi\nother line\nmno pqr stu";
+	static String expectedMessageShort = "Strings are different. First diff at line 1 column 5." + "\nThis is the additional message."
 			+ "\n- Visual diffs at: " + diffFile;
-	static String htmlDiffs = "<ins style=\"background:#e6ffe6;\">&nbsp;</ins>"
+	static String htmlDiffs = ""
 			+ "<span>abc </span><del style=\"background:#ffe6e6;\">def</del>"
 			+ "<ins style=\"background:#e6ffe6;\">DEF</ins><span> ghi&para;"
 			+ "<br></span><ins style=\"background:#e6ffe6;\">other&nbsp;line&para;" 
@@ -95,7 +95,7 @@ public class TestVisualAssert {
 				fullPath="/" + fullPath.replace("\\", "/");
 			String diffFileFullPath = "file://" + fullPath;
 
-			String expectedMessageLong = "Strings are different." 
+			String expectedMessageLong = "Strings are different. First diff at line 1 column 5." 
 					+ "\n- Visual diffs at: " + diffFileFullPath 
 					+ "\n- Expected: <" + expected + ">." 
 					+ "\n- Actual: <" + actualFail + ">.";

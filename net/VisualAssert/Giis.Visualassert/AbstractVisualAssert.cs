@@ -179,6 +179,7 @@ namespace Giis.Visualassert
 			string fullMessage = messagePrefix;
 			fullMessage += actual == null ? " Actual was <null>." : string.Empty;
 			fullMessage += expected == null ? " Expected was <null>." : string.Empty;
+			fullMessage += actual != null && expected != null ? " " + GetDiffLocation(expected, actual) + "." : string.Empty;
 			if (!JavaCs.IsEmpty(message))
 			{
 				fullMessage += "\n" + message + ".";
@@ -268,6 +269,61 @@ namespace Giis.Visualassert
 				fileUrl = "file://" + (absPath.StartsWith("/") ? string.Empty : "/") + absPath;
 			}
 			return fileUrl;
+		}
+
+		/// <summary>
+		/// Gets a string indicating the position of the first difference
+		/// (line and column); assumes non null parameters
+		/// </summary>
+		public virtual string GetDiffLocation(string expected, string actual)
+		{
+			if (string.Empty.Equals(actual) && !string.Empty.Equals(expected))
+			{
+				return "Actual is empty";
+			}
+			else
+			{
+				if (!string.Empty.Equals(actual) && string.Empty.Equals(expected))
+				{
+					return "Expected is empty";
+				}
+			}
+			int line = 0;
+			int column = 0;
+			for (int i = 0; i < expected.Length; i++)
+			{
+				char current = expected[i];
+				if (i < actual.Length && current != actual[i])
+				{
+					// found
+					return "First diff at line " + (line + 1) + " column " + (column + 1);
+				}
+				else
+				{
+					if (i >= actual.Length)
+					{
+						// no more in actual
+						return "Actual is contained in expected";
+					}
+				}
+				if (current == '\n')
+				{
+					line++;
+					column = 0;
+				}
+				else
+				{
+					column++;
+				}
+			}
+			if (expected.Length < actual.Length)
+			{
+				return "Expected is contained in actual";
+			}
+			else
+			{
+				return "No diffs";
+			}
 		}
 	}
 }

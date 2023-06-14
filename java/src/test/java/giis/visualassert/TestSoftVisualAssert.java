@@ -77,7 +77,7 @@ public class TestSoftVisualAssert {
 	public static String expectedMessage(boolean aggregateDiffs) {
 		return "There are 5 failed assertion(s)\n"
 			+ (aggregateDiffs ?  "Aggregated visual diffs at: Aggregate.html\n" : "")
-			+ "Failure 1: Strings are different.\n"
+			+ "Failure 1: Strings are different. First diff at line 1 column 4.\n"
 			+ "- Visual diffs at: f1.html\n"
 			+ "- Call Stack:\n"
 			+ "    at giis.visualassert.TestSoftVisualAssert.doFailSoftAssert(TestSoftVisualAssert.java:15)\n"
@@ -95,7 +95,7 @@ public class TestSoftVisualAssert {
 			+ "- Visual diffs at: fan.html\n"
 			+ "- Call Stack:\n"
 			+ "    at giis.visualassert.TestSoftVisualAssert.doFailSoftAssert(TestSoftVisualAssert.java:20)\n"
-			+ "Failure 5: Strings are different.\n"
+			+ "Failure 5: Strings are different. First diff at line 1 column 4.\n"
 			+ "msg5.\n"
 			+ "- Visual diffs at: diff-0.html\n"
 			+ "- Call Stack:\n"

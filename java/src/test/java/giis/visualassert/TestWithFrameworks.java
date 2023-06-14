@@ -10,12 +10,12 @@ import org.junit.Test;
  */
 public class TestWithFrameworks {
 	
-	private String junit4AdditionalMessage="\n expected:<[abc def ghi\n"
-			+ "mno pqr s ]tu> but was:<[ abc DEF ghi\n"
+	private String junit4AdditionalMessage="\n expected:<abc [def ghi\n"
+			+ "mno pqr s ]tu> but was:<abc [DEF ghi\n"
 			+ "other line\n"
 			+ "mno pqr s]tu>";
 	private String junit5AdditionalMessage="\n ==> expected: <abc def ghi\n"
-			+ "mno pqr s tu> but was: < abc DEF ghi\n"
+			+ "mno pqr s tu> but was: <abc DEF ghi\n"
 			+ "other line\n"
 			+ "mno pqr stu>";
 

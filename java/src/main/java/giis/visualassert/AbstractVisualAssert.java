@@ -164,6 +164,7 @@ public abstract class AbstractVisualAssert<T extends AbstractVisualAssert<T>> {
 		String fullMessage = messagePrefix;
 		fullMessage += actual == null ? " Actual was <null>." : "";
 		fullMessage += expected == null ? " Expected was <null>." : "";
+		fullMessage += actual != null && expected !=null ? " " + getDiffLocation(expected, actual) + "." : "";
 		if (!JavaCs.isEmpty(message))
 			fullMessage += "\n" + message + ".";
 		fullMessage += "\n- Visual diffs at: " + getFileUrl(uniqueFileName);
@@ -228,6 +229,37 @@ public abstract class AbstractVisualAssert<T extends AbstractVisualAssert<T>> {
 			fileUrl = "file://" + (absPath.startsWith("/") ? "" : "/") + absPath;
 		}
 		return fileUrl;
+	}
+	
+	/**
+	 * Gets a string indicating the position of the first difference
+	 * (line and column); assumes non null parameters
+	 */
+	public String getDiffLocation(String expected, String actual) {
+		if ("".equals(actual) && !"".equals(expected))
+			return "Actual is empty";
+		else if (!"".equals(actual) && "".equals(expected))
+			return "Expected is empty";
+		int line = 0;
+		int column = 0;
+		for (int i = 0; i < expected.length(); i++) {
+			char current = expected.charAt(i);
+			if (i < actual.length() && current != actual.charAt(i)) { // found
+				return "First diff at line " + (line + 1) + " column " + (column + 1);
+			} else if (i >= actual.length()) { // no more in actual
+				return "Actual is contained in expected";
+			}
+			if (current == '\n') {
+				line++;
+				column = 0;
+			} else {
+				column++;
+			}
+		}
+		if (expected.length() < actual.length())
+			return "Expected is contained in actual";
+		else
+			return "No diffs";
 	}
 
 }

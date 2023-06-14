@@ -19,12 +19,11 @@ namespace Giis.Visualassert
 
 		internal static string actualNofail = "abc def ghi\nmno pqr s tu";
 
-		internal static string actualFail = " abc DEF ghi\nother line\nmno pqr stu";
+		internal static string actualFail = "abc DEF ghi\nother line\nmno pqr stu";
 
-		internal static string expectedMessageShort = "Strings are different." + "\nThis is the additional message." + "\n- Visual diffs at: " + diffFile;
+		internal static string expectedMessageShort = "Strings are different. First diff at line 1 column 5." + "\nThis is the additional message." + "\n- Visual diffs at: " + diffFile;
 
-		internal static string htmlDiffs = "<ins style=\"background:#e6ffe6;\">&nbsp;</ins>" + "<span>abc </span><del style=\"background:#ffe6e6;\">def</del>" + "<ins style=\"background:#e6ffe6;\">DEF</ins><span> ghi&para;" + "<br></span><ins style=\"background:#e6ffe6;\">other&nbsp;line&para;"
-			 + "<br></ins><span>mno pqr s</span><del style=\"background:#ffe6e6;\">&nbsp;</del><span>tu</span>";
+		internal static string htmlDiffs = string.Empty + "<span>abc </span><del style=\"background:#ffe6e6;\">def</del>" + "<ins style=\"background:#e6ffe6;\">DEF</ins><span> ghi&para;" + "<br></span><ins style=\"background:#e6ffe6;\">other&nbsp;line&para;" + "<br></ins><span>mno pqr s</span><del style=\"background:#ffe6e6;\">&nbsp;</del><span>tu</span>";
 
 		/*
 		* What is being tested: no failure and failure for every feature. Each choice of:
@@ -106,7 +105,7 @@ namespace Giis.Visualassert
 					fullPath = "/" + fullPath.Replace("\\", "/");
 				}
 				string diffFileFullPath = "file://" + fullPath;
-				string expectedMessageLong = "Strings are different." + "\n- Visual diffs at: " + diffFileFullPath + "\n- Expected: <" + expected + ">." + "\n- Actual: <" + actualFail + ">.";
+				string expectedMessageLong = "Strings are different. First diff at line 1 column 5." + "\n- Visual diffs at: " + diffFileFullPath + "\n- Expected: <" + expected + ">." + "\n- Actual: <" + actualFail + ">.";
 				NUnit.Framework.Assert.AreEqual(expectedMessageLong.Replace("\r", string.Empty), e.Message.Replace("\r", string.Empty));
 				NUnit.Framework.Assert.AreEqual(htmlDiffs.Replace("&nbsp;", " ").Replace("e6ffe6", "00ff00").Replace("ffe6e6", "ff4000"), FileUtil.FileRead(FileUtil.GetPath(tempReportPath, diffFileName)));
 			}

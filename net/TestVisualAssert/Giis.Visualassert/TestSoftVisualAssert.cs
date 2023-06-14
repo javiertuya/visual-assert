@@ -82,10 +82,10 @@ namespace Giis.Visualassert
 
 		public static string ExpectedMessage(bool aggregateDiffs)
 		{
-			return "There are 5 failed assertion(s)\n" + (aggregateDiffs ? "Aggregated visual diffs at: Aggregate.html\n" : string.Empty) + "Failure 1: Strings are different.\n" + "- Visual diffs at: f1.html\n" + "- Call Stack:\n" + "    at Giis.Visualassert.TestSoftVisualAssert.DoFailSoftAssert(TestSoftVisualAssert.java:15)\n"
+			return "There are 5 failed assertion(s)\n" + (aggregateDiffs ? "Aggregated visual diffs at: Aggregate.html\n" : string.Empty) + "Failure 1: Strings are different. First diff at line 1 column 4.\n" + "- Visual diffs at: f1.html\n" + "- Call Stack:\n" + "    at Giis.Visualassert.TestSoftVisualAssert.DoFailSoftAssert(TestSoftVisualAssert.java:15)\n"
 				 + "Failure 2: Fail assertion raised.\n" + "msg4\n" + "- Call Stack:\n" + "    at Giis.Visualassert.TestSoftVisualAssert.DoFailSoftAssert(TestSoftVisualAssert.java:18)\n" + "Failure 3: Strings are different. Expected was <null>.\n" + "msgen.\n" + "- Visual diffs at: fen.html\n" +
 				 "- Call Stack:\n" + "    at Giis.Visualassert.TestSoftVisualAssert.DoFailSoftAssert(TestSoftVisualAssert.java:19)\n" + "Failure 4: Strings are different. Actual was <null>.\n" + "msgan.\n" + "- Visual diffs at: fan.html\n" + "- Call Stack:\n" + "    at Giis.Visualassert.TestSoftVisualAssert.DoFailSoftAssert(TestSoftVisualAssert.java:20)\n"
-				 + "Failure 5: Strings are different.\n" + "msg5.\n" + "- Visual diffs at: diff-0.html\n" + "- Call Stack:\n" + "    at Giis.Visualassert.TestSoftVisualAssert.DoFailSoftAssert(TestSoftVisualAssert.java:21)";
+				 + "Failure 5: Strings are different. First diff at line 1 column 4.\n" + "msg5.\n" + "- Visual diffs at: diff-0.html\n" + "- Call Stack:\n" + "    at Giis.Visualassert.TestSoftVisualAssert.DoFailSoftAssert(TestSoftVisualAssert.java:21)";
 		}
 	}
 }

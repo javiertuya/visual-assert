@@ -98,19 +98,19 @@ namespace Giis.Visualassert
 
 		private string GetExpectedSingleStackItem()
 		{
-			return "There are 2 failed assertion(s)\n" + "Failure 1: Strings are different.\n" + "- Visual diffs at: ../../../../reports/fstack11.html\n" + "- Call Stack:\n" + "    at Giis.Visualassert.TestSoftVisualAssertCallStack.TestSingleStackItem(TestSoftVisualAssertCallStack.java:37)\n" + "Failure 2: Strings are different.\n"
-				 + "- Visual diffs at: ../../../../reports/fstack12.html\n" + "- Call Stack:\n" + "    at Giis.Visualassert.TestSoftVisualAssertCallStack.OtherClass.DoAssert(TestSoftVisualAssertCallStack.java:19)";
+			return "There are 2 failed assertion(s)\n" + "Failure 1: Strings are different. First diff at line 1 column 4.\n" + "- Visual diffs at: ../../../../reports/fstack11.html\n" + "- Call Stack:\n" + "    at Giis.Visualassert.TestSoftVisualAssertCallStack.TestSingleStackItem(TestSoftVisualAssertCallStack.java:37)\n"
+				 + "Failure 2: Strings are different. First diff at line 1 column 4.\n" + "- Visual diffs at: ../../../../reports/fstack12.html\n" + "- Call Stack:\n" + "    at Giis.Visualassert.TestSoftVisualAssertCallStack.OtherClass.DoAssert(TestSoftVisualAssertCallStack.java:19)";
 		}
 
 		private string GetExpectedMultipleStackItem()
 		{
-			return "There are 1 failed assertion(s)\n" + "Failure 1: Strings are different.\n" + "- Visual diffs at: ../../../../reports/fstack12.html\n" + "- Call Stack:\n" + "    at Giis.Visualassert.TestSoftVisualAssertCallStack.OtherClass.DoAssert(TestSoftVisualAssertCallStack.java:19)\n" + "    at Giis.Visualassert.TestSoftVisualAssertCallStack.CallDoAssert(TestSoftVisualAssertCallStack.java:25)\n"
-				 + "    at Giis.Visualassert.TestSoftVisualAssertCallStack.TestMultipleStackItem(TestSoftVisualAssertCallStack.java:49)";
+			return "There are 1 failed assertion(s)\n" + "Failure 1: Strings are different. First diff at line 1 column 4.\n" + "- Visual diffs at: ../../../../reports/fstack12.html\n" + "- Call Stack:\n" + "    at Giis.Visualassert.TestSoftVisualAssertCallStack.OtherClass.DoAssert(TestSoftVisualAssertCallStack.java:19)\n"
+				 + "    at Giis.Visualassert.TestSoftVisualAssertCallStack.CallDoAssert(TestSoftVisualAssertCallStack.java:25)\n" + "    at Giis.Visualassert.TestSoftVisualAssertCallStack.TestMultipleStackItem(TestSoftVisualAssertCallStack.java:49)";
 		}
 
 		private string GetExpectedZeroStackItem()
 		{
-			return "There are 2 failed assertion(s)\n" + "Failure 1: Strings are different.\n" + "- Visual diffs at: ../../../../reports/fstack11.html\n" + "Failure 2: Strings are different.\n" + "- Visual diffs at: ../../../../reports/fstack12.html";
+			return "There are 2 failed assertion(s)\n" + "Failure 1: Strings are different. First diff at line 1 column 4.\n" + "- Visual diffs at: ../../../../reports/fstack11.html\n" + "Failure 2: Strings are different. First diff at line 1 column 4.\n" + "- Visual diffs at: ../../../../reports/fstack12.html";
 		}
 	}
 }
