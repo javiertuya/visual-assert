@@ -57,10 +57,18 @@ public class SoftVisualAssert extends AbstractVisualAssert<SoftVisualAssert> {
 		int countTraces=0;
 		for (int i=0; i<stack.size(); i++) {
 			//Skip traces corresponding to the classes of this package that are at the top of stack
-			if (skip && !stack.getClassName(i).startsWith("giis.visualassert.portable.CallStack")
+			//case insensitive for net compatibility
+			if (skip 
+					&& !stack.getClassName(i).startsWith("giis.visualassert.portable.CallStack")
 					&& !stack.getClassName(i).startsWith("giis.visualassert.AbstractVisualAssert") 
 					&& !stack.getClassName(i).startsWith("giis.visualassert.SoftVisualAssert") 
-					&& !stack.getClassName(i).startsWith("giis.visualassert.VisualAssert")) {
+					&& !stack.getClassName(i).startsWith("giis.visualassert.VisualAssert")
+					&& !stack.getClassName(i).startsWith("Giis.Visualassert.portable.CallStack")
+					&& !stack.getClassName(i).startsWith("Giis.Visualassert.AbstractVisualassert") 
+					&& !stack.getClassName(i).startsWith("Giis.Visualassert.SoftVisualAssert") 
+					&& !stack.getClassName(i).startsWith("Giis.Visualassert.VisualAssert")
+					&& !stack.getClassName(i).startsWith("System.Environment") //only net
+					) {
 				skip=false;
 			}
 			//Collect the desired number of traces
@@ -87,7 +95,7 @@ public class SoftVisualAssert extends AbstractVisualAssert<SoftVisualAssert> {
 	 * Throws and exception if at least one assertion failed including all assertion messages
 	 */
 	public void assertAll(String aggregateFileName) {
-		if (assertionMessages.isEmpty())
+		if (assertionMessages.size() == 0)
 			return;
 		if (aggregateFileName == null)
 			aggregateFileName = "";
@@ -127,7 +135,7 @@ public class SoftVisualAssert extends AbstractVisualAssert<SoftVisualAssert> {
 		}
 		return sb.toString();
 	}
-	String getAggregateFailureHeader(int failureNumber) {
+	public String getAggregateFailureHeader(int failureNumber) {
 		return "\n---------------------------"
 			+ "\n-------- Failure " + (failureNumber+1) + " --------"
 			+ "\n---------------------------";

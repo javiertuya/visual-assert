@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace Giis.Visualassert.Portable
 {
@@ -67,5 +68,15 @@ namespace Giis.Visualassert.Portable
                 sw.Write("\n        " + GetClassName(i) + " " + GetMethodName(i) + " " + GetLineNumber(i) + " " + GetFileName(i));
             return sw.ToString();
         }
+        /// <summary>
+        /// Normalizes a string representing a call stack by replacing line numbers by a hashtag,
+        /// removing the language extension (java and cs) and replacing windows path separators
+        /// </summary>
+        public static string Normalize(string stack)
+        {
+            return Regex.Replace(stack, "\\:\\d+\\)", ":##)")
+                .Replace(".java:", ":").Replace(".cs:", ":").Replace("\\", "/");
+        }
+
     }
 }

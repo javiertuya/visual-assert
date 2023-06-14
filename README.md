@@ -57,8 +57,10 @@ if the specified framework is not in the classpath.
 Soft assertions do not throw an exception immediately when an assertion fails, 
 but record the assertion message and allow to continue the test and check other assertions.
 
+### Using soft assertions
+
 Class `SoftVisualAssert` implements this type of assertions:
-- After a number of assertions, method `assertAll()` will throw the exception 
+- After a number of calls to `assertEquals()`, calling `assertAll()` will throw the exception 
   if at least one previous assertion failed. The message aggregates the messages of all failed assertions.
 - If the soft assert instance is shared by more than one test, `assertClear()` must be called
   before each sequence of assertions to reset the stored messages.
@@ -73,9 +75,20 @@ va.assertEquals("abc def ghi\nmno pqr stu", "abc def ghi\nmno pqr stu", "this do
 va.assertAll();
 ```
 
+### Aggregate differencies
+
+By default, each of the assertions that fail produces an html file with the differences.
+You can obtain an aggregated view of all failed assertions by using one or both of the
+following methods:
+
+- If a framework has been specified using `setFramework()` (java only) you can see the aggregated differences 
+  from your development environment in the same sway as with the native `assertEquals()`.
+- If you specify the name of an html file as argument to `assertAll(String htmlFile)`
+  the aggregated differences can be viewed by opening this file. 
+
 ## Customization
 
-The behaviour of the `VisualAssert` instance can be customized by calling a number of set* methods. 
+The behaviour of the `VisualAssert` and `SoftVisualAssert` instances can be customized by calling a number of setter methods. 
 These methods follow a fluent style, so as, they can be concatenated in a single statement.
 
 - `setReportSubdir(String reportSubdir)`: Sets the folder where generated files with the differences are stored (default is `target`).
@@ -95,7 +108,7 @@ The `SoftVisualAssert` instances have an additional method:
 
 To publish the files with differences to Jenkins you can include the following statement in some steop of the project Jenkinsfile:
 
-```
+```yaml
 archiveArtifacts artifacts:'target/*.html', allowEmptyArchive:true
 ```
 

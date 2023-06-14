@@ -5,10 +5,37 @@ import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
+import giis.visualassert.portable.CallStack;
 import giis.visualassert.portable.FileUtil;
 import giis.visualassert.portable.JavaCs;
 
 public class TestSoftVisualAssert {
+	
+	@Test
+	public void testSoftNoFail() {
+		SoftVisualAssert va = new SoftVisualAssert();
+		va.assertEquals("ab cd", "ab cd");
+		va.assertEquals("xy vw", "xy vw");
+		va.assertAll();
+	}
+
+	/*
+	 * Conditions:
+	 * -with/without failures
+	 * -use fail
+	 * -set/no set out file name
+	 * -with/without additional message
+	 * -reset because assertAll/assertClear
+	 */
+	@Test
+	public void testSoftFail() {
+		//uses a different path for files to avoid filename collisions with other tests
+		String tempReportPath=FileUtil.getPath(JavaCs.DEFAULT_REPORT_SUBDIR, "tmp-"+JavaCs.getUniqueId());
+		SoftVisualAssert va = new SoftVisualAssert()
+				.setReportSubdir(tempReportPath).clearCurrentSequence();
+		doFailSoftAssert(va, expectedMessage(false), tempReportPath, "");
+	}
+	
 	//Actual execution and assertions in a method that will be reused to test with frameworks
 	public static void doFailSoftAssert(SoftVisualAssert va, String expected, String reportPath,
 			String aggregateFile) {
@@ -33,7 +60,7 @@ public class TestSoftVisualAssert {
 			expected=expected.replace("fan.html", FileUtil.getPath(reportPath, "fan.html"));
 			expected=expected.replace("diff-0.html", FileUtil.getPath(reportPath, "diff-0.html"));
 			expected=expected.replace("Aggregate.html", FileUtil.getPath(reportPath, "Aggregate.html"));
-			assertEquals(expected, e.getMessage());
+			assertEquals(CallStack.normalize(expected), CallStack.normalize(e.getMessage()));
 		}
 		
 		//assertAll resets the list
@@ -75,28 +102,4 @@ public class TestSoftVisualAssert {
 			+ "    at giis.visualassert.TestSoftVisualAssert.doFailSoftAssert(TestSoftVisualAssert.java:21)";
 	}
 	
-	@Test
-	public void testSoftNoFail() {
-		SoftVisualAssert va = new SoftVisualAssert();
-		va.assertEquals("ab cd", "ab cd");
-		va.assertEquals("xy vw", "xy vw");
-		va.assertAll();
-	}
-
-	/*
-	 * Conditions:
-	 * -with/without failures
-	 * -use fail
-	 * -set/no set out file name
-	 * -with/without additional message
-	 * -reset because assertAll/assertClear
-	 */
-	@Test
-	public void testSoftFail() {
-		//uses a different path for files to avoid filename collisions with other tests
-		String tempReportPath=FileUtil.getPath(JavaCs.DEFAULT_REPORT_SUBDIR, "tmp-"+JavaCs.getUniqueId());
-		SoftVisualAssert va = new SoftVisualAssert()
-				.setReportSubdir(tempReportPath).clearCurrentSequence();
-		doFailSoftAssert(va, expectedMessage(false), tempReportPath, "");
-	}
 }

@@ -30,5 +30,15 @@ public class CallStack {
 			sb.append("\n        " + getClassName(i)+" "+getMethodName(i)+" "+getLineNumber(i)+" "+getFileName(i));
 		return sb.toString();
 	}
+	/**
+	 * Normalizes a string representing a call stack by replacing line numbers by a hashtag,
+	 * removing the language extension (java and cs) and replacing windows path separators
+	 */
+	public static String normalize(String stack) {
+		return stack.replaceAll("\\:\\d+\\)", ":##)")
+				.replace(".java:", ":").replace(".cs:", ":").replace("\\","/");
+	}
+	
+
 
 }
