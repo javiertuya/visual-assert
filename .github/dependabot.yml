@@ -4,16 +4,12 @@ updates:
     directory: "/java"
     schedule:
       interval: monthly
-    assignees:
-      - "javiertuya" 
     open-pull-requests-limit: 20
 
   - package-ecosystem: nuget
     directory: "/net"
     schedule:
       interval: monthly
-    assignees:
-      - "javiertuya" 
     open-pull-requests-limit: 20
 
   - package-ecosystem: github-actions
@@ -21,5 +17,3 @@ updates:
     schedule:
       interval: monthly
     open-pull-requests-limit: 20
-    assignees:
-      - "javiertuya" 
