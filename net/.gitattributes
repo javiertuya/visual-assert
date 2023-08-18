@@ -1,0 +1,2 @@
+**/DiffMatchPatch.cs linguist-vendored
+TestVisualAssert/**/*.cs linguist-generated
