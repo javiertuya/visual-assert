@@ -30,7 +30,7 @@ jobs:
         run: mvn test -Dmaven.test.failure.ignore=true -U --no-transfer-progress
       - name: Publish test report
         if: always()
-        uses: mikepenz/action-junit-report@v4.0.1
+        uses: mikepenz/action-junit-report@v4.0.3
         with:
           check_name: test-report-java
           report_paths: '**/target/surefire-reports/TEST-*.xml'
