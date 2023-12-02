@@ -46,7 +46,7 @@ namespace Giis.Visualassert
 			va.AssertEquals(null, "this is notnull", "msgen", "fen.html");
 			va.AssertEquals("this is notnull", null, "msgan", "fan.html");
 			va.AssertEquals("xy vw", "xy zz vw", "msg5");
-			NUnit.Framework.Assert.AreEqual(5, va.GetFailureCount());
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual(5, va.GetFailureCount());
 			try
 			{
 				if (string.Empty.Equals(aggregateFile))
@@ -67,16 +67,16 @@ namespace Giis.Visualassert
 				expected = expected.Replace("fan.html", FileUtil.GetPath(reportPath, "fan.html"));
 				expected = expected.Replace("diff-0.html", FileUtil.GetPath(reportPath, "diff-0.html"));
 				expected = expected.Replace("Aggregate.html", FileUtil.GetPath(reportPath, "Aggregate.html"));
-				NUnit.Framework.Assert.AreEqual(CallStack.Normalize(expected), CallStack.Normalize(e.Message));
+				NUnit.Framework.Legacy.ClassicAssert.AreEqual(CallStack.Normalize(expected), CallStack.Normalize(e.Message));
 			}
 			//assertAll resets the list
-			NUnit.Framework.Assert.AreEqual(0, va.GetFailureCount());
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual(0, va.GetFailureCount());
 			va.AssertAll();
 			//assertClear resets the list
 			va.AssertEquals("ab zz cd", "ab cd");
-			NUnit.Framework.Assert.AreEqual(1, va.GetFailureCount());
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual(1, va.GetFailureCount());
 			va.AssertClear();
-			NUnit.Framework.Assert.AreEqual(0, va.GetFailureCount());
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual(0, va.GetFailureCount());
 			va.AssertAll();
 		}
 

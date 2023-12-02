@@ -70,13 +70,13 @@ namespace Giis.Visualassert
 			}
 			catch (Exception e)
 			{
-				NUnit.Framework.Assert.AreEqual(assertionException, e.GetType().FullName);
+				NUnit.Framework.Legacy.ClassicAssert.AreEqual(assertionException, e.GetType().FullName);
 				//not a subclass of this exception
 				//first transforms the file name in expected message to include the path
 				string message = expectedMessageShort.Replace(diffFile, FileUtil.GetPath(JavaCs.DefaultReportSubdir, diffFile));
 				message += expActMessage;
-				NUnit.Framework.Assert.AreEqual(message, e.Message);
-				NUnit.Framework.Assert.AreEqual(htmlDiffs, FileUtil.FileRead(FileUtil.GetPath(defaultFolder, diffFile)));
+				NUnit.Framework.Legacy.ClassicAssert.AreEqual(message, e.Message);
+				NUnit.Framework.Legacy.ClassicAssert.AreEqual(htmlDiffs, FileUtil.FileRead(FileUtil.GetPath(defaultFolder, diffFile)));
 			}
 		}
 
@@ -95,7 +95,7 @@ namespace Giis.Visualassert
 			{
 				//get file and path of the generated diff file (only file in the folder)
 				IList<string> allFiles = FileUtil.GetFileListInDirectory(tempReportPath);
-				NUnit.Framework.Assert.AreEqual(1, allFiles.Count);
+				NUnit.Framework.Legacy.ClassicAssert.AreEqual(1, allFiles.Count);
 				// only a file has been created
 				string diffFileName = allFiles[0];
 				string fullPath = FileUtil.GetFullPath(FileUtil.GetPath(tempReportPath, diffFileName));
@@ -106,8 +106,8 @@ namespace Giis.Visualassert
 				}
 				string diffFileFullPath = "file://" + fullPath;
 				string expectedMessageLong = "Strings are different. First diff at line 1 column 5." + "\n- Visual diffs at: " + diffFileFullPath + "\n- Expected: <" + expected + ">." + "\n- Actual: <" + actualFail + ">.";
-				NUnit.Framework.Assert.AreEqual(expectedMessageLong.Replace("\r", string.Empty), e.Message.Replace("\r", string.Empty));
-				NUnit.Framework.Assert.AreEqual(htmlDiffs.Replace("&nbsp;", " ").Replace("e6ffe6", "00ff00").Replace("ffe6e6", "ff4000"), FileUtil.FileRead(FileUtil.GetPath(tempReportPath, diffFileName)));
+				NUnit.Framework.Legacy.ClassicAssert.AreEqual(expectedMessageLong.Replace("\r", string.Empty), e.Message.Replace("\r", string.Empty));
+				NUnit.Framework.Legacy.ClassicAssert.AreEqual(htmlDiffs.Replace("&nbsp;", " ").Replace("e6ffe6", "00ff00").Replace("ffe6e6", "ff4000"), FileUtil.FileRead(FileUtil.GetPath(tempReportPath, diffFileName)));
 			}
 		}
 
@@ -128,7 +128,7 @@ namespace Giis.Visualassert
 			}
 			catch (Exception e)
 			{
-				NUnit.Framework.Assert.AreEqual(expectedMessage, e.Message.Replace("\\", "/"));
+				NUnit.Framework.Legacy.ClassicAssert.AreEqual(expectedMessage, e.Message.Replace("\\", "/"));
 			}
 		}
 
@@ -141,13 +141,13 @@ namespace Giis.Visualassert
 			int initialSequence = JavaCs.GetCurrentSequence();
 			//Sequence number increments in succesive asserts with same va
 			RunFailSilently(va);
-			NUnit.Framework.Assert.IsTrue(FileUtil.FileRead(FileUtil.GetPath(tempReportPath, "diff-" + initialSequence.ToString() + ".html")).Length > 0);
+			NUnit.Framework.Legacy.ClassicAssert.IsTrue(FileUtil.FileRead(FileUtil.GetPath(tempReportPath, "diff-" + initialSequence.ToString() + ".html")).Length > 0);
 			RunFailSilently(va);
-			NUnit.Framework.Assert.IsTrue(FileUtil.FileRead(FileUtil.GetPath(tempReportPath, "diff-" + (initialSequence + 1).ToString() + ".html")).Length > 0);
+			NUnit.Framework.Legacy.ClassicAssert.IsTrue(FileUtil.FileRead(FileUtil.GetPath(tempReportPath, "diff-" + (initialSequence + 1).ToString() + ".html")).Length > 0);
 			//a different va, sequence continues
 			va = new VisualAssert().SetReportSubdir(tempReportPath);
 			RunFailSilently(va);
-			NUnit.Framework.Assert.IsTrue(FileUtil.FileRead(FileUtil.GetPath(tempReportPath, "diff-" + (initialSequence + 2).ToString() + ".html")).Length > 0);
+			NUnit.Framework.Legacy.ClassicAssert.IsTrue(FileUtil.FileRead(FileUtil.GetPath(tempReportPath, "diff-" + (initialSequence + 2).ToString() + ".html")).Length > 0);
 		}
 
 		private void RunFailSilently(VisualAssert va)

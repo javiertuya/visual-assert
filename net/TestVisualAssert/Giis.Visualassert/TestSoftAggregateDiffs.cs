@@ -31,7 +31,7 @@ namespace Giis.Visualassert
 			//Check aggregate no generated
 			string htmlDiffs = FileUtil.FileRead(FileUtil.GetPath(tempReportPath, AggregateHtml), false);
 			//null if does not exist
-			NUnit.Framework.Assert.IsNull("Aggregate file " + tempReportPath + "/" + AggregateHtml + " should not exist", htmlDiffs);
+			NUnit.Framework.Legacy.ClassicAssert.IsNull("Aggregate file " + tempReportPath + "/" + AggregateHtml + " should not exist", htmlDiffs);
 		}
 
 		[Test]
@@ -54,7 +54,7 @@ namespace Giis.Visualassert
 
 		private void AssertAggregateFile(string tempReportPath)
 		{
-			NUnit.Framework.Assert.AreEqual(FileUtil.FileRead(FileUtil.GetPath(SrcTestResources, AggregateHtml)), FileUtil.FileRead(FileUtil.GetPath(tempReportPath, AggregateHtml)));
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual(FileUtil.FileRead(FileUtil.GetPath(SrcTestResources, AggregateHtml)), FileUtil.FileRead(FileUtil.GetPath(tempReportPath, AggregateHtml)));
 		}
 
 		private string GetExpectedDiffsJUnit5(SoftVisualAssert va)

@@ -59,7 +59,7 @@ namespace Giis.Visualassert
 			}
 			catch (Exception e)
 			{
-				NUnit.Framework.Assert.AreEqual(CallStack.Normalize(GetExpectedSingleStackItem()), CallStack.Normalize(e.Message));
+				NUnit.Framework.Legacy.ClassicAssert.AreEqual(CallStack.Normalize(GetExpectedSingleStackItem()), CallStack.Normalize(e.Message));
 			}
 		}
 
@@ -75,7 +75,7 @@ namespace Giis.Visualassert
 			}
 			catch (Exception e)
 			{
-				NUnit.Framework.Assert.AreEqual(CallStack.Normalize(GetExpectedMultipleStackItem()), CallStack.Normalize(e.Message));
+				NUnit.Framework.Legacy.ClassicAssert.AreEqual(CallStack.Normalize(GetExpectedMultipleStackItem()), CallStack.Normalize(e.Message));
 			}
 		}
 
@@ -92,7 +92,7 @@ namespace Giis.Visualassert
 			}
 			catch (Exception e)
 			{
-				NUnit.Framework.Assert.AreEqual(CallStack.Normalize(GetExpectedZeroStackItem()), CallStack.Normalize(e.Message));
+				NUnit.Framework.Legacy.ClassicAssert.AreEqual(CallStack.Normalize(GetExpectedZeroStackItem()), CallStack.Normalize(e.Message));
 			}
 		}
 

@@ -40,3 +40,9 @@
 -typeMapping org.junit.BeforeClass NUnit.Framework.OneTimeSetUp
 -typeMapping org.junit.AfterClass NUnit.Framework.OneTimeTearDown
 
+#JUnit mappings to NUnit4 (v3 compatibility mode)
+-methodMapping org.junit.Assert.assertEquals NUnit.Framework.Legacy.ClassicAssert.AreEqual
+-methodMapping org.junit.Assert.assertTrue NUnit.Framework.Legacy.ClassicAssert.IsTrue
+-methodMapping org.junit.Assert.assertFalse NUnit.Framework.Legacy.ClassicAssert.IsFalse
+-methodMapping org.junit.Assert.assertNull NUnit.Framework.Legacy.ClassicAssert.IsNull
+
