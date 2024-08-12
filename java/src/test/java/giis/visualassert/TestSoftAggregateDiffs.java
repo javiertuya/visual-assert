@@ -74,7 +74,7 @@ public class TestSoftAggregateDiffs {
 			+ "\n" + va.getAggregateFailureHeader(0)
 			+ "\nab cd"
 			+ "\n" + va.getAggregateFailureHeader(1)
-			+ "\n"
+			+ "\nFail assertion raised.\nmsg4"
 			+ "\n" + va.getAggregateFailureHeader(2)
 			+ "\nthis is notnull"
 			+ "\n" + va.getAggregateFailureHeader(3)
@@ -118,7 +118,7 @@ public class TestSoftAggregateDiffs {
 			+ "\nxy] vw> but was:<...----------------"
 			+ "\nab [cd"
 			+ "\n" + va.getAggregateFailureHeader(1)
-			+ "\n"
+			+ "\nFail assertion raised.\nmsg4"
 			+ "\n" + va.getAggregateFailureHeader(2)
 			+ "\nthis is notnull"
 			+ "\n" + va.getAggregateFailureHeader(3)

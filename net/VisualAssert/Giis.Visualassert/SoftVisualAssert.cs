@@ -179,13 +179,15 @@ namespace Giis.Visualassert
 		/// <summary>Fails a test with no message</summary>
 		public virtual void Fail()
 		{
-			ThrowAssertionError(string.Empty, string.Empty, string.Empty);
+			Fail(string.Empty);
 		}
 
 		/// <summary>Fails a test with the given message</summary>
 		public virtual void Fail(string message)
 		{
-			ThrowAssertionError(GetMessagePrefix() + " Fail assertion raised." + (string.Empty.Equals(message) ? string.Empty : "\n" + message), string.Empty, string.Empty);
+			string messageInfo = "Fail assertion raised." + (string.Empty.Equals(message) ? string.Empty : "\n" + message);
+			// sets the message info as the actual value to show in the comparison file
+			ThrowAssertionError(GetMessagePrefix() + " " + messageInfo, string.Empty, messageInfo);
 		}
 	}
 }

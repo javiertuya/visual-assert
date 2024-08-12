@@ -60,8 +60,8 @@ namespace Giis.Visualassert
 		private string GetExpectedDiffsJUnit5(SoftVisualAssert va)
 		{
 			return " ==> expected: <Aggregated failures:" + "\n" + va.GetAggregateFailureHeader(0) + "\nab zz cd" + "\n" + va.GetAggregateFailureHeader(1) + "\n" + "\n" + va.GetAggregateFailureHeader(2) + "\n" + "\n" + va.GetAggregateFailureHeader(3) + "\nthis is notnull" + "\n" + va.GetAggregateFailureHeader
-				(4) + "\nxy vw> but was: <Aggregated failures:" + "\n" + va.GetAggregateFailureHeader(0) + "\nab cd" + "\n" + va.GetAggregateFailureHeader(1) + "\n" + "\n" + va.GetAggregateFailureHeader(2) + "\nthis is notnull" + "\n" + va.GetAggregateFailureHeader(3) + "\n" + "\n" + va.GetAggregateFailureHeader
-				(4) + "\nxy zz vw>";
+				(4) + "\nxy vw> but was: <Aggregated failures:" + "\n" + va.GetAggregateFailureHeader(0) + "\nab cd" + "\n" + va.GetAggregateFailureHeader(1) + "\nFail assertion raised.\nmsg4" + "\n" + va.GetAggregateFailureHeader(2) + "\nthis is notnull" + "\n" + va.GetAggregateFailureHeader(3)
+				 + "\n" + "\n" + va.GetAggregateFailureHeader(4) + "\nxy zz vw>";
 		}
 
 		//Full test with other frameworks (3 and 4), expected diffs are slightly different
@@ -86,7 +86,7 @@ namespace Giis.Visualassert
 		private string GetExpectedDiffsJUnit34(SoftVisualAssert va)
 		{
 			return " expected:<...----------------" + "\nab [zz cd" + "\n" + va.GetAggregateFailureHeader(1) + "\n" + "\n" + va.GetAggregateFailureHeader(2) + "\n" + "\n" + va.GetAggregateFailureHeader(3) + "\nthis is notnull" + "\n" + va.GetAggregateFailureHeader(4) + "\nxy] vw> but was:<...----------------"
-				 + "\nab [cd" + "\n" + va.GetAggregateFailureHeader(1) + "\n" + "\n" + va.GetAggregateFailureHeader(2) + "\nthis is notnull" + "\n" + va.GetAggregateFailureHeader(3) + "\n" + "\n" + va.GetAggregateFailureHeader(4) + "\nxy zz] vw>";
+				 + "\nab [cd" + "\n" + va.GetAggregateFailureHeader(1) + "\nFail assertion raised.\nmsg4" + "\n" + va.GetAggregateFailureHeader(2) + "\nthis is notnull" + "\n" + va.GetAggregateFailureHeader(3) + "\n" + "\n" + va.GetAggregateFailureHeader(4) + "\nxy zz] vw>";
 		}
 	}
 }

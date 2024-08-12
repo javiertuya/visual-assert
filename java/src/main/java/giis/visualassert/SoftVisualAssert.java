@@ -159,13 +159,15 @@ public class SoftVisualAssert extends AbstractVisualAssert<SoftVisualAssert> {
 	 * Fails a test with no message
 	 */
 	public void fail() {
-		throwAssertionError("", "", "");
+		fail("");
 	}
 	/**
 	 * Fails a test with the given message
 	 */
 	public void fail(String message) {
-		throwAssertionError(getMessagePrefix() + " Fail assertion raised." + ("".equals(message) ? "" : "\n"+message), "", "");
+		String messageInfo = "Fail assertion raised." + ("".equals(message) ? "" : "\n"+message);
+		// sets the message info as the actual value to show in the comparison file
+		throwAssertionError(getMessagePrefix() + " " + messageInfo, "", messageInfo);
 	}
 	
 
