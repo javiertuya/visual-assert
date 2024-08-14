@@ -1,7 +1,7 @@
 package giis.visualassert;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
@@ -38,35 +38,41 @@ public class TestSoftVisualAssertCallStack {
 		SoftVisualAssert va = new SoftVisualAssert(); //default stack 1
 		va.assertEquals("ab zz cd", "ab cd", "", "fstack11.html");
 		callDoAssert(va);
+		boolean success = false;
 		try {
 			va.assertAll();
-			fail("this should fail");
 		} catch (AssertionError e) {
 			assertEquals(CallStack.normalize(getExpectedSingleStackItem()), CallStack.normalize(e.getMessage()));
+			success=true;
 		}
+		assertTrue(success);
 	}
 	@Test
 	public void testMultipleStackItem() {
 		SoftVisualAssert va = new SoftVisualAssert().setCallStackLength(3);
 		callDoAssert(va);
+		boolean success = false;
 		try {
 			va.assertAll();
-			fail("this should fail");
 		} catch (AssertionError e) {
 			assertEquals(CallStack.normalize(getExpectedMultipleStackItem()), CallStack.normalize(e.getMessage()));
+			success=true;
 		}
+		assertTrue(success);
 	}
 	@Test
 	public void testZeroStackItem() {
 		SoftVisualAssert va = new SoftVisualAssert().setCallStackLength(0);
 		va.assertEquals("ab zz cd", "ab cd", "", "fstack11.html");
 		callDoAssert(va);
+		boolean success = false;
 		try {
 			va.assertAll();
-			fail("this should fail");
 		} catch (AssertionError e) {
 			assertEquals(CallStack.normalize(getExpectedZeroStackItem()), CallStack.normalize(e.getMessage()));
+			success=true;
 		}
+		assertTrue(success);
 	}
 	
 	private String getExpectedSingleStackItem() {

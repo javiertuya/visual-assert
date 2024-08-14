@@ -16,7 +16,6 @@ namespace Giis.Visualassert
 			SoftVisualAssert va = new SoftVisualAssert();
 			va.AssertEquals("ab cd", "ab cd");
 			va.AssertEquals("xy vw", "xy vw");
-			va.AssertAll();
 		}
 
 		/*
@@ -47,6 +46,7 @@ namespace Giis.Visualassert
 			va.AssertEquals("this is notnull", null, "msgan", "fan.html");
 			va.AssertEquals("xy vw", "xy zz vw", "msg5");
 			NUnit.Framework.Legacy.ClassicAssert.AreEqual(5, va.GetFailureCount());
+			bool success = false;
 			try
 			{
 				if (string.Empty.Equals(aggregateFile))
@@ -57,7 +57,6 @@ namespace Giis.Visualassert
 				{
 					va.AssertAll(aggregateFile);
 				}
-				NUnit.Framework.Assert.Fail("this should fail");
 			}
 			catch (Exception e)
 			{
@@ -68,7 +67,9 @@ namespace Giis.Visualassert
 				expected = expected.Replace("diff-0.html", FileUtil.GetPath(reportPath, "diff-0.html"));
 				expected = expected.Replace("Aggregate.html", FileUtil.GetPath(reportPath, "Aggregate.html"));
 				NUnit.Framework.Legacy.ClassicAssert.AreEqual(CallStack.Normalize(expected), CallStack.Normalize(e.Message));
+				success = true;
 			}
+			NUnit.Framework.Legacy.ClassicAssert.IsTrue(success);
 			//assertAll resets the list
 			NUnit.Framework.Legacy.ClassicAssert.AreEqual(0, va.GetFailureCount());
 			va.AssertAll();

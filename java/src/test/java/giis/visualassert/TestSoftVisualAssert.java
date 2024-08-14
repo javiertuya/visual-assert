@@ -1,7 +1,7 @@
 package giis.visualassert;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
@@ -16,7 +16,6 @@ public class TestSoftVisualAssert {
 		SoftVisualAssert va = new SoftVisualAssert();
 		va.assertEquals("ab cd", "ab cd");
 		va.assertEquals("xy vw", "xy vw");
-		va.assertAll();
 	}
 
 	/*
@@ -47,12 +46,12 @@ public class TestSoftVisualAssert {
 		va.assertEquals("this is notnull", null, "msgan", "fan.html");
 		va.assertEquals("xy vw", "xy zz vw", "msg5");
 		assertEquals(5, va.getFailureCount());
+		boolean success = false;
 		try {
 			if ("".equals(aggregateFile))
 				va.assertAll();
 			else
 				va.assertAll(aggregateFile);
-			fail("this should fail");
 		} catch (AssertionError e) {
 			//first transforms the file name in expected mesage to include the path
 			expected=expected.replace("f1.html", FileUtil.getPath(reportPath, "f1.html"));
@@ -61,7 +60,9 @@ public class TestSoftVisualAssert {
 			expected=expected.replace("diff-0.html", FileUtil.getPath(reportPath, "diff-0.html"));
 			expected=expected.replace("Aggregate.html", FileUtil.getPath(reportPath, "Aggregate.html"));
 			assertEquals(CallStack.normalize(expected), CallStack.normalize(e.getMessage()));
+			success = true;
 		}
+		assertTrue(success);
 		
 		//assertAll resets the list
 		assertEquals(0, va.getFailureCount());

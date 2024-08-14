@@ -63,10 +63,12 @@ namespace Giis.Visualassert
 			FileUtil.CreateDirectory(defaultFolder);
 			// ensure folder exists
 			FileUtil.FileWrite(FileUtil.GetPath(defaultFolder, diffFile), string.Empty);
+			// Always use this pattern with a boolean variable to check that assert exception is raised
+			// to avoid problems with exception hierarchy across platforms and frameworks.
+			bool success = false;
 			try
 			{
 				va.AssertEquals(expected, actualFail, "This is the additional message", diffFile);
-				NUnit.Framework.Assert.Fail("this should fail");
 			}
 			catch (Exception e)
 			{
@@ -77,7 +79,9 @@ namespace Giis.Visualassert
 				message += expActMessage;
 				NUnit.Framework.Legacy.ClassicAssert.AreEqual(message, e.Message);
 				NUnit.Framework.Legacy.ClassicAssert.AreEqual(htmlDiffs, FileUtil.FileRead(FileUtil.GetPath(defaultFolder, diffFile)));
+				success = true;
 			}
+			NUnit.Framework.Legacy.ClassicAssert.IsTrue(success);
 		}
 
 		[Test]
@@ -86,10 +90,10 @@ namespace Giis.Visualassert
 			string tempReportPath = FileUtil.GetPath(defaultFolder, "tmp-" + JavaCs.GetUniqueId());
 			//folder does not exist
 			VisualAssert va = new VisualAssert().ClearCurrentSequence().SetShowExpectedAndActual(true).SetUseLocalAbsolutePath(true).SetSoftDifferences(true).SetBrightColors(true).SetReportSubdir(tempReportPath);
+			bool success = false;
 			try
 			{
 				va.AssertEquals(expected, actualFail);
-				NUnit.Framework.Assert.Fail("this should fail");
 			}
 			catch (Exception e)
 			{
@@ -108,7 +112,9 @@ namespace Giis.Visualassert
 				string expectedMessageLong = "Strings are different. First diff at line 1 column 5." + "\n- Visual diffs at: " + diffFileFullPath + "\n- Expected: <" + expected + ">." + "\n- Actual: <" + actualFail + ">.";
 				NUnit.Framework.Legacy.ClassicAssert.AreEqual(expectedMessageLong.Replace("\r", string.Empty), e.Message.Replace("\r", string.Empty));
 				NUnit.Framework.Legacy.ClassicAssert.AreEqual(htmlDiffs.Replace("&nbsp;", " ").Replace("e6ffe6", "00ff00").Replace("ffe6e6", "ff4000"), FileUtil.FileRead(FileUtil.GetPath(tempReportPath, diffFileName)));
+				success = true;
 			}
+			NUnit.Framework.Legacy.ClassicAssert.IsTrue(success);
 		}
 
 		[Test]
@@ -121,15 +127,17 @@ namespace Giis.Visualassert
 
 		private void DoAssertNulls(VisualAssert va, string expected, string actual, string message, string expectedMessage, string htmlFile)
 		{
+			bool success = false;
 			try
 			{
 				va.AssertEquals(expected, actual, message);
-				NUnit.Framework.Assert.Fail("this should fail");
 			}
 			catch (Exception e)
 			{
 				NUnit.Framework.Legacy.ClassicAssert.AreEqual(expectedMessage, e.Message.Replace("\\", "/"));
+				success = true;
 			}
+			NUnit.Framework.Legacy.ClassicAssert.IsTrue(success);
 		}
 
 		[Test]

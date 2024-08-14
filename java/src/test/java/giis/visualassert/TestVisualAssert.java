@@ -2,7 +2,6 @@ package giis.visualassert;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.util.List;
 
@@ -57,9 +56,11 @@ public class TestVisualAssert {
 	public static void doFailAllConditionsFalse(VisualAssert va, String assertionException, String assertMessage, String expActMessage) {
 		FileUtil.createDirectory(defaultFolder); // ensure folder exists
 		FileUtil.fileWrite(FileUtil.getPath(defaultFolder, diffFile), "");
+		// Always use this pattern with a boolean variable to check that assert exception is raised
+		// to avoid problems with exception hierarchy across platforms and frameworks.
+		boolean success = false;
 		try {
 			va.assertEquals(expected, actualFail, "This is the additional message", diffFile);
-			fail("this should fail");
 		} catch (AssertionError e) {
 			assertEquals(assertionException, e.getClass().getName()); //not a subclass of this exception
 			//first transforms the file name in expected message to include the path
@@ -67,7 +68,9 @@ public class TestVisualAssert {
 			message+=expActMessage;
 			assertEquals(message, e.getMessage());
 			assertEquals(htmlDiffs, FileUtil.fileRead(FileUtil.getPath(defaultFolder, diffFile)));
+			success = true;
 		}
+		assertTrue(success);
 	}
 
 	@Test
@@ -80,9 +83,9 @@ public class TestVisualAssert {
 				.setSoftDifferences(true)
 				.setBrightColors(true)
 				.setReportSubdir(tempReportPath);
+		boolean success = false;
 		try {
 			va.assertEquals(expected, actualFail);
-			fail("this should fail");
 		} catch (AssertionError e) {
 			//get file and path of the generated diff file (only file in the folder)
 			List<String> allFiles = FileUtil.getFileListInDirectory(tempReportPath);
@@ -102,7 +105,9 @@ public class TestVisualAssert {
 			assertEquals(expectedMessageLong.replace("\r", ""), e.getMessage().replace("\r", ""));
 			assertEquals(htmlDiffs.replace("&nbsp;", " ").replace("e6ffe6", "00ff00").replace("ffe6e6", "ff4000"),
 					FileUtil.fileRead(FileUtil.getPath(tempReportPath, diffFileName)));
+			success = true;
 		}
+		assertTrue(success);
 	}
 	
 	@Test
@@ -114,12 +119,14 @@ public class TestVisualAssert {
 				+ "- Visual diffs at: target/diff-1.html", "null-expected.html");
 	}
 	private void doAssertNulls(VisualAssert va, String expected, String actual, String message, String expectedMessage, String htmlFile) {
+		boolean success = false;
 		try {
 			va.assertEquals(expected, actual, message);
-			fail("this should fail");
 		} catch (AssertionError e){
 			assertEquals(expectedMessage, e.getMessage().replace("\\", "/"));
+			success = true;
 		}
+		assertTrue(success);
 	}
 	
 	@Test

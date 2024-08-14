@@ -52,15 +52,17 @@ namespace Giis.Visualassert
 			//default stack 1
 			va.AssertEquals("ab zz cd", "ab cd", string.Empty, "fstack11.html");
 			CallDoAssert(va);
+			bool success = false;
 			try
 			{
 				va.AssertAll();
-				NUnit.Framework.Assert.Fail("this should fail");
 			}
 			catch (Exception e)
 			{
 				NUnit.Framework.Legacy.ClassicAssert.AreEqual(CallStack.Normalize(GetExpectedSingleStackItem()), CallStack.Normalize(e.Message));
+				success = true;
 			}
+			NUnit.Framework.Legacy.ClassicAssert.IsTrue(success);
 		}
 
 		[Test]
@@ -68,15 +70,17 @@ namespace Giis.Visualassert
 		{
 			SoftVisualAssert va = new SoftVisualAssert().SetCallStackLength(3);
 			CallDoAssert(va);
+			bool success = false;
 			try
 			{
 				va.AssertAll();
-				NUnit.Framework.Assert.Fail("this should fail");
 			}
 			catch (Exception e)
 			{
 				NUnit.Framework.Legacy.ClassicAssert.AreEqual(CallStack.Normalize(GetExpectedMultipleStackItem()), CallStack.Normalize(e.Message));
+				success = true;
 			}
+			NUnit.Framework.Legacy.ClassicAssert.IsTrue(success);
 		}
 
 		[Test]
@@ -85,15 +89,17 @@ namespace Giis.Visualassert
 			SoftVisualAssert va = new SoftVisualAssert().SetCallStackLength(0);
 			va.AssertEquals("ab zz cd", "ab cd", string.Empty, "fstack11.html");
 			CallDoAssert(va);
+			bool success = false;
 			try
 			{
 				va.AssertAll();
-				NUnit.Framework.Assert.Fail("this should fail");
 			}
 			catch (Exception e)
 			{
 				NUnit.Framework.Legacy.ClassicAssert.AreEqual(CallStack.Normalize(GetExpectedZeroStackItem()), CallStack.Normalize(e.Message));
+				success = true;
 			}
+			NUnit.Framework.Legacy.ClassicAssert.IsTrue(success);
 		}
 
 		private string GetExpectedSingleStackItem()
