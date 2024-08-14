@@ -9,6 +9,8 @@ public class VisualAssert extends AbstractVisualAssert<VisualAssert> {
 
 	@Override
 	public void assertEquals(String expected, String actual, String message, String fileName) {
+		expected = normalize(expected);
+		actual = normalize(actual);
 		if (!stringsAreEqual(expected, actual))
 			platformAssert.failNotEquals(expected, actual, getAssertionMessage(expected, actual, message, fileName));
 	}

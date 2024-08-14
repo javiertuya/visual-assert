@@ -5,7 +5,7 @@
 # visual-assert
 
 Assertion methods that generate an html file with the differences highlighting the additions and deletions. 
-Useful for comparing large strings.
+Useful for comparing large strings or files.
 Available on Java and .NET platforms.
 
 - From Java include the `visual-assert` dependency as indicated in the 
@@ -82,7 +82,7 @@ You can obtain an aggregated view of all failed assertions by using one or both 
 following methods:
 
 - If a framework has been specified using `setFramework()` (java only) you can see the aggregated differences 
-  from your development environment in the same sway as with the native `assertEquals()`.
+  from your development environment in the same way as with the native `assertEquals()`.
 - If you specify the name of an html file as argument to `assertAll(String htmlFile)`
   the aggregated differences can be viewed by opening this file. 
 
@@ -92,15 +92,16 @@ The behaviour of the `VisualAssert` and `SoftVisualAssert` instances can be cust
 These methods follow a fluent style, so as, they can be concatenated in a single statement.
 
 - `setReportSubdir(String reportSubdir)`: Sets the folder where generated files with the differences are stored (default is `target`).
+- `setNormalizeEol(boolean normalizeEol)`: If set to true, the compared strings are normalized to linux line-endings by removing all CR characters.
 - `setSoftDifferences(boolean useSoftDifferences)`: By default (hard), differences in whitespaces are rendered as whitespace html entities and therefore, always visible in the html ouput.
 If set to true (soft), some whitespace differences may be hidden from the html output.
 - `setBrightColors(boolean useBrightColors)`: By default differences are highlighted with pale red and green colors,
   if set to true the colors are brighter to easily locate small differences.
-- `setUseLocalAbsolutePath(boolean useLocalAbsolutePath)`: If set to true, the link with the differences file will include an file url with the absolute path to the file,
+- `setUseLocalAbsolutePath(boolean useLocalAbsolutePath)`: If set to true, the link with the differences file will include a file url with the absolute path to the file,
   useful when running tests from a development environment that allows links in the assertion messages (e.g. MS Visual Studio).
 - `setShowExpectedAndActual(boolean showExpectedAndActual)`: If set to true, the assert message will include the whole content of the exepcted and actual strings that are compared.
 
-The `SoftVisualAssert` instances have an additional method:
+The `SoftVisualAssert` instances have an additional method to customize:
 - `setCallStackLength(int length)`: 
   Sets the number of call stack items that are shown for each failed assertion (default 1)
 

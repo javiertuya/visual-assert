@@ -42,6 +42,8 @@ namespace Giis.Visualassert
 
 		public override void AssertEquals(string expected, string actual, string message, string fileName)
 		{
+			expected = Normalize(expected);
+			actual = Normalize(actual);
 			if (!StringsAreEqual(expected, actual))
 			{
 				ThrowAssertionError(GetAssertionMessage(expected, actual, message, fileName), expected, actual);

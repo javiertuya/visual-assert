@@ -87,5 +87,17 @@ namespace Giis.Visualassert
 				 "- Call Stack:\n" + "    at Giis.Visualassert.TestSoftVisualAssert.DoFailSoftAssert(TestSoftVisualAssert.java:19)\n" + "Failure 4: Strings are different. Actual was <null>.\n" + "msgan.\n" + "- Visual diffs at: fan.html\n" + "- Call Stack:\n" + "    at Giis.Visualassert.TestSoftVisualAssert.DoFailSoftAssert(TestSoftVisualAssert.java:20)\n"
 				 + "Failure 5: Strings are different. First diff at line 1 column 4.\n" + "msg5.\n" + "- Visual diffs at: diff-0.html\n" + "- Call Stack:\n" + "    at Giis.Visualassert.TestSoftVisualAssert.DoFailSoftAssert(TestSoftVisualAssert.java:21)";
 		}
+
+		[Test]
+		public virtual void TestNormalizeLineEndings()
+		{
+			string linux = "line1\nline2\nline3\n";
+			string windows = "line1\r\nline2\r\nline3\r\n";
+			SoftVisualAssert sva = new SoftVisualAssert().SetNormalizeEol(true);
+			sva.AssertEquals(windows, linux, "Should not fail with normalize eol");
+			sva.AssertEquals(linux, windows, "Should not fail with normalize eol");
+			sva.AssertEquals(null, null, "Should not fail with nulls");
+			sva.AssertAll("sva-normalize-eol.html");
+		}
 	}
 }

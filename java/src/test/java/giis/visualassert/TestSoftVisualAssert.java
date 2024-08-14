@@ -102,4 +102,15 @@ public class TestSoftVisualAssert {
 			+ "    at giis.visualassert.TestSoftVisualAssert.doFailSoftAssert(TestSoftVisualAssert.java:21)";
 	}
 	
+	@Test
+	public void testNormalizeLineEndings() {
+		String linux = "line1\nline2\nline3\n";
+		String windows = "line1\r\nline2\r\nline3\r\n";
+		SoftVisualAssert sva = new SoftVisualAssert().setNormalizeEol(true);
+		sva.assertEquals(windows, linux, "Should not fail with normalize eol");
+		sva.assertEquals(linux, windows, "Should not fail with normalize eol");
+		sva.assertEquals(null, null, "Should not fail with nulls");
+		sva.assertAll("sva-normalize-eol.html");
+	}
+	
 }

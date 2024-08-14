@@ -22,6 +22,8 @@ namespace Giis.Visualassert
 
 		private bool softDifferences = false;
 
+		protected internal bool normalizeEol = false;
+
 		private bool brightColors = false;
 
 		private string reportSubdir = JavaCs.DefaultReportSubdir;
@@ -50,6 +52,18 @@ namespace Giis.Visualassert
 		public virtual T SetReportSubdir(string reportSubdir)
 		{
 			this.reportSubdir = reportSubdir;
+			return (T)this;
+		}
+
+		/// <summary>
+		/// If set to true, the compared strings are normalized to linux
+		/// line-endings by removing all CR characters.
+		/// </summary>
+		/// <param name="normalizeEol">sets the end of line normalization</param>
+		/// <returns>this object to allow fluent style</returns>
+		public virtual T SetNormalizeEol(bool normalizeEol)
+		{
+			this.normalizeEol = normalizeEol;
 			return (T)this;
 		}
 
@@ -160,6 +174,11 @@ namespace Giis.Visualassert
 		protected internal abstract string GetAssertionMessage(string expected, string actual, string message, string fileName);
 
 		// Common methods to obtain messages and diffs
+		protected internal virtual string Normalize(string value)
+		{
+			return value != null && this.normalizeEol ? value.Replace("\r", string.Empty) : value;
+		}
+
 		// Always use this to check for equality with null handling
 		protected internal virtual bool StringsAreEqual(string expected, string actual)
 		{

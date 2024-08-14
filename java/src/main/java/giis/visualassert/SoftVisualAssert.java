@@ -36,6 +36,8 @@ public class SoftVisualAssert extends AbstractVisualAssert<SoftVisualAssert> {
 	
 	@Override
 	public void assertEquals(String expected, String actual, String message, String fileName) {
+		expected = normalize(expected);
+		actual = normalize(actual);
 		if (!stringsAreEqual(expected, actual))
 			throwAssertionError(getAssertionMessage(expected, actual, message, fileName), expected, actual);
 	}

@@ -15,6 +15,7 @@ public abstract class AbstractVisualAssert<T extends AbstractVisualAssert<T>> {
 	private boolean useLocalAbsolutePath = false;
 	private boolean showExpectedAndActual = false;
 	private boolean softDifferences = false;
+	protected boolean normalizeEol = false;
 	private boolean brightColors = false;
 	private String reportSubdir = JavaCs.DEFAULT_REPORT_SUBDIR;
 	protected FrameworkAssert platformAssert = new FrameworkAssert(Framework.NONE); // no platform by default
@@ -40,6 +41,18 @@ public abstract class AbstractVisualAssert<T extends AbstractVisualAssert<T>> {
 	@SuppressWarnings("unchecked")
 	public T setReportSubdir(String reportSubdir) {
 		this.reportSubdir = reportSubdir;
+		return (T) this;
+	}
+
+	/**
+	 * If set to true, the compared strings are normalized to linux
+	 * line-endings by removing all CR characters.
+	 * @param normalizeEol sets the end of line normalization
+	 * @return this object to allow fluent style
+	 */
+	@SuppressWarnings("unchecked")
+	public T setNormalizeEol(boolean normalizeEol) {
+		this.normalizeEol = normalizeEol;
 		return (T) this;
 	}
 
@@ -146,6 +159,10 @@ public abstract class AbstractVisualAssert<T extends AbstractVisualAssert<T>> {
 	protected abstract String getAssertionMessage(String expected, String actual, String message, String fileName);
 
 	// Common methods to obtain messages and diffs
+	
+	protected String normalize(String value) {
+		return value != null && this.normalizeEol ? value.replace("\r", "") : value;
+	}
 	 
 	// Always use this to check for equality with null handling
 	protected boolean stringsAreEqual(String expected, String actual) {
