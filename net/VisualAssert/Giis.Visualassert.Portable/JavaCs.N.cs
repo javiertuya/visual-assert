@@ -41,6 +41,10 @@ namespace Giis.Visualassert.Portable
                 currentSequenceId = 0;
             }
         }
+        public static string GetEnvironmentVariable(string name)
+        {
+            return Environment.GetEnvironmentVariable(name);
+        }
         public static string GetUniqueId()
         {
             return Guid.NewGuid().ToString();

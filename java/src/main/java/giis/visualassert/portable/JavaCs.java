@@ -26,6 +26,9 @@ public class JavaCs {
 	public static synchronized void clearCurrentSequence() {
 		currentSequenceId=0;
 	}
+	public static String getEnvironmentVariable(String name) {
+		return System.getenv(name); // NOSONAR
+	}
 	public static String getUniqueId() {
 		return UUID.randomUUID().toString();
 	}
