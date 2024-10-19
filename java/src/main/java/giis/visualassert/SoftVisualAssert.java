@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import giis.visualassert.portable.CallStack;
+import giis.visualassert.portable.JavaCs;
 
 /**
  * Records all VisualAssert assertion message that fail and the diff files instead of throwing and exception;
@@ -13,6 +14,7 @@ import giis.visualassert.portable.CallStack;
 public class SoftVisualAssert extends AbstractVisualAssert<SoftVisualAssert> {
 
 	private List<String> assertionMessages;
+	private List<String> userMessages; // additional message set in the assert
 	//For each failure message, stores expected and actual to generate aggregated diffs
 	private List<String> failureExpected;
 	private List<String> failureActual;
@@ -39,10 +41,10 @@ public class SoftVisualAssert extends AbstractVisualAssert<SoftVisualAssert> {
 		expected = normalize(expected);
 		actual = normalize(actual);
 		if (!stringsAreEqual(expected, actual))
-			throwAssertionError(getAssertionMessage(expected, actual, message, fileName), expected, actual);
+			throwAssertionError(getAssertionMessage(expected, actual, message, fileName), message, expected, actual);
 	}
 
-	protected void throwAssertionError(String message, String expected, String actual) {
+	protected void throwAssertionError(String message, String userMessage, String expected, String actual) {
 		// instead of throwing the exception, stores the message
 		if (callStackLength>0) { 
 			//firstly adds the call stack traces when appropriate
@@ -50,6 +52,7 @@ public class SoftVisualAssert extends AbstractVisualAssert<SoftVisualAssert> {
 			message += (message.endsWith("\n") ? "" : "\n") + getStackTraceMessage(stack);
 		}
 		assertionMessages.add(message);
+		userMessages.add(userMessage);
 		failureExpected.add(expected);
 		failureActual.add(actual);
 	}
@@ -132,21 +135,28 @@ public class SoftVisualAssert extends AbstractVisualAssert<SoftVisualAssert> {
 		StringBuilder sb=new StringBuilder();
 		sb.append("Aggregated failures:");
 		for (int i = 0; i<expectedOrActual.size(); i++) {
-			sb.append("\n").append(getAggregateFailureHeader(i))
+			sb.append("\n").append(getAggregateFailureHeader(i, userMessages.get(i)))
 				.append("\n").append(expectedOrActual.get(i) == null ? "" : expectedOrActual.get(i));
 		}
 		return sb.toString();
 	}
-	public String getAggregateFailureHeader(int failureNumber) {
+	public String getAggregateFailureHeader(int failureNumber, String userMessage) {
 		return "\n---------------------------"
 			+ "\n-------- Failure " + (failureNumber+1) + " --------"
+			+ getUserMessage(userMessage)
 			+ "\n---------------------------";
+	}
+	private String getUserMessage(String userMessage) {
+		if (JavaCs.isEmpty(userMessage))
+			return "";
+		return "\n-------- " + userMessage;
 	}
 	/**
 	 * Resets the current failure messages that are stored
 	 */
 	public void assertClear() {
 		assertionMessages=new ArrayList<String>();
+		userMessages=new ArrayList<String>();
 		failureExpected=new ArrayList<String>();
 		failureActual=new ArrayList<String>();
 	}
@@ -169,7 +179,7 @@ public class SoftVisualAssert extends AbstractVisualAssert<SoftVisualAssert> {
 	public void fail(String message) {
 		String messageInfo = "Fail assertion raised." + ("".equals(message) ? "" : "\n"+message);
 		// sets the message info as the actual value to show in the comparison file
-		throwAssertionError(getMessagePrefix() + " " + messageInfo, "", messageInfo);
+		throwAssertionError(getMessagePrefix() + " " + messageInfo, message, "", messageInfo);
 	}
 	
 

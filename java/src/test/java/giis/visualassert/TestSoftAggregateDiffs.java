@@ -55,31 +55,31 @@ public class TestSoftAggregateDiffs {
 		assertAggregateFile(tempReportPath);
 	}
 	private void assertAggregateFile(String tempReportPath) {
-		assertEquals(FileUtil.fileRead(FileUtil.getPath(SRC_TEST_RESOURCES, AGGREGATE_HTML)), 
+		assertEquals(FileUtil.fileRead(FileUtil.getPath(SRC_TEST_RESOURCES, AGGREGATE_HTML)).replace("\r", ""), 
 				FileUtil.fileRead(FileUtil.getPath(tempReportPath, AGGREGATE_HTML)));
 	}
 	
 	private String getExpectedDiffsJUnit5(SoftVisualAssert va) {
 		return " ==> expected: <Aggregated failures:"
-			+ "\n" + va.getAggregateFailureHeader(0)
+			+ "\n" + va.getAggregateFailureHeader(0, "")
 			+ "\nab zz cd"
-			+ "\n" + va.getAggregateFailureHeader(1)
+			+ "\n" + va.getAggregateFailureHeader(1, "msg4")
 			+ "\n"
-			+ "\n" + va.getAggregateFailureHeader(2)
+			+ "\n" + va.getAggregateFailureHeader(2, "msgen")
 			+ "\n"
-			+ "\n" + va.getAggregateFailureHeader(3)
+			+ "\n" + va.getAggregateFailureHeader(3, "msgan")
 			+ "\nthis is notnull"
-			+ "\n" + va.getAggregateFailureHeader(4)
+			+ "\n" + va.getAggregateFailureHeader(4, "msg5")
 			+ "\nxy vw> but was: <Aggregated failures:"
-			+ "\n" + va.getAggregateFailureHeader(0)
+			+ "\n" + va.getAggregateFailureHeader(0, "")
 			+ "\nab cd"
-			+ "\n" + va.getAggregateFailureHeader(1)
+			+ "\n" + va.getAggregateFailureHeader(1, "msg4")
 			+ "\nFail assertion raised.\nmsg4"
-			+ "\n" + va.getAggregateFailureHeader(2)
+			+ "\n" + va.getAggregateFailureHeader(2, "msgen")
 			+ "\nthis is notnull"
-			+ "\n" + va.getAggregateFailureHeader(3)
+			+ "\n" + va.getAggregateFailureHeader(3, "msgan")
 			+ "\n"
-			+ "\n" + va.getAggregateFailureHeader(4)
+			+ "\n" + va.getAggregateFailureHeader(4, "msg5")
 			+ "\nxy zz vw>";
 	}
 
@@ -108,22 +108,22 @@ public class TestSoftAggregateDiffs {
 	private String getExpectedDiffsJUnit34(SoftVisualAssert va) {
 		return " expected:<...----------------"
 			+ "\nab [zz cd"
-			+ "\n" + va.getAggregateFailureHeader(1)
+			+ "\n" + va.getAggregateFailureHeader(1, "msg4")
 			+ "\n"
-			+ "\n" + va.getAggregateFailureHeader(2)
+			+ "\n" + va.getAggregateFailureHeader(2, "msgen")
 			+ "\n"
-			+ "\n" + va.getAggregateFailureHeader(3)
+			+ "\n" + va.getAggregateFailureHeader(3, "msgan")
 			+ "\nthis is notnull"
-			+ "\n" + va.getAggregateFailureHeader(4)
+			+ "\n" + va.getAggregateFailureHeader(4, "msg5")
 			+ "\nxy] vw> but was:<...----------------"
 			+ "\nab [cd"
-			+ "\n" + va.getAggregateFailureHeader(1)
+			+ "\n" + va.getAggregateFailureHeader(1, "msg4")
 			+ "\nFail assertion raised.\nmsg4"
-			+ "\n" + va.getAggregateFailureHeader(2)
+			+ "\n" + va.getAggregateFailureHeader(2, "msgen")
 			+ "\nthis is notnull"
-			+ "\n" + va.getAggregateFailureHeader(3)
+			+ "\n" + va.getAggregateFailureHeader(3, "msgan")
 			+ "\n"
-			+ "\n" + va.getAggregateFailureHeader(4)
+			+ "\n" + va.getAggregateFailureHeader(4, "msg5")
 			+ "\nxy zz] vw>";
 	}
 	

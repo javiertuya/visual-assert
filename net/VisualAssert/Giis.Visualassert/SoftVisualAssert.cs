@@ -17,6 +17,8 @@ namespace Giis.Visualassert
 	{
 		private IList<string> assertionMessages;
 
+		private IList<string> userMessages;
+
 		private IList<string> failureExpected;
 
 		private IList<string> failureActual;
@@ -26,6 +28,7 @@ namespace Giis.Visualassert
 		public SoftVisualAssert()
 			: base()
 		{
+			// additional message set in the assert
 			//For each failure message, stores expected and actual to generate aggregated diffs
 			//by default shows the single line where assert failed
 			AssertClear();
@@ -46,11 +49,11 @@ namespace Giis.Visualassert
 			actual = Normalize(actual);
 			if (!StringsAreEqual(expected, actual))
 			{
-				ThrowAssertionError(GetAssertionMessage(expected, actual, message, fileName), expected, actual);
+				ThrowAssertionError(GetAssertionMessage(expected, actual, message, fileName), message, expected, actual);
 			}
 		}
 
-		protected internal virtual void ThrowAssertionError(string message, string expected, string actual)
+		protected internal virtual void ThrowAssertionError(string message, string userMessage, string expected, string actual)
 		{
 			// instead of throwing the exception, stores the message
 			if (callStackLength > 0)
@@ -60,6 +63,7 @@ namespace Giis.Visualassert
 				message += (message.EndsWith("\n") ? string.Empty : "\n") + GetStackTraceMessage(stack);
 			}
 			assertionMessages.Add(message);
+			userMessages.Add(userMessage);
 			failureExpected.Add(expected);
 			failureActual.Add(actual);
 		}
@@ -154,20 +158,30 @@ namespace Giis.Visualassert
 			sb.Append("Aggregated failures:");
 			for (int i = 0; i < expectedOrActual.Count; i++)
 			{
-				sb.Append("\n").Append(GetAggregateFailureHeader(i)).Append("\n").Append(expectedOrActual[i] == null ? string.Empty : expectedOrActual[i]);
+				sb.Append("\n").Append(GetAggregateFailureHeader(i, userMessages[i])).Append("\n").Append(expectedOrActual[i] == null ? string.Empty : expectedOrActual[i]);
 			}
 			return sb.ToString();
 		}
 
-		public virtual string GetAggregateFailureHeader(int failureNumber)
+		public virtual string GetAggregateFailureHeader(int failureNumber, string userMessage)
 		{
-			return "\n---------------------------" + "\n-------- Failure " + (failureNumber + 1) + " --------" + "\n---------------------------";
+			return "\n---------------------------" + "\n-------- Failure " + (failureNumber + 1) + " --------" + GetUserMessage(userMessage) + "\n---------------------------";
+		}
+
+		private string GetUserMessage(string userMessage)
+		{
+			if (JavaCs.IsEmpty(userMessage))
+			{
+				return string.Empty;
+			}
+			return "\n-------- " + userMessage;
 		}
 
 		/// <summary>Resets the current failure messages that are stored</summary>
 		public virtual void AssertClear()
 		{
 			assertionMessages = new List<string>();
+			userMessages = new List<string>();
 			failureExpected = new List<string>();
 			failureActual = new List<string>();
 		}
@@ -189,7 +203,7 @@ namespace Giis.Visualassert
 		{
 			string messageInfo = "Fail assertion raised." + (string.Empty.Equals(message) ? string.Empty : "\n" + message);
 			// sets the message info as the actual value to show in the comparison file
-			ThrowAssertionError(GetMessagePrefix() + " " + messageInfo, string.Empty, messageInfo);
+			ThrowAssertionError(GetMessagePrefix() + " " + messageInfo, message, string.Empty, messageInfo);
 		}
 	}
 }
