@@ -14,6 +14,9 @@ public class JavaCs {
 	private JavaCs() {
 	    throw new IllegalAccessError("Utility class");
 	}
+	public static boolean isJava() {
+		return true;
+	}
 	public static boolean isEmpty(String str) {
 		return str==null || "".equals(str.trim());
 	}

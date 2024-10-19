@@ -1,0 +1,33 @@
+ImportMappings:
+  java.util.List : ""
+  java.util.ArrayList : ""
+  java.util.LinkedList : ""
+  org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch : ""
+
+  org.junit.Test : NUnit.Framework
+  org.junit.Ignore : ""
+  org.junit.Before : ""
+  org.junit.After : ""
+  org.junit.Assert.assertEquals : ""
+  org.junit.Assert.assertTrue : ""
+  org.junit.Assert.assertFalse : ""
+  org.junit.Assert.assertNull : ""
+  org.junit.Assert.fail : ""
+  org.junit.Assert.assertThrows : ""
+
+NonVoidMethodMappings:
+  toLowerCase : ToLower
+
+VoidMethodMappings:
+  assertEquals : NUnit.Framework.Legacy.ClassicAssert.AreEqual
+  assertTrue : NUnit.Framework.Legacy.ClassicAssert.IsTrue
+  assertFalse : NUnit.Framework.Legacy.ClassicAssert.IsFalse
+  assertNull : NUnit.Framework.Legacy.ClassicAssert.IsNull
+  assertThrows : NUnit.Framework.Assert.Throws
+  fail : NUnit.Framework.Legacy.ClassicAssert.Fail
+
+AnnotationMappings:
+  Test: Test
+  Ignore: Ignore
+  Before: NUnit.Framework.SetUp
+  After: NUnit.Framework.TearDown

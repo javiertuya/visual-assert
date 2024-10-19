@@ -59,7 +59,7 @@ public class TestSoftVisualAssert {
 			expected=expected.replace("fan.html", FileUtil.getPath(reportPath, "fan.html"));
 			expected=expected.replace("diff-0.html", FileUtil.getPath(reportPath, "diff-0.html"));
 			expected=expected.replace("Aggregate.html", FileUtil.getPath(reportPath, "Aggregate.html"));
-			assertEquals(CallStack.normalize(expected), CallStack.normalize(e.getMessage()));
+			assertEquals(CallStack.normalize(expected).toLowerCase(), CallStack.normalize(e.getMessage()).toLowerCase());
 			success = true;
 		}
 		assertTrue(success);

@@ -84,6 +84,17 @@ jobs:
           #working-directory does not work here
           path: net/reports
 
+      # C# code is converted in the development environment and pushed to the repo,
+      # so that there can be incompatible changes in the java side
+      # this last step performs conversion with the latest versions and checks compilation is ok
+      - name: Validate Conversion from Java to C#
+        if: always()
+        run: |
+          echo "*** Convert java to C#"
+          ant clone convert
+          echo "*** Check net build on converted code"
+          dotnet build
+
   publish-java-snapshot:
     #if: ${{ false }}  # disable for now
     #avoid publishing PRs and dependabot branches

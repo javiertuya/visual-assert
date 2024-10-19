@@ -13,6 +13,8 @@ Available on Java and .NET platforms.
 - From .NET include the `VisualAssert` package in you project as indicated in 
   [NuGet](https://www.nuget.org/packages/VisualAssert/)
 
+Most of the .NET code and tests are converted from java using the [JavaToCsharp](https://github.com/paulirwin/JavaToCSharp) converter.
+
 ## Usage
 
 From Java, instantiate the `VisualAssert` class and perform an assert:

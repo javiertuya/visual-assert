@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31729.503
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.35122.118
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisualAssert", "VisualAssert\VisualAssert.csproj", "{E80580CC-9632-4727-BF60-6D9EF232456E}"
 EndProject
@@ -10,9 +10,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Folder", "Solution Folder", "{2DD3B41F-B4A7-4D36-9A60-9C29F18963B8}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		build-convert.xml = build-convert.xml
+		build.xml = build.xml
+		java-mapping.yml = java-mapping.yml
 		..\README.md = ..\README.md
-		run-test.bat = run-test.bat
-		..\.github\workflows\test-net.yml = ..\.github\workflows\test-net.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github-workflows", ".github-workflows", "{FFCF6BA3-01D1-4098-8BCF-E1A1D0024094}"

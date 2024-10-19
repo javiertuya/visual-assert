@@ -10,10 +10,15 @@ namespace Giis.Visualassert.Portable
 	{
         //Default report folder, relative to the current solution directory
         //(provided that the project folder is under the solution)
-        public const string DefaultReportSubdir = "../../../../reports";
+        public const string DEFAULT_REPORT_SUBDIR = "../../../../reports";
         //to generate sequential identifiers
         public static int currentSequenceId = 0;
         public static object Lock = new object();
+
+        public static bool IsJava()
+        {
+            return false;
+        }
 
         public static bool IsEmpty(string str)
         {

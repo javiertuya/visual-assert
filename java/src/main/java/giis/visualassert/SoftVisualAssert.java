@@ -63,16 +63,13 @@ public class SoftVisualAssert extends AbstractVisualAssert<SoftVisualAssert> {
 		for (int i=0; i<stack.size(); i++) {
 			//Skip traces corresponding to the classes of this package that are at the top of stack
 			//case insensitive for net compatibility
+			String stackClass = stack.getClassName(i).toLowerCase();
 			if (skip 
-					&& !stack.getClassName(i).startsWith("giis.visualassert.portable.CallStack")
-					&& !stack.getClassName(i).startsWith("giis.visualassert.AbstractVisualAssert") 
-					&& !stack.getClassName(i).startsWith("giis.visualassert.SoftVisualAssert") 
-					&& !stack.getClassName(i).startsWith("giis.visualassert.VisualAssert")
-					&& !stack.getClassName(i).startsWith("Giis.Visualassert.portable.CallStack")
-					&& !stack.getClassName(i).startsWith("Giis.Visualassert.AbstractVisualassert") 
-					&& !stack.getClassName(i).startsWith("Giis.Visualassert.SoftVisualAssert") 
-					&& !stack.getClassName(i).startsWith("Giis.Visualassert.VisualAssert")
-					&& !stack.getClassName(i).startsWith("System.Environment") //only net
+					&& !stackClass.startsWith("giis.visualassert.portable.callstack")
+					&& !stackClass.startsWith("giis.visualassert.abstractvisualassert") 
+					&& !stackClass.startsWith("giis.visualassert.softvisualassert") 
+					&& !stackClass.startsWith("giis.visualassert.visualassert")
+					&& !stackClass.startsWith("system.environment") //only net
 					) {
 				skip=false;
 			}
@@ -171,7 +168,7 @@ public class SoftVisualAssert extends AbstractVisualAssert<SoftVisualAssert> {
 	 * Fails a test with no message
 	 */
 	public void fail() {
-		fail("");
+		this.fail("");
 	}
 	/**
 	 * Fails a test with the given message
