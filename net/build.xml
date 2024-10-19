@@ -140,4 +140,106 @@
     </copy>
   </target>
 
+
+  <!-- Prueba de JavaToCSharp -->
+
+  <target name="clone">
+    <delete dir="JavaToCSharp-temp" failonerror="false"/>
+    <exec executable="git" failonerror="true">
+      <arg value="clone" />
+      <arg value="https://github.com/javiertuya/JavaToCSharp.git" />
+      <arg value="JavaToCSharp-temp" />
+      <arg value="--branch" />
+      <arg value="master-test-all" />
+    </exec>
+    <echo>Building JavaToCsharp CLI</echo>
+    <exec executable="dotnet" failonerror="true" dir="JavaToCSharp-temp/JavaToCSharpCli">
+      <arg value="build" />
+    </exec>
+  </target>
+
+  <macrodef name="runConvert" >
+    <attribute name="input" />
+    <attribute name="output" />
+    <attribute name="mapping" default="" />
+    <sequential>
+      <delete>
+        <fileset dir="@{output}" includes="*.cs" />
+      </delete>
+      <echo>Convert: @{input}</echo>
+      <echo>To: @{output}</echo>
+      <echo>Mapping file: @{mapping}</echo>
+      <exec executable="JavaToCSharp-temp/JavaToCSharpCli/bin/Debug/net8.0/JavaToCSharpCli.exe" failonerror="true">
+        <arg value="--include-subdirectories" />
+        <arg value="false" />
+        <arg value="--start-interface-names-with-i" />
+        <arg value="false" />
+        <arg value="--add-using" />
+        <arg value="converted.placeholder" />
+        <arg value="--mappings-file" unless:blank="mapping" />
+        <arg value="@{mapping}" unless:blank="mapping" />
+        <arg value="dir" />
+        <arg value="@{input}" />
+        <arg value="@{output}" />
+      </exec>
+    </sequential>
+  </macrodef>
+
+  <target name="convert">
+    <runConvert input="../java/src/main/java/giis/visualassert" output="VisualAssert/Giis.Visualassert"  mapping="java-mapping.yml"/>
+    <delete file="VisualAssert/Giis.Visualassert/FrameworkAssert.cs" />
+    
+    <replace file="VisualAssert/Giis.Visualassert/AbstractVisualAssert.cs" >
+      <!-- JavaToCsharp #125 converts this
+      <replacefilter token="public abstract class AbstractVisualAssert&lt;T&gt;"
+            value="public abstract class AbstractVisualAssert&lt;T&gt; where T : AbstractVisualAssert&lt;T&gt;" />
+      -->
+      <replacefilter token="DiffMatchPatch dmp = new DiffMatchPatch();" value="DiffMatchPatch.diff_match_patch dmp = new DiffMatchPatch.diff_match_patch();" />
+      <replacefilter token="dmp.DiffMain(" value="dmp.diff_main(" />
+      <replacefilter token="LinkedList&lt;DiffMatchPatch.Diff&gt;" value="List&lt;DiffMatchPatch.Diff&gt;" />
+      <replacefilter token="DiffCleanupSemantic" value="diff_cleanupSemantic" />
+      <replacefilter token="DiffPrettyHtml" value="diff_prettyHtml" />
+      <replacefilter token=".CharAt(i)" value="[i]" />
+      <replacefilter token="case INSERT:" value="case DiffMatchPatch.Operation.INSERT:" />
+      <replacefilter token="case DELETE:" value="case DiffMatchPatch.Operation.DELETE:" />
+      <replacefilter token="case EQUAL:" value="case DiffMatchPatch.Operation.EQUAL:" />
+    </replace>
+    <replace file="VisualAssert/Giis.Visualassert/Framework.cs" >
+      <replacefilter token="NONE" value="None" />
+      <replacefilter token="JUNIT" value="Junit" />
+    </replace>
+
+    <runConvert input="../java/src/test/java/giis/visualassert" output="TestVisualAssert/Giis.Visualassert" mapping="java-mapping.yml" />
+    <delete file="TestVisualAssert/Giis.Visualassert/TestWithFrameworks.cs" />
+    <replace dir="TestVisualAssert/Giis.Visualassert/">
+      <replacefilter token="[Ignore]" value="[Ignore(&quot;&quot;)]" />
+      <replacefilter token="e.GetMessage()" value="e.Message" />
+      <replacefilter token="InvalidOperationException" value="Exception" />
+      <replacefilter token="e.GetType().GetName()" value="e.GetType().FullName" />
+      <replacefilter token="String.ValueOf(" value="(" />
+      <replacefilter token="java.lang.AssertionError" value="System.Exception" />
+      <replacefilter token="org.junit.ComparisonFailure" value="System.Exception" />
+      <replacefilter token="junit.framework.ComparisonFailure" value="System.Exception" />
+      <replacefilter token="org.opentest4j.AssertionFailedError" value="System.Exception" />
+      <replacefilter token="target/" value="../../../../reports/" />
+      <replacefilter token="src/test/resources" value="../../../../../java/src/test/resources" />
+    </replace>
+    <replace file="TestVisualAssert/Giis.VisualAssert/TestSoftAggregateDiffs.cs">
+      <replacefilter token="public virtual void TestJunit5FailureWithFramework()" value="[Ignore(&quot;&quot;)] public virtual void TestJunit5FailureWithFramework()" />
+      <replacefilter token="public virtual void TestJunit5FailureWithFileAndFramework()" value="[Ignore(&quot;&quot;)] public virtual void TestJunit5FailureWithFileAndFramework()" />
+      <replacefilter token="public virtual void TestJunit4FailureWithFileAndFramework()" value="[Ignore(&quot;&quot;)] public virtual void TestJunit4FailureWithFileAndFramework()" />
+      <replacefilter token="public virtual void TestJunit3FailureWithFileAndFramework()" value="[Ignore(&quot;&quot;)] public virtual void TestJunit3FailureWithFileAndFramework()" />
+    </replace>
+
+    <replace dir=".">
+      <include name="VisualAssert/Giis.Visualassert/*.cs" />
+      <include name="TestVisualAssert/Giis.Visualassert/*.cs" />
+      <replacefilter token="JavaCs.DEFAULT_REPORT_SUBDIR" value="JavaCs.DefaultReportSubdir" />
+      <replacefilter token="Framework.JUNIT" value="Framework.Junit" />
+      <replacefilter token="Framework.NONE" value="Framework.None" />
+      
+      <replacefilter token="using converted.placeholder;" value="/////// THIS FILE HAS BEEN AUTOMATICALLY CONVERTED FROM THE JAVA SOURCES. DO NOT EDIT ///////" />
+    </replace>
+  </target>
+
 </project>

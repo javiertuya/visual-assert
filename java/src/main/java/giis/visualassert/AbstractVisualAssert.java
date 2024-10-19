@@ -163,7 +163,7 @@ public abstract class AbstractVisualAssert<T extends AbstractVisualAssert<T>> {
 	 * @param actual   the value to compare against expected
 	 */
 	public void assertEquals(String expected, String actual) {
-		assertEquals(expected, actual, "", "");
+		this.assertEquals(expected, actual, "", "");
 	}
 
 	/**
@@ -172,9 +172,10 @@ public abstract class AbstractVisualAssert<T extends AbstractVisualAssert<T>> {
 	 * file in the assert message.
 	 * @param expected the expected string
 	 * @param actual   the value to compare against expected
+	 * @param message  additional message to be included
 	 */
 	public void assertEquals(String expected, String actual, String message) {
-		assertEquals(expected, actual, message, "");
+		this.assertEquals(expected, actual, message, "");
 	}
 
 	/**

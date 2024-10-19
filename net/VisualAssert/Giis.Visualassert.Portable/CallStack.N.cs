@@ -10,6 +10,7 @@ namespace Giis.Visualassert.Portable
     public class CallStack
     {
         private readonly string[] stack;
+        public int Count { get {  return stack.Length; } } // to suport conversion
 
         public CallStack()
         {
