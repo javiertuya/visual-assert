@@ -15,6 +15,11 @@ namespace Giis.Visualassert.Portable
         public static int currentSequenceId = 0;
         public static object Lock = new object();
 
+        public static bool IsJava()
+        {
+            return false;
+        }
+
         public static bool IsEmpty(string str)
         {
             return string.IsNullOrWhiteSpace(str);

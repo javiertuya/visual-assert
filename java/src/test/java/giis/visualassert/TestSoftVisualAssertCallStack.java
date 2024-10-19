@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import giis.visualassert.portable.CallStack;
+import giis.visualassert.portable.JavaCs;
 
 /**
  * Checks the stack trace items shown in messages.
@@ -14,6 +15,8 @@ import giis.visualassert.portable.CallStack;
  * Adjust the numbers if new lines are added to the code
  */
 public class TestSoftVisualAssertCallStack {
+	
+	private String innerClassSeparator = JavaCs.isJava() ? "$" : ".";
 
 	//Deep stack assert invocations
 	public class OtherClass {
@@ -42,7 +45,7 @@ public class TestSoftVisualAssertCallStack {
 		try {
 			va.assertAll();
 		} catch (AssertionError e) {
-			assertEquals(CallStack.normalize(getExpectedSingleStackItem()), CallStack.normalize(e.getMessage()));
+			assertEquals(CallStack.normalize(getExpectedSingleStackItem()).toLowerCase(), CallStack.normalize(e.getMessage()).toLowerCase());
 			success=true;
 		}
 		assertTrue(success);
@@ -55,7 +58,7 @@ public class TestSoftVisualAssertCallStack {
 		try {
 			va.assertAll();
 		} catch (AssertionError e) {
-			assertEquals(CallStack.normalize(getExpectedMultipleStackItem()), CallStack.normalize(e.getMessage()));
+			assertEquals(CallStack.normalize(getExpectedMultipleStackItem()).toLowerCase(), CallStack.normalize(e.getMessage()).toLowerCase());
 			success=true;
 		}
 		assertTrue(success);
@@ -84,7 +87,7 @@ public class TestSoftVisualAssertCallStack {
 				+ "Failure 2: Strings are different. First diff at line 1 column 4.\n"
 				+ "- Visual diffs at: target/fstack12.html\n"
 				+ "- Call Stack:\n"
-				+ "    at giis.visualassert.TestSoftVisualAssertCallStack$OtherClass.doAssert(TestSoftVisualAssertCallStack.java:19)";
+				+ "    at giis.visualassert.TestSoftVisualAssertCallStack" + innerClassSeparator + "OtherClass.doAssert(TestSoftVisualAssertCallStack.java:19)";
 	}
 
 	private String getExpectedMultipleStackItem() {
@@ -92,7 +95,7 @@ public class TestSoftVisualAssertCallStack {
 				+ "Failure 1: Strings are different. First diff at line 1 column 4.\n"
 				+ "- Visual diffs at: target/fstack12.html\n"
 				+ "- Call Stack:\n"
-				+ "    at giis.visualassert.TestSoftVisualAssertCallStack$OtherClass.doAssert(TestSoftVisualAssertCallStack.java:19)\n"
+				+ "    at giis.visualassert.TestSoftVisualAssertCallStack" + innerClassSeparator + "OtherClass.doAssert(TestSoftVisualAssertCallStack.java:19)\n"
 				+ "    at giis.visualassert.TestSoftVisualAssertCallStack.callDoAssert(TestSoftVisualAssertCallStack.java:25)\n"
 				+ "    at giis.visualassert.TestSoftVisualAssertCallStack.testMultipleStackItem(TestSoftVisualAssertCallStack.java:49)";
 	}
