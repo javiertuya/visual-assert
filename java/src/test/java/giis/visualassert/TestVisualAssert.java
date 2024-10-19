@@ -35,10 +35,11 @@ public class TestVisualAssert {
 	static String expectedMessageShort = "Strings are different. First diff at line 1 column 5." + "\nThis is the additional message."
 			+ "\n- Visual diffs at: " + diffFile;
 	static String htmlDiffs = ""
-			+ "<span>abc </span><del style=\"background:#ffe6e6;\">def</del>"
-			+ "<ins style=\"background:#e6ffe6;\">DEF</ins><span> ghi&para;"
-			+ "<br></span><ins style=\"background:#e6ffe6;\">other&nbsp;line&para;" 
-			+ "<br></ins><span>mno pqr s</span><del style=\"background:#ffe6e6;\">&nbsp;</del><span>tu</span>";
+			+ "<pre>\n"
+			+ "<span>abc </span><del style=\"background:#ffe6e6;\">def</del><ins style=\"background:#e6ffe6;\">DEF</ins><span> ghi&para;\n"
+			+ "</span><ins style=\"background:#e6ffe6;\">other line&para;\n"
+			+ "</ins><span>mno pqr s</span><del style=\"background:#ffe6e6;\"> </del><span>tu</span>\n"
+			+ "</pre>";
 
 	@Test
 	public void testNoFail() {
@@ -103,7 +104,10 @@ public class TestVisualAssert {
 					+ "\n- Expected: <" + expected + ">." 
 					+ "\n- Actual: <" + actualFail + ">.";
 			assertEquals(expectedMessageLong.replace("\r", ""), e.getMessage().replace("\r", ""));
-			assertEquals(htmlDiffs.replace("&nbsp;", " ").replace("e6ffe6", "00ff00").replace("ffe6e6", "ff4000"),
+			assertEquals(htmlDiffs
+					.replace("<pre>\n", "").replace("\n</pre>", "")
+					.replace("\n", "<br>")
+					.replace("e6ffe6", "00ff00").replace("ffe6e6", "ff4000"),
 					FileUtil.fileRead(FileUtil.getPath(tempReportPath, diffFileName)));
 			success = true;
 		}

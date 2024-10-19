@@ -59,9 +59,9 @@ public abstract class AbstractVisualAssert<T extends AbstractVisualAssert<T>> {
 	}
 
 	/**
-	 * By default (hard), differences in whitespaces are rendered as whitespace html
-	 * entities and therefore, always visible in the html ouput; if set to true
-	 * (soft), some whitespace differences may be hidden from the html output
+	 * By default (hard), html differences are displayed inside a pre tag;
+	 * if set to true (soft), some whitespace differences and indentation
+	 * may be hidden from the html output
 	 * @param useSoftDifferences sets soft differences
 	 * @return this object to allow fluent style
 	 */
@@ -262,8 +262,29 @@ public abstract class AbstractVisualAssert<T extends AbstractVisualAssert<T>> {
 		return diffs;
 	}
 
-	// customized method to display spaces as whtiespace entities
+	// customized method to display spaces as whitespace entities
 	protected String diffPrettyHtmlHard(LinkedList<DiffMatchPatch.Diff> diffs) {
+		StringBuilder html = new StringBuilder();
+		for (DiffMatchPatch.Diff aDiff : diffs) {
+			String text = aDiff.text.replace("&", "&amp;")
+					.replace("<", "&lt;").replace(">", "&gt;")
+					.replace("\r", " ").replace("\n", "&para;\n"); // don't use br because everything will be insde pre
+			switch (aDiff.operation) {
+			case INSERT:
+				html.append("<ins style=\"background:#e6ffe6;\">").append(text).append("</ins>");
+				break;
+			case DELETE:
+				html.append("<del style=\"background:#ffe6e6;\">").append(text).append("</del>");
+				break;
+			case EQUAL:
+				html.append("<span>").append(text).append("</span>");
+				break;
+			}
+		}
+		return "<pre>\n" + html.toString() + "\n</pre>";
+	}
+	
+	protected String diffPrettyHtmlHardOld(LinkedList<DiffMatchPatch.Diff> diffs) {
 		StringBuilder html = new StringBuilder();
 		for (DiffMatchPatch.Diff aDiff : diffs) {
 			String text = aDiff.text.replace("&", "&amp;")
