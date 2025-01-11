@@ -30,7 +30,7 @@ jobs:
         run: mvn test -Dmaven.test.failure.ignore=true -U --no-transfer-progress
       - name: Publish test report
         if: always()
-        uses: mikepenz/action-junit-report@v5.1.0
+        uses: mikepenz/action-junit-report@v5.2.0
         with:
           check_name: test-report-java
           report_paths: '**/target/surefire-reports/TEST-*.xml'
@@ -53,7 +53,7 @@ jobs:
         working-directory: net
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-dotnet@v4.1.0
+      - uses: actions/setup-dotnet@v4.2.0
         with:
             dotnet-version: '8.0.x'
 
