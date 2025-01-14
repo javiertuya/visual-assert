@@ -33,7 +33,7 @@ namespace Giis.Visualassert
         static string actualNofail = "abc def ghi\nmno pqr s tu";
         static string actualFail = "abc DEF ghi\nother line\nmno pqr stu";
         static string expectedMessageShort = "Strings are different. First diff at line 1 column 5." + "\nThis is the additional message." + "\n- Visual diffs at: " + diffFile;
-        static string htmlDiffs = "" + "<span>abc </span><del style=\"background:#ffe6e6;\">def</del>" + "<ins style=\"background:#e6ffe6;\">DEF</ins><span> ghi&para;" + "<br></span><ins style=\"background:#e6ffe6;\">other&nbsp;line&para;" + "<br></ins><span>mno pqr s</span><del style=\"background:#ffe6e6;\">&nbsp;</del><span>tu</span>";
+        static string htmlDiffs = "" + "<pre>\n" + "<span>abc </span><del style=\"background:#ffe6e6;\">def</del><ins style=\"background:#e6ffe6;\">DEF</ins><span> ghi&para;\n" + "</span><ins style=\"background:#e6ffe6;\">other line&para;\n" + "</ins><span>mno pqr s</span><del style=\"background:#ffe6e6;\"> </del><span>tu</span>\n" + "</pre>";
         [Test]
         public virtual void TestNoFail()
         {
@@ -77,10 +77,6 @@ namespace Giis.Visualassert
             NUnit.Framework.Legacy.ClassicAssert.IsTrue(success);
         }
 
-<<<<<<< HEAD
-		internal static string htmlDiffs = string.Empty + "<pre>\n" + "<span>abc </span><del style=\"background:#ffe6e6;\">def</del><ins style=\"background:#e6ffe6;\">DEF</ins><span> ghi&para;\n" + "</span><ins style=\"background:#e6ffe6;\">other line&para;\n" + "</ins><span>mno pqr s</span><del style=\"background:#ffe6e6;\"> </del><span>tu</span>\n"
-			 + "</pre>";
-=======
         [Test]
         public virtual void TestFailAllConditionsTrue()
         {
@@ -93,7 +89,6 @@ namespace Giis.Visualassert
             }
             catch (Exception e)
             {
->>>>>>> 1fbf429 (Test net convert con JavaToCSharp)
 
                 //get file and path of the generated diff file (only file in the folder)
                 IList<string> allFiles = FileUtil.GetFileListInDirectory(tempReportPath);
@@ -107,47 +102,13 @@ namespace Giis.Visualassert
                 string diffFileFullPath = "file://" + fullPath;
                 string expectedMessageLong = "Strings are different. First diff at line 1 column 5." + "\n- Visual diffs at: " + diffFileFullPath + "\n- Expected: <" + expected + ">." + "\n- Actual: <" + actualFail + ">.";
                 NUnit.Framework.Legacy.ClassicAssert.AreEqual(expectedMessageLong.Replace("\r", ""), e.Message.Replace("\r", ""));
-                NUnit.Framework.Legacy.ClassicAssert.AreEqual(htmlDiffs.Replace("&nbsp;", " ").Replace("e6ffe6", "00ff00").Replace("ffe6e6", "ff4000"), FileUtil.FileRead(FileUtil.GetPath(tempReportPath, diffFileName)));
+                NUnit.Framework.Legacy.ClassicAssert.AreEqual(htmlDiffs.Replace("<pre>\n", "").Replace("\n</pre>", "").Replace("\n", "<br>").Replace("e6ffe6", "00ff00").Replace("ffe6e6", "ff4000"), FileUtil.FileRead(FileUtil.GetPath(tempReportPath, diffFileName)));
                 success = true;
             }
 
             NUnit.Framework.Legacy.ClassicAssert.IsTrue(success);
         }
 
-<<<<<<< HEAD
-		[Test]
-		public virtual void TestFailAllConditionsTrue()
-		{
-			string tempReportPath = FileUtil.GetPath(defaultFolder, "tmp-" + JavaCs.GetUniqueId());
-			//folder does not exist
-			VisualAssert va = new VisualAssert().ClearCurrentSequence().SetShowExpectedAndActual(true).SetUseLocalAbsolutePath(true).SetSoftDifferences(true).SetBrightColors(true).SetReportSubdir(tempReportPath);
-			bool success = false;
-			try
-			{
-				va.AssertEquals(expected, actualFail);
-			}
-			catch (Exception e)
-			{
-				//get file and path of the generated diff file (only file in the folder)
-				IList<string> allFiles = FileUtil.GetFileListInDirectory(tempReportPath);
-				NUnit.Framework.Legacy.ClassicAssert.AreEqual(1, allFiles.Count);
-				// only a file has been created
-				string diffFileName = allFiles[0];
-				string fullPath = FileUtil.GetFullPath(FileUtil.GetPath(tempReportPath, diffFileName));
-				//on windows, back slash must be replaced by forward slash and full path start with slash
-				if (fullPath.Contains("\\"))
-				{
-					fullPath = "/" + fullPath.Replace("\\", "/");
-				}
-				string diffFileFullPath = "file://" + fullPath;
-				string expectedMessageLong = "Strings are different. First diff at line 1 column 5." + "\n- Visual diffs at: " + diffFileFullPath + "\n- Expected: <" + expected + ">." + "\n- Actual: <" + actualFail + ">.";
-				NUnit.Framework.Legacy.ClassicAssert.AreEqual(expectedMessageLong.Replace("\r", string.Empty), e.Message.Replace("\r", string.Empty));
-				NUnit.Framework.Legacy.ClassicAssert.AreEqual(htmlDiffs.Replace("<pre>\n", string.Empty).Replace("\n</pre>", string.Empty).Replace("\n", "<br>").Replace("e6ffe6", "00ff00").Replace("ffe6e6", "ff4000"), FileUtil.FileRead(FileUtil.GetPath(tempReportPath, diffFileName)));
-				success = true;
-			}
-			NUnit.Framework.Legacy.ClassicAssert.IsTrue(success);
-		}
-=======
         [Test]
         public virtual void TestFailWithNulls()
         {
@@ -155,7 +116,6 @@ namespace Giis.Visualassert
             DoAssertNulls(va, "abc", null, "", "Strings are different. Actual was <null>.\n" + "- Visual diffs at: ../../../../reports/diff-0.html", "null-actual.html");
             DoAssertNulls(va, null, "def", "Custom message", "Strings are different. Expected was <null>.\nCustom message.\n" + "- Visual diffs at: ../../../../reports/diff-1.html", "null-expected.html");
         }
->>>>>>> 1fbf429 (Test net convert con JavaToCSharp)
 
         private void DoAssertNulls(VisualAssert va, string expected, string actual, string message, string expectedMessage, string htmlFile)
         {

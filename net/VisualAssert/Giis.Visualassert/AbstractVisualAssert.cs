@@ -61,9 +61,9 @@ namespace Giis.Visualassert
         }
 
         /// <summary>
-        /// By default (hard), differences in whitespaces are rendered as whitespace html
-        /// entities and therefore, always visible in the html ouput; if set to true
-        /// (soft), some whitespace differences may be hidden from the html output
+        /// By default (hard), html differences are displayed inside a pre tag;
+        /// if set to true (soft), some whitespace differences and indentation
+        /// may be hidden from the html output
         /// </summary>
         /// <param name="useSoftDifferences">sets soft differences</param>
         /// <returns>this object to allow fluent style</returns>
@@ -182,20 +182,6 @@ namespace Giis.Visualassert
             this.AssertEquals(expected, actual, message, "");
         }
 
-<<<<<<< HEAD
-		/// <summary>
-		/// By default (hard), html differences are displayed inside a pre tag;
-		/// if set to true (soft), some whitespace differences and indentation
-		/// may be hidden from the html output
-		/// </summary>
-		/// <param name="useSoftDifferences">sets soft differences</param>
-		/// <returns>this object to allow fluent style</returns>
-		public virtual T SetSoftDifferences(bool useSoftDifferences)
-		{
-			this.softDifferences = useSoftDifferences;
-			return (T)this;
-		}
-=======
         /// <summary>
         /// Asserts that two large strings are equal; if they are not, generates an html
         /// file with the 'fileName' provided highlighting the additions and deletions
@@ -218,7 +204,6 @@ namespace Giis.Visualassert
         {
             return value != null && this.normalizeEol ? value.Replace("\r", "") : value;
         }
->>>>>>> 1fbf429 (Test net convert con JavaToCSharp)
 
         // Always use this to check for equality with null handling
         protected virtual bool StringsAreEqual(string expected, string actual)
@@ -287,8 +272,31 @@ namespace Giis.Visualassert
             return diffs;
         }
 
-        // customized method to display spaces as whtiespace entities
+        // customized method to display spaces as whitespace entities
         protected virtual string diff_prettyHtmlHard(List<DiffMatchPatch.Diff> diffs)
+        {
+            StringBuilder html = new StringBuilder();
+            foreach (DiffMatchPatch.Diff aDiff in diffs)
+            {
+                string text = aDiff.text.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("\r", " ").Replace("\n", "&para;\n"); // don't use br because everything will be insde pre
+                switch (aDiff.operation)
+                {
+                    case DiffMatchPatch.Operation.INSERT:
+                        html.Append("<ins style=\"background:#e6ffe6;\">").Append(text).Append("</ins>");
+                        break;
+                    case DiffMatchPatch.Operation.DELETE:
+                        html.Append("<del style=\"background:#ffe6e6;\">").Append(text).Append("</del>");
+                        break;
+                    case DiffMatchPatch.Operation.EQUAL:
+                        html.Append("<span>").Append(text).Append("</span>");
+                        break;
+                }
+            }
+
+            return "<pre>\n" + html.ToString() + "\n</pre>";
+        }
+
+        protected virtual string diff_prettyHtmlHardOld(List<DiffMatchPatch.Diff> diffs)
         {
             StringBuilder html = new StringBuilder();
             foreach (DiffMatchPatch.Diff aDiff in diffs)
@@ -351,53 +359,6 @@ namespace Giis.Visualassert
                     return "Actual is contained in expected";
                 }
 
-<<<<<<< HEAD
-		// customized method to display spaces as whitespace entities
-		protected internal virtual string DiffPrettyHtmlHard(List<DiffMatchPatch.Diff> diffs)
-		{
-			StringBuilder html = new StringBuilder();
-			foreach (DiffMatchPatch.Diff aDiff in diffs)
-			{
-				string text = aDiff.text.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("\r", " ").Replace("\n", "&para;\n");
-				switch (aDiff.operation)
-				{
-					case DiffMatchPatch.Operation.INSERT:
-					{
-						// don't use br because everything will be insde pre
-						html.Append("<ins style=\"background:#e6ffe6;\">").Append(text).Append("</ins>");
-						break;
-					}
-
-					case DiffMatchPatch.Operation.DELETE:
-					{
-						html.Append("<del style=\"background:#ffe6e6;\">").Append(text).Append("</del>");
-						break;
-					}
-
-					case DiffMatchPatch.Operation.EQUAL:
-					{
-						html.Append("<span>").Append(text).Append("</span>");
-						break;
-					}
-				}
-			}
-			return "<pre>\n" + html.ToString() + "\n</pre>";
-		}
-
-		protected internal virtual string DiffPrettyHtmlHardOld(List<DiffMatchPatch.Diff> diffs)
-		{
-			StringBuilder html = new StringBuilder();
-			foreach (DiffMatchPatch.Diff aDiff in diffs)
-			{
-				string text = aDiff.text.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("\n", "&para;<br>");
-				switch (aDiff.operation)
-				{
-					case DiffMatchPatch.Operation.INSERT:
-					{
-						html.Append("<ins style=\"background:#e6ffe6;\">").Append(text.Replace(" ", "&nbsp;")).Append("</ins>");
-						break;
-					}
-=======
                 if (current == '\n')
                 {
                     line++;
@@ -408,7 +369,6 @@ namespace Giis.Visualassert
                     column++;
                 }
             }
->>>>>>> 1fbf429 (Test net convert con JavaToCSharp)
 
             if (expected.Length < actual.Length)
                 return "Expected is contained in actual";

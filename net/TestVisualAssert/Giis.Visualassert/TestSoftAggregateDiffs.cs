@@ -53,25 +53,12 @@ namespace Giis.Visualassert
 
         private void AssertAggregateFile(string tempReportPath)
         {
-            NUnit.Framework.Legacy.ClassicAssert.AreEqual(FileUtil.FileRead(FileUtil.GetPath(SRC_TEST_RESOURCES, AGGREGATE_HTML)), FileUtil.FileRead(FileUtil.GetPath(tempReportPath, AGGREGATE_HTML)));
+            NUnit.Framework.Legacy.ClassicAssert.AreEqual(FileUtil.FileRead(FileUtil.GetPath(SRC_TEST_RESOURCES, AGGREGATE_HTML)).Replace("\r", ""), FileUtil.FileRead(FileUtil.GetPath(tempReportPath, AGGREGATE_HTML)));
         }
 
-<<<<<<< HEAD
-		private void AssertAggregateFile(string tempReportPath)
-		{
-			NUnit.Framework.Legacy.ClassicAssert.AreEqual(FileUtil.FileRead(FileUtil.GetPath(SrcTestResources, AggregateHtml)).Replace("\r", string.Empty), FileUtil.FileRead(FileUtil.GetPath(tempReportPath, AggregateHtml)));
-		}
-
-		private string GetExpectedDiffsJUnit5(SoftVisualAssert va)
-		{
-			return " ==> expected: <Aggregated failures:" + "\n" + va.GetAggregateFailureHeader(0, string.Empty) + "\nab zz cd" + "\n" + va.GetAggregateFailureHeader(1, "msg4") + "\n" + "\n" + va.GetAggregateFailureHeader(2, "msgen") + "\n" + "\n" + va.GetAggregateFailureHeader(3, "msgan") + 
-				"\nthis is notnull" + "\n" + va.GetAggregateFailureHeader(4, "msg5") + "\nxy vw> but was: <Aggregated failures:" + "\n" + va.GetAggregateFailureHeader(0, string.Empty) + "\nab cd" + "\n" + va.GetAggregateFailureHeader(1, "msg4") + "\nFail assertion raised.\nmsg4" + "\n" + va.GetAggregateFailureHeader
-				(2, "msgen") + "\nthis is notnull" + "\n" + va.GetAggregateFailureHeader(3, "msgan") + "\n" + "\n" + va.GetAggregateFailureHeader(4, "msg5") + "\nxy zz vw>";
-		}
-=======
         private string GetExpectedDiffsJUnit5(SoftVisualAssert va)
         {
-            return " ==> expected: <Aggregated failures:" + "\n" + va.GetAggregateFailureHeader(0) + "\nab zz cd" + "\n" + va.GetAggregateFailureHeader(1) + "\n" + "\n" + va.GetAggregateFailureHeader(2) + "\n" + "\n" + va.GetAggregateFailureHeader(3) + "\nthis is notnull" + "\n" + va.GetAggregateFailureHeader(4) + "\nxy vw> but was: <Aggregated failures:" + "\n" + va.GetAggregateFailureHeader(0) + "\nab cd" + "\n" + va.GetAggregateFailureHeader(1) + "\nFail assertion raised.\nmsg4" + "\n" + va.GetAggregateFailureHeader(2) + "\nthis is notnull" + "\n" + va.GetAggregateFailureHeader(3) + "\n" + "\n" + va.GetAggregateFailureHeader(4) + "\nxy zz vw>";
+            return " ==> expected: <Aggregated failures:" + "\n" + va.GetAggregateFailureHeader(0, "") + "\nab zz cd" + "\n" + va.GetAggregateFailureHeader(1, "msg4") + "\n" + "\n" + va.GetAggregateFailureHeader(2, "msgen") + "\n" + "\n" + va.GetAggregateFailureHeader(3, "msgan") + "\nthis is notnull" + "\n" + va.GetAggregateFailureHeader(4, "msg5") + "\nxy vw> but was: <Aggregated failures:" + "\n" + va.GetAggregateFailureHeader(0, "") + "\nab cd" + "\n" + va.GetAggregateFailureHeader(1, "msg4") + "\nFail assertion raised.\nmsg4" + "\n" + va.GetAggregateFailureHeader(2, "msgen") + "\nthis is notnull" + "\n" + va.GetAggregateFailureHeader(3, "msgan") + "\n" + "\n" + va.GetAggregateFailureHeader(4, "msg5") + "\nxy zz vw>";
         }
 
         //Full test with other frameworks (3 and 4), expected diffs are slightly different
@@ -83,7 +70,6 @@ namespace Giis.Visualassert
             TestSoftVisualAssert.DoFailSoftAssert(va, TestSoftVisualAssert.ExpectedMessage(true) + GetExpectedDiffsJUnit34(va), tempReportPath, AGGREGATE_HTML);
             AssertAggregateFile(tempReportPath);
         }
->>>>>>> 1fbf429 (Test net convert con JavaToCSharp)
 
         [Test]
         [Ignore("")] public virtual void TestJunit3FailureWithFileAndFramework()
@@ -94,29 +80,9 @@ namespace Giis.Visualassert
             AssertAggregateFile(tempReportPath);
         }
 
-<<<<<<< HEAD
-		[Test]
-		[Ignore("")] public virtual void TestJunit3FailureWithFileAndFramework()
-		{
-			string tempReportPath = FileUtil.GetPath(JavaCs.DefaultReportSubdir, "tmp-" + JavaCs.GetUniqueId());
-			SoftVisualAssert va = new SoftVisualAssert().SetReportSubdir(tempReportPath).ClearCurrentSequence().SetFramework(Giis.Visualassert.Framework.Junit3);
-			TestSoftVisualAssert.DoFailSoftAssert(va, TestSoftVisualAssert.ExpectedMessage(true) + GetExpectedDiffsJUnit34(va), tempReportPath, AggregateHtml);
-			AssertAggregateFile(tempReportPath);
-		}
-
-		private string GetExpectedDiffsJUnit34(SoftVisualAssert va)
-		{
-			return " expected:<...----------------" + "\nab [zz cd" + "\n" + va.GetAggregateFailureHeader(1, "msg4") + "\n" + "\n" + va.GetAggregateFailureHeader(2, "msgen") + "\n" + "\n" + va.GetAggregateFailureHeader(3, "msgan") + "\nthis is notnull" + "\n" + va.GetAggregateFailureHeader(4, 
-				"msg5") + "\nxy] vw> but was:<...----------------" + "\nab [cd" + "\n" + va.GetAggregateFailureHeader(1, "msg4") + "\nFail assertion raised.\nmsg4" + "\n" + va.GetAggregateFailureHeader(2, "msgen") + "\nthis is notnull" + "\n" + va.GetAggregateFailureHeader(3, "msgan") + "\n" + "\n"
-				 + va.GetAggregateFailureHeader(4, "msg5") + "\nxy zz] vw>";
-		}
-	}
-}
-=======
         private string GetExpectedDiffsJUnit34(SoftVisualAssert va)
         {
-            return " expected:<...----------------" + "\nab [zz cd" + "\n" + va.GetAggregateFailureHeader(1) + "\n" + "\n" + va.GetAggregateFailureHeader(2) + "\n" + "\n" + va.GetAggregateFailureHeader(3) + "\nthis is notnull" + "\n" + va.GetAggregateFailureHeader(4) + "\nxy] vw> but was:<...----------------" + "\nab [cd" + "\n" + va.GetAggregateFailureHeader(1) + "\nFail assertion raised.\nmsg4" + "\n" + va.GetAggregateFailureHeader(2) + "\nthis is notnull" + "\n" + va.GetAggregateFailureHeader(3) + "\n" + "\n" + va.GetAggregateFailureHeader(4) + "\nxy zz] vw>";
+            return " expected:<...----------------" + "\nab [zz cd" + "\n" + va.GetAggregateFailureHeader(1, "msg4") + "\n" + "\n" + va.GetAggregateFailureHeader(2, "msgen") + "\n" + "\n" + va.GetAggregateFailureHeader(3, "msgan") + "\nthis is notnull" + "\n" + va.GetAggregateFailureHeader(4, "msg5") + "\nxy] vw> but was:<...----------------" + "\nab [cd" + "\n" + va.GetAggregateFailureHeader(1, "msg4") + "\nFail assertion raised.\nmsg4" + "\n" + va.GetAggregateFailureHeader(2, "msgen") + "\nthis is notnull" + "\n" + va.GetAggregateFailureHeader(3, "msgan") + "\n" + "\n" + va.GetAggregateFailureHeader(4, "msg5") + "\nxy zz] vw>";
         }
     }
 }
->>>>>>> 1fbf429 (Test net convert con JavaToCSharp)
