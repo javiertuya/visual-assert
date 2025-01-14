@@ -150,7 +150,7 @@
       <arg value="https://github.com/javiertuya/JavaToCSharp.git" />
       <arg value="JavaToCSharp-temp" />
       <arg value="--branch" />
-      <arg value="master-test-all" />
+      <arg value="master-fork" />
     </exec>
     <echo>Building JavaToCsharp CLI</echo>
     <exec executable="dotnet" failonerror="true" dir="JavaToCSharp-temp/JavaToCSharpCli">
