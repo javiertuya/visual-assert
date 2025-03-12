@@ -1,6 +1,7 @@
 package giis.visualassert;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
@@ -57,21 +58,16 @@ public class TestVisualAssert {
 	public static void doFailAllConditionsFalse(VisualAssert va, String assertionException, String assertMessage, String expActMessage) {
 		FileUtil.createDirectory(defaultFolder); // ensure folder exists
 		FileUtil.fileWrite(FileUtil.getPath(defaultFolder, diffFile), "");
-		// Always use this pattern with a boolean variable to check that assert exception is raised
-		// to avoid problems with exception hierarchy across platforms and frameworks.
-		boolean success = false;
-		try {
+
+		AssertionError e = assertThrows(AssertionError.class, () -> {
 			va.assertEquals(expected, actualFail, "This is the additional message", diffFile);
-		} catch (AssertionError e) {
-			assertEquals(assertionException, e.getClass().getName()); //not a subclass of this exception
-			//first transforms the file name in expected message to include the path
-			String message=expectedMessageShort.replace(diffFile, FileUtil.getPath(JavaCs.DEFAULT_REPORT_SUBDIR, diffFile));
-			message+=expActMessage;
-			assertEquals(message, e.getMessage());
-			assertEquals(htmlDiffs, FileUtil.fileRead(FileUtil.getPath(defaultFolder, diffFile)));
-			success = true;
-		}
-		assertTrue(success);
+		});
+		assertEquals(assertionException, e.getClass().getName()); //not a subclass of this exception
+		//first transforms the file name in expected message to include the path
+		String message=expectedMessageShort.replace(diffFile, FileUtil.getPath(JavaCs.DEFAULT_REPORT_SUBDIR, diffFile));
+		message+=expActMessage;
+		assertEquals(message, e.getMessage());
+		assertEquals(htmlDiffs, FileUtil.fileRead(FileUtil.getPath(defaultFolder, diffFile)));
 	}
 
 	@Test
@@ -84,34 +80,30 @@ public class TestVisualAssert {
 				.setSoftDifferences(true)
 				.setBrightColors(true)
 				.setReportSubdir(tempReportPath);
-		boolean success = false;
-		try {
+		AssertionError e = assertThrows(AssertionError.class, () -> {
 			va.assertEquals(expected, actualFail);
-		} catch (AssertionError e) {
-			//get file and path of the generated diff file (only file in the folder)
-			List<String> allFiles = FileUtil.getFileListInDirectory(tempReportPath);
-			assertEquals(1, allFiles.size()); // only a file has been created
-			String diffFileName = allFiles.get(0);
+		});
+		//get file and path of the generated diff file (only file in the folder)
+		List<String> allFiles = FileUtil.getFileListInDirectory(tempReportPath);
+		assertEquals(1, allFiles.size()); // only a file has been created
+		String diffFileName = allFiles.get(0);
 			
-			String fullPath=FileUtil.getFullPath(FileUtil.getPath(tempReportPath, diffFileName));
-			//on windows, back slash must be replaced by forward slash and full path start with slash
-			if (fullPath.contains("\\"))
-				fullPath="/" + fullPath.replace("\\", "/");
-			String diffFileFullPath = "file://" + fullPath;
-
-			String expectedMessageLong = "Strings are different. First diff at line 1 column 5." 
-					+ "\n- Visual diffs at: " + diffFileFullPath 
-					+ "\n- Expected: <" + expected + ">." 
-					+ "\n- Actual: <" + actualFail + ">.";
-			assertEquals(expectedMessageLong.replace("\r", ""), e.getMessage().replace("\r", ""));
-			assertEquals(htmlDiffs
-					.replace("<pre>\n", "").replace("\n</pre>", "")
-					.replace("\n", "<br>")
-					.replace("e6ffe6", "00ff00").replace("ffe6e6", "ff4000"),
-					FileUtil.fileRead(FileUtil.getPath(tempReportPath, diffFileName)));
-			success = true;
-		}
-		assertTrue(success);
+		String fullPath=FileUtil.getFullPath(FileUtil.getPath(tempReportPath, diffFileName));
+		//on windows, back slash must be replaced by forward slash and full path start with slash
+		if (fullPath.contains("\\"))
+			fullPath="/" + fullPath.replace("\\", "/");
+		String diffFileFullPath = "file://" + fullPath;
+		
+		String expectedMessageLong = "Strings are different. First diff at line 1 column 5." 
+				+ "\n- Visual diffs at: " + diffFileFullPath 
+				+ "\n- Expected: <" + expected + ">." 
+				+ "\n- Actual: <" + actualFail + ">.";
+		assertEquals(expectedMessageLong.replace("\r", ""), e.getMessage().replace("\r", ""));
+		assertEquals(htmlDiffs
+				.replace("<pre>\n", "").replace("\n</pre>", "")
+				.replace("\n", "<br>")
+				.replace("e6ffe6", "00ff00").replace("ffe6e6", "ff4000"),
+				FileUtil.fileRead(FileUtil.getPath(tempReportPath, diffFileName)));
 	}
 	
 	@Test
@@ -123,29 +115,22 @@ public class TestVisualAssert {
 				+ "- Visual diffs at: target/diff-1.html", "null-expected.html");
 	}
 	private void doAssertNulls(VisualAssert va, String expected, String actual, String message, String expectedMessage, String htmlFile) {
-		boolean success = false;
-		try {
+		AssertionError e = assertThrows(AssertionError.class, () -> {
 			va.assertEquals(expected, actual, message);
-		} catch (AssertionError e){
-			assertEquals(expectedMessage, e.getMessage().replace("\\", "/"));
-			success = true;
-		}
-		assertTrue(success);
+		});
+		assertEquals(expectedMessage, e.getMessage().replace("\\", "/"));
 	}
 	
 	@Test
 	public void testNormalizeLineEndings() {
 		String linux = "line1\nline2\nline3\n";
 		String windows = "line1\r\nline2\r\nline3\r\n";
-		VisualAssert va = new VisualAssert();
-		boolean success = false;
-		try {
+		assertThrows(AssertionError.class, () -> {
+			VisualAssert va = new VisualAssert();
 			va.assertEquals(windows, linux, "Should fail without normalize eol", "va-normalize-eol.html");
-		} catch (AssertionError e) {
-			success = true;
-		}
-		assertTrue(success);
+		});
 		
+		VisualAssert va = new VisualAssert();
 		va = new VisualAssert().setNormalizeEol(true);
 		va.assertEquals(windows, linux, "Should not fail with normalize eol", "va-normalize-eol.html");
 		va.assertEquals(linux, windows, "Should not fail with normalize eol", "va-normalize-eol.html");
@@ -170,11 +155,10 @@ public class TestVisualAssert {
 		assertTrue(FileUtil.fileRead(FileUtil.getPath(tempReportPath, "diff-" + String.valueOf(initialSequence+2) + ".html")).length()>0);
 	}
 	private void runFailSilently(VisualAssert va) {
-		try {
+		assertThrows(AssertionError.class, () -> {
 			va.assertEquals("abc", "def");
-		} catch (AssertionError e) {
-			//no action, but a file was generated
-		}
+		});
+		//no action, but a file was generated
 	}
 
 	@Test

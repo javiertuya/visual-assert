@@ -1,7 +1,7 @@
 package giis.visualassert;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertThrows;
 
 import org.junit.Test;
 
@@ -41,41 +41,29 @@ public class TestSoftVisualAssertCallStack {
 		SoftVisualAssert va = new SoftVisualAssert(); //default stack 1
 		va.assertEquals("ab zz cd", "ab cd", "", "fstack11.html");
 		callDoAssert(va);
-		boolean success = false;
-		try {
+		AssertionError e = assertThrows(AssertionError.class, () -> {
 			va.assertAll();
-		} catch (AssertionError e) {
-			assertEquals(CallStack.normalize(getExpectedSingleStackItem()).toLowerCase(), CallStack.normalize(e.getMessage()).toLowerCase());
-			success=true;
-		}
-		assertTrue(success);
+		});
+		assertEquals(CallStack.normalize(getExpectedSingleStackItem()).toLowerCase(), CallStack.normalize(e.getMessage()).toLowerCase());
 	}
 	@Test
 	public void testMultipleStackItem() {
 		SoftVisualAssert va = new SoftVisualAssert().setCallStackLength(3);
 		callDoAssert(va);
-		boolean success = false;
-		try {
+		AssertionError e = assertThrows(AssertionError.class, () -> {
 			va.assertAll();
-		} catch (AssertionError e) {
-			assertEquals(CallStack.normalize(getExpectedMultipleStackItem()).toLowerCase(), CallStack.normalize(e.getMessage()).toLowerCase());
-			success=true;
-		}
-		assertTrue(success);
+		});
+		assertEquals(CallStack.normalize(getExpectedMultipleStackItem()).toLowerCase(), CallStack.normalize(e.getMessage()).toLowerCase());
 	}
 	@Test
 	public void testZeroStackItem() {
 		SoftVisualAssert va = new SoftVisualAssert().setCallStackLength(0);
 		va.assertEquals("ab zz cd", "ab cd", "", "fstack11.html");
 		callDoAssert(va);
-		boolean success = false;
-		try {
+		AssertionError e = assertThrows(AssertionError.class, () -> {
 			va.assertAll();
-		} catch (AssertionError e) {
-			assertEquals(CallStack.normalize(getExpectedZeroStackItem()), CallStack.normalize(e.getMessage()));
-			success=true;
-		}
-		assertTrue(success);
+		});
+		assertEquals(CallStack.normalize(getExpectedZeroStackItem()), CallStack.normalize(e.getMessage()));
 	}
 	
 	private String getExpectedSingleStackItem() {

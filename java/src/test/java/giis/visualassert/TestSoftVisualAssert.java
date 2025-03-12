@@ -1,7 +1,7 @@
 package giis.visualassert;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertThrows;
 
 import org.junit.Test;
 
@@ -46,23 +46,19 @@ public class TestSoftVisualAssert {
 		va.assertEquals("this is notnull", null, "msgan", "fan.html");
 		va.assertEquals("xy vw", "xy zz vw", "msg5");
 		assertEquals(5, va.getFailureCount());
-		boolean success = false;
-		try {
+		AssertionError e = assertThrows(AssertionError.class, () -> {
 			if ("".equals(aggregateFile))
 				va.assertAll();
 			else
 				va.assertAll(aggregateFile);
-		} catch (AssertionError e) {
-			//first transforms the file name in expected mesage to include the path
-			expected=expected.replace("f1.html", FileUtil.getPath(reportPath, "f1.html"));
-			expected=expected.replace("fen.html", FileUtil.getPath(reportPath, "fen.html"));
-			expected=expected.replace("fan.html", FileUtil.getPath(reportPath, "fan.html"));
-			expected=expected.replace("diff-0.html", FileUtil.getPath(reportPath, "diff-0.html"));
-			expected=expected.replace("Aggregate.html", FileUtil.getPath(reportPath, "Aggregate.html"));
-			assertEquals(CallStack.normalize(expected).toLowerCase(), CallStack.normalize(e.getMessage()).toLowerCase());
-			success = true;
-		}
-		assertTrue(success);
+		});
+		//first transforms the file name in expected mesage to include the path
+		expected=expected.replace("f1.html", FileUtil.getPath(reportPath, "f1.html"));
+		expected=expected.replace("fen.html", FileUtil.getPath(reportPath, "fen.html"));
+		expected=expected.replace("fan.html", FileUtil.getPath(reportPath, "fan.html"));
+		expected=expected.replace("diff-0.html", FileUtil.getPath(reportPath, "diff-0.html"));
+		expected=expected.replace("Aggregate.html", FileUtil.getPath(reportPath, "Aggregate.html"));
+		assertEquals(CallStack.normalize(expected).toLowerCase(), CallStack.normalize(e.getMessage()).toLowerCase());
 		
 		//assertAll resets the list
 		assertEquals(0, va.getFailureCount());

@@ -45,18 +45,11 @@ namespace Giis.Visualassert
             SoftVisualAssert va = new SoftVisualAssert(); //default stack 1
             va.AssertEquals("ab zz cd", "ab cd", "", "fstack11.html");
             CallDoAssert(va);
-            bool success = false;
-            try
+            Exception e = NUnit.Framework.Assert.Throws(typeof(Exception), () =>
             {
                 va.AssertAll();
-            }
-            catch (Exception e)
-            {
-                NUnit.Framework.Legacy.ClassicAssert.AreEqual(CallStack.Normalize(GetExpectedSingleStackItem()).ToLower(), CallStack.Normalize(e.Message).ToLower());
-                success = true;
-            }
-
-            NUnit.Framework.Legacy.ClassicAssert.IsTrue(success);
+            });
+            NUnit.Framework.Legacy.ClassicAssert.AreEqual(CallStack.Normalize(GetExpectedSingleStackItem()).ToLower(), CallStack.Normalize(e.Message).ToLower());
         }
 
         [Test]
@@ -64,18 +57,11 @@ namespace Giis.Visualassert
         {
             SoftVisualAssert va = new SoftVisualAssert().SetCallStackLength(3);
             CallDoAssert(va);
-            bool success = false;
-            try
+            Exception e = NUnit.Framework.Assert.Throws(typeof(Exception), () =>
             {
                 va.AssertAll();
-            }
-            catch (Exception e)
-            {
-                NUnit.Framework.Legacy.ClassicAssert.AreEqual(CallStack.Normalize(GetExpectedMultipleStackItem()).ToLower(), CallStack.Normalize(e.Message).ToLower());
-                success = true;
-            }
-
-            NUnit.Framework.Legacy.ClassicAssert.IsTrue(success);
+            });
+            NUnit.Framework.Legacy.ClassicAssert.AreEqual(CallStack.Normalize(GetExpectedMultipleStackItem()).ToLower(), CallStack.Normalize(e.Message).ToLower());
         }
 
         [Test]
@@ -84,18 +70,11 @@ namespace Giis.Visualassert
             SoftVisualAssert va = new SoftVisualAssert().SetCallStackLength(0);
             va.AssertEquals("ab zz cd", "ab cd", "", "fstack11.html");
             CallDoAssert(va);
-            bool success = false;
-            try
+            Exception e = NUnit.Framework.Assert.Throws(typeof(Exception), () =>
             {
                 va.AssertAll();
-            }
-            catch (Exception e)
-            {
-                NUnit.Framework.Legacy.ClassicAssert.AreEqual(CallStack.Normalize(GetExpectedZeroStackItem()), CallStack.Normalize(e.Message));
-                success = true;
-            }
-
-            NUnit.Framework.Legacy.ClassicAssert.IsTrue(success);
+            });
+            NUnit.Framework.Legacy.ClassicAssert.AreEqual(CallStack.Normalize(GetExpectedZeroStackItem()), CallStack.Normalize(e.Message));
         }
 
         private string GetExpectedSingleStackItem()

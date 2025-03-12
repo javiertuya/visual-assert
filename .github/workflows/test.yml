@@ -51,6 +51,10 @@ jobs:
     defaults:
       run:
         working-directory: net
+    permissions:
+      contents: read
+      checks: write
+      packages: read
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-dotnet@v4.3.0
@@ -87,12 +91,14 @@ jobs:
       # C# code is converted in the development environment and pushed to the repo,
       # so that there can be incompatible changes in the java side
       # this last step performs conversion with the latest versions and checks compilation is ok
-      - name: Validate Conversion from Java to C#
+      - name: Verify Conversion from Java to C#
         if: always()
         run: |
-          echo "*** Convert java to C#"
-          ant clone convert
-          echo "*** Check net build on converted code"
+          echo "*** Check .NET build on converted code"
+          dotnet nuget add source --username ${{ github.actor }} --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/javiertuya/index.json"
+          dotnet tool install JavaToCSharpCli --global
+          dotnet tool list --global
+          ant convert
           dotnet build
 
   publish-java-snapshot:

@@ -48,28 +48,21 @@ namespace Giis.Visualassert
             va.AssertEquals("this is notnull", null, "msgan", "fan.html");
             va.AssertEquals("xy vw", "xy zz vw", "msg5");
             NUnit.Framework.Legacy.ClassicAssert.AreEqual(5, va.GetFailureCount());
-            bool success = false;
-            try
+            Exception e = NUnit.Framework.Assert.Throws(typeof(Exception), () =>
             {
                 if ("".Equals(aggregateFile))
                     va.AssertAll();
                 else
                     va.AssertAll(aggregateFile);
-            }
-            catch (Exception e)
-            {
+            });
 
-                //first transforms the file name in expected mesage to include the path
-                expected = expected.Replace("f1.html", FileUtil.GetPath(reportPath, "f1.html"));
-                expected = expected.Replace("fen.html", FileUtil.GetPath(reportPath, "fen.html"));
-                expected = expected.Replace("fan.html", FileUtil.GetPath(reportPath, "fan.html"));
-                expected = expected.Replace("diff-0.html", FileUtil.GetPath(reportPath, "diff-0.html"));
-                expected = expected.Replace("Aggregate.html", FileUtil.GetPath(reportPath, "Aggregate.html"));
-                NUnit.Framework.Legacy.ClassicAssert.AreEqual(CallStack.Normalize(expected).ToLower(), CallStack.Normalize(e.Message).ToLower());
-                success = true;
-            }
-
-            NUnit.Framework.Legacy.ClassicAssert.IsTrue(success);
+            //first transforms the file name in expected mesage to include the path
+            expected = expected.Replace("f1.html", FileUtil.GetPath(reportPath, "f1.html"));
+            expected = expected.Replace("fen.html", FileUtil.GetPath(reportPath, "fen.html"));
+            expected = expected.Replace("fan.html", FileUtil.GetPath(reportPath, "fan.html"));
+            expected = expected.Replace("diff-0.html", FileUtil.GetPath(reportPath, "diff-0.html"));
+            expected = expected.Replace("Aggregate.html", FileUtil.GetPath(reportPath, "Aggregate.html"));
+            NUnit.Framework.Legacy.ClassicAssert.AreEqual(CallStack.Normalize(expected).ToLower(), CallStack.Normalize(e.Message).ToLower());
 
             //assertAll resets the list
             NUnit.Framework.Legacy.ClassicAssert.AreEqual(0, va.GetFailureCount());
