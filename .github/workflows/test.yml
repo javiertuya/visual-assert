@@ -30,7 +30,7 @@ jobs:
         run: mvn test -Dmaven.test.failure.ignore=true -U --no-transfer-progress
       - name: Publish test report
         if: always()
-        uses: mikepenz/action-junit-report@v6.3.0
+        uses: mikepenz/action-junit-report@v6.4.0
         with:
           check_name: test-report-java
           report_paths: '**/target/surefire-reports/TEST-*.xml'
@@ -58,7 +58,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       
-      - uses: actions/setup-dotnet@v5.1.0
+      - uses: actions/setup-dotnet@v5.2.0
         with:
             dotnet-version: '8.0.x'
 
@@ -73,7 +73,7 @@ jobs:
       #prevents execute on pr or dependabot that fails with "Resource not accessible by integration" due to permissions
       - name: Publish test report
         if: ${{ always() && github.actor=='javiertuya' }} 
-        uses: dorny/test-reporter@v2
+        uses: dorny/test-reporter@v3
         with:
           name: test-report-net
           #working-directory does not work here
