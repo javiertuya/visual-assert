@@ -18,7 +18,7 @@ jobs:
     #if: ${{ false }}  # disable for now
     steps:
       - name: Checkout GitHub repo
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - name: Select Java Version
         uses: actions/setup-java@v5
         with:
@@ -56,7 +56,7 @@ jobs:
       checks: write
       packages: read
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       
       - uses: actions/setup-dotnet@v5.3.0
         with:
